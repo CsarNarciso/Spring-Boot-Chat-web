@@ -1,16 +1,18 @@
  package com.cesar.ChatWeb.controller;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cesar.ChatWeb.entity.Usuario;
+import com.cesar.Methods.AccederUsuarioAutenticado;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,14 +43,9 @@ public class Controlador_Paginas {
 	
 	
 	@RequestMapping("/index")
-	public String dameIndex_desdeLogin(Model modelo){
+	public String dameIndex_desdeLogin(Principal p, Model modelo){
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Object principal = auth.getPrincipal();
-		
-		String nombreUsuario = ((UserDetails) principal).getUsername();
-
-		modelo.addAttribute("nombreUsuario", nombreUsuario);
+		modelo.addAttribute("UsuarioActual", AccederUsuarioAutenticado.getIdAndNombre(p));
 		
 		return "Pagina_Chat";
 	}
@@ -60,9 +57,11 @@ public class Controlador_Paginas {
 	public String damePagina_Index_desdeRegistro(
 			@Valid @ModelAttribute("usuario") Usuario usuario, 
 			BindingResult resultadoValidacion,
-			Model modelo,
 			HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,
+			Model modelo,
+			Principal p,
+			@RequestParam("imagenPerfil") MultipartFile metadatosImagenPerfil) {
 
 		
 			if (resultadoValidacion.hasErrors()){
@@ -71,7 +70,9 @@ public class Controlador_Paginas {
 			}
 			
 			System.out.println("Acceso exitoso!");
-			modelo.addAttribute("nombreUsuario", usuario.getNombre());
+			
+			modelo.addAttribute("UsuarioActual", AccederUsuarioAutenticado.getIdAndNombre(p));
+			
 			return "Pagina_Chat";
 		
 			

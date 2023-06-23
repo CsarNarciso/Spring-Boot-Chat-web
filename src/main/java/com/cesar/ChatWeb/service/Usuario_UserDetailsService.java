@@ -26,11 +26,11 @@ public class Usuario_UserDetailsService implements UserDetailsService {
 			System.out.println("Usuario " + usuario.getNombre() + " encontrado en la base de datos");
 		}
 		
-		return User.builder()
-				.username(usuario.getNombre())
-				.password(usuario.getContraseña())
-				.roles("usuario")
-				.build();
+		return new CustomUserDetails(
+				usuario.getId(),
+				usuario.getNombre(),
+				usuario.getContraseña()
+				);
 	
 	}
 

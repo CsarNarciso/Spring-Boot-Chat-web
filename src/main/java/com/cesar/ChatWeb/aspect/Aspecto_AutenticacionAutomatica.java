@@ -27,9 +27,11 @@ public class Aspecto_AutenticacionAutomatica {
 	public void autenticacionAutomatica(JoinPoint interceptor) {
 		
 		Object[] parametros = interceptor.getArgs();
+		
 		Usuario usuario = (Usuario) parametros[0];
 		HttpServletRequest request = (HttpServletRequest) parametros[2];
 		HttpServletResponse response = (HttpServletResponse) parametros[3];
+		
 
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(

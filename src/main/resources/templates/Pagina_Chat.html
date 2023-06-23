@@ -7,6 +7,23 @@
 
     <meta charset="UTF-8">
     <title>Pagina de chat</title>
+    
+    <style>
+    	
+    	#listaUsuarios{
+    		max-height: 200px;
+    		overflow: auto;
+    	}
+    	
+    	#formEnviar{
+    		display:none;
+    	}
+    	
+    	#nombreConversacion{
+    		display:none;
+    	}
+    	
+    </style>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
@@ -21,9 +38,13 @@
 
 
 <body>
-
-
-    <h1 id="nombreUsuario" th:text="${nombreUsuario}"></h1>  
+	<div id="datosUsuario" 
+		data-Id="${UsuarioActual.nombre}" 
+		data-Nombre="${UsuarioActual.id}"
+	></div>
+	
+	
+    <h1 id="nombreUsuario"></h1>  
     
     <a href="/logout">Cerrar sesion</a>
     
@@ -31,18 +52,24 @@
     <br><br>
     
     
-     <div id="bandejaMensajes">
-    	<strong>Bandeja de conversacion</strong>
-    </div>
+    <strong>Usuarios en linea</strong> <br>
+    <ul id="listaUsuarios"></ul> <br>
     
-    <br>
+    <strong>Conversaciones</strong> <br>
+    <ul id="listaConversaciones"></ul>
     
     
     
-    <form id="formEnviar">
+	    <br>    
+
+	<div id="nombreConversacion"></div> <br>
+     <div id="bandejaMensajes"></div>
+    
+
+    <form id="formEnviar" data-AccionAlEnviar="">
     
     	<input type="text" id="campoMensaje" placeholder="Escribe aqui..."> <br>
-    	<input type="text" id="campoRemitente" placeholder="Enviar a"> <input type="submit" value="Enviar">
+    	<input type="submit" value="Enviar">
     	
     </form>
     

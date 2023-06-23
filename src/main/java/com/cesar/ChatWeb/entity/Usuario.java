@@ -3,7 +3,9 @@ package com.cesar.ChatWeb.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cesar.ChatWeb.validation.EmailNoDisponible;
 import com.cesar.ChatWeb.validation.EmailPersonalizado;
+import com.cesar.ChatWeb.validation.NombreNoDisponible;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,26 +22,44 @@ public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public long id;
+	private Long id;
 
 	@NotBlank(message = "Nombre necesario")
-	public String nombre;
+	@NombreNoDisponible
+	private String nombre;
 
 	@EmailPersonalizado(message = "Introduce un email correcto")
-	public String email;
+	@EmailNoDisponible
+	private String email;
 
 	@NotBlank(message = "Contraseña necesaria")
-	public String contraseña;
+	private String contraseña;
+	
+	
+	
+	
+	
+	
+	
+	public Usuario() {}
 
-	public Usuario() {
-		super();
+
+	public Usuario(Long id, String nombre) {
+		this.id = id;
+		this.nombre = nombre;
 	}
 
-	public long getId() {
+	
+	
+	
+	
+	
+	
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -67,5 +87,6 @@ public class Usuario {
 	public void setContraseña(String contraseña) {
 		this.contraseña = contraseña;
 	}
+	
 
 }

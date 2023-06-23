@@ -7,9 +7,9 @@ public class Validador_EmailPersonalizado implements ConstraintValidator<EmailPe
 
 	
 	@Override
-	public boolean isValid(String emailIntroducido, ConstraintValidatorContext context) {
+	public boolean isValid(String email, ConstraintValidatorContext context) {
 		
-		return (emailIntroducido.matches("^[A-Za-z0-9]+@[A-Za-z]+\\.[A-Za-z]{2,3}$"));
+		return (email.matches("^[A-Za-z0-9]+@[A-Za-z]+\\.[A-Za-z]{2,3}$"));
 		
 	}
 
