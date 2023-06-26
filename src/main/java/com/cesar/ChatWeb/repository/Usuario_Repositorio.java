@@ -16,8 +16,8 @@ public interface Usuario_Repositorio extends JpaRepository<Usuario, Long>{
 	@Query("SELECT u FROM Usuario u WHERE u.id = :id")
 	Usuario findByID(@Param("id") Long id);
 	
-	@Query("UPDATE Usuario u SET u.nombreImagenPerfil = :nombre WHERE u.id = :id")
-	void updateNombreImagenPerfil(@Param("nombre") String nombre, @Param("id") Long id);
+	@Query("UPDATE Usuario u SET u.nombreImagen = :nombre WHERE u.id = :id")
+	void updateNombreImagen(@Param("nombre") String nombre, @Param("id") Long id);
 	
 	
 }

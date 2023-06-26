@@ -31,6 +31,8 @@ public class Usuario {
 	@EmailPersonalizado(message = "Introduce un email correcto")
 	@EmailNoDisponible
 	private String email;
+	
+	private String nombreImagen;
 
 	@NotBlank(message = "Contraseña necesaria")
 	private String contraseña;
@@ -78,7 +80,14 @@ public class Usuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getNombreImagen() {
+		return nombreImagen;
+	}
 
+	public void setNombreImagen(String nombreImagen) {
+		this.nombreImagen = nombreImagen;
+	}
 
 	public String getContraseña() {
 		return contraseña;

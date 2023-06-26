@@ -16,7 +16,6 @@ public class Mensaje {
 	private long id;
 	private long id_remitente;
 	private long id_destinatario;
-	private String remitente;
 	private String contenido;
 	private String fecha;
 	
@@ -43,12 +42,6 @@ public class Mensaje {
 	}
 	public void setId_destinatario(long id_destinatario) {
 		this.id_destinatario = id_destinatario;
-	}
-	public String getRemitente() {
-		return remitente;
-	}
-	public void setRemitente(String remitente) {
-		this.remitente = remitente;
 	}
 	public String getContenido() {
 		return contenido;

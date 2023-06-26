@@ -1,6 +1,7 @@
  package com.cesar.ChatWeb.controller;
 
 import java.security.Principal;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,8 +46,8 @@ public class Controlador_Paginas {
 	@RequestMapping("/index")
 	public String dameIndex_desdeLogin(Principal p, Model modelo){
 		
-		modelo.addAttribute("UsuarioActual", AccederUsuarioAutenticado.getIdAndNombre(p));
-		
+		modelo.addAttribute("DatosUsuario", AccederUsuarioAutenticado.getDatos(p));
+	
 		return "Pagina_Chat";
 	}
 	
@@ -71,7 +72,9 @@ public class Controlador_Paginas {
 			
 			System.out.println("Acceso exitoso!");
 			
-			modelo.addAttribute("UsuarioActual", AccederUsuarioAutenticado.getIdAndNombre(p));
+			
+			modelo.addAttribute("DatosUsuario", AccederUsuarioAutenticado.getDatos(p));
+			
 			
 			return "Pagina_Chat";
 		

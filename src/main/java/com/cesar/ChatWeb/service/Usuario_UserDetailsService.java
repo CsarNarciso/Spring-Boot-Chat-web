@@ -29,6 +29,8 @@ public class Usuario_UserDetailsService implements UserDetailsService {
 		return new CustomUserDetails(
 				usuario.getId(),
 				usuario.getNombre(),
+				usuario.getEmail(),
+				usuario.getNombreImagen(),
 				usuario.getContraseña()
 				);
 	

@@ -13,10 +13,11 @@ public class Conversacion {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	private long id_remitente;
-	private long id_destinatario;
+	private Long id;
+	private Long id_remitente;
+	private Long id_destinatario;
 	private String nombre;
+	private String nombreImagen;
 	private int mensajesNuevos;
 	
 	
@@ -27,22 +28,22 @@ public class Conversacion {
 	
 	
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public long getId_remitente() {
+	public Long getId_remitente() {
 		return id_remitente;
 	}
-	public void setId_remitente(long id_remitente) {
+	public void setId_remitente(Long id_remitente) {
 		this.id_remitente = id_remitente;
 	}
-	public long getId_destinatario() {
+	public Long getId_destinatario() {
 		return id_destinatario;
 	}
-	public void setId_destinatario(long id_destinatario) {
+	public void setId_destinatario(Long id_destinatario) {
 		this.id_destinatario = id_destinatario;
 	}
 	public String getNombre() {
@@ -50,6 +51,12 @@ public class Conversacion {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public String getNombreImagen() {
+		return nombreImagen;
+	}
+	public void setNombreImagen(String nombreImagen) {
+		this.nombreImagen = nombreImagen;
 	}
 	public int getMensajesNuevos() {
 		return mensajesNuevos;

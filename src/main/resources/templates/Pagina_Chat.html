@@ -39,14 +39,13 @@
 
 <body>
 	<div id="datosUsuario" 
-		data-Id="${UsuarioActual.nombre}" 
-		data-Nombre="${UsuarioActual.id}"
+		data-Id="${DatosUsuario.id}" 
+		data-Nombre="${DatosUsuario.username}" 
+		data-NombreImagen="${DatosUsuario.nombreImagen}" 
 	></div>
 	
 	
-    <h1 id="nombreUsuario"></h1>  
-    
-    <a href="/logout">Cerrar sesion</a>
+    <img id="imagenUsuario" src=""> <h1 id="nombreUsuario"></h1> <a href="/logout">Cerrar sesion</a>
     
     
     <br><br>

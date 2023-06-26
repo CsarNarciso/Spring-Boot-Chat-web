@@ -1,13 +1,19 @@
 $(document).ready(function() {
 
+
+	////////////////VARIABLES////////////////////
+	/////////////////////////////////////////////
 	var socket = new SockJS("/chat/index");
 	var stomp = Stomp.over(socket);
 	
 	var nombre = $("#datosUsuario").attr("data-Nombre");
 	var id = $("#datosUsuario").attr("data-Id");
+	var nombreImagen = $("#datosUsuario").attr("data-NombreImagen");
 	
 	var nombreDestinatarioActual;
 	var idDestinatarioActual;
+	
+	var rutaImagenesPerfil = "/imagenesDePerfil/";
 	
 	var destinoSuscripcion_ListaUsuarios = "/topic/mostrarListaUsuariosOnline";
 	var destinoSuscripcion_ListaConversaciones = "/user/" + id + "/queue/conversaciones";
@@ -17,6 +23,13 @@ $(document).ready(function() {
 	var destinoEnvio_ObtenerListaConversaciones = "/obtenerListaConversaciones";
 	var destinoCrearConversacion = "/crearConversacion";
 
+
+
+
+	//////////////////////MOSTRAR NOMBRE E IMAGEN DEL USUARIO EN LA INTERFAZ////////////////
+	///////////////////////////////////////////////////////////////////////////////////////
+	$("#nombreUsuario").text(nombre);
+	$("#imagenUsuario").attr("src", rutaImagenesPerfil + nombreImagen);
 
 
 

@@ -2,36 +2,64 @@ package com.cesar.Methods;
 
 import java.io.File;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 
 public class ActualizarDatosUsuario {
 
+	
 	public static void guardarImagenPerfil(MultipartFile metadatosImagen, Long idUsuario) {
 			
+			String nombreImagen = "SinImagen.jpg";
+			String extension = null;
+		
 			if(!metadatosImagen.isEmpty()) {
 	
-				String rutaImagen = "\\resources\\static\\ImagenesDePerfil\\" + idUsuario;
 				
-				File imagen = new File(rutaImagen);
+				String tipoExtension = metadatosImagen.getContentType();
 				
-				
-				if (imagen.exists()) {
-	
-					imagen.delete();
-					System.out.println("Remplazando anterior imagen...");
+				if( tipoExtension.equals("image/jpeg") ) {
+					extension = ".jpg";
 				}
-	
-				
-				try { 
-					metadatosImagen.transferTo(imagen);
+				else if ( tipoExtension.equals("image/png") ) {
+					extension = ".png";
 				}
-				catch(Exception e) { e.printStackTrace(); }
 				
-				System.out.println("Imagen de perfil almacenada en servidor");
+				if ( extension != null ) {
 				
+					String rutaImagen = "\\resources\\static\\ImagenesDePerfil\\" + idUsuario;
+					
+					File imagen = new File(rutaImagen);
+					
+					if (imagen.exists()) {
+						
+						System.out.println("Remplazando anterior imagen...");
+						imagen.delete();
+						
+					}
+					
+					try { 
+						metadatosImagen.transferTo(imagen);
+						System.out.println("Imagen de perfil almacenada en servidor");
+						nombreImagen = idUsuario + extension;
+					}
+					catch(Exception e) { e.printStackTrace(); }
+					
+				}
+					
 				
 			}
+				
+			userRepo.updateNombreImagen(nombreImagen, idUsuario);
 			
 		}
+			
+				
+			
+
+	@Autowired
+	private static Usuario_Repositorio userRepo;
 	
 }
