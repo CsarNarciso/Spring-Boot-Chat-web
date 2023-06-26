@@ -27,7 +27,9 @@ public class Controlador_Sockets {
 		
 		Long id = (Long) headers.get("id");
 		String nombre = (String) headers.get("nombre");
-		Usuario usuario = usuarioRepo.findByID(id);
+		String nombreImagen = (String) headers.get("nombreImagen");
+		
+		Usuario usuario = new Usuario(id, nombre, nombreImagen);
 	
 		if( headers.get("accion") == "agregar" ) {
 			if(!usuariosOnline.containsKey(id)) {
@@ -45,6 +47,9 @@ public class Controlador_Sockets {
 		
 	}
 	
+	
+	
+	
 	@MessageMapping("/obtenerListaConversaciones")
 	public void obtenerListaConversaciones(@Headers Map<String, Long> headers) {
 	
@@ -57,6 +62,8 @@ public class Controlador_Sockets {
 	}
 	
 
+	
+	
 
 	@MessageMapping("/enviarMensaje")
 	public void enviarMensaje(Mensaje mensaje) {
@@ -76,20 +83,12 @@ public class Controlador_Sockets {
 	}
 	
 	
+	
+	
+	
 	@MessageMapping("/crearConversacion")
-	public void crearConversacion(Map<String, Object> datosConversacion) {
-		
-		Long idRemitente = (Long) datosConversacion.get("idRemitente");
-		Long idDestinatario = (Long) datosConversacion.get("idDestinatario");
-		String nombreDestinatario = (String) datosConversacion.get("nombreDestinatario");
-		
-		Conversacion conversacion = new Conversacion();
-		conversacion.setId_remitente(idRemitente);
-		conversacion.setId_destinatario(idDestinatario);
-		conversacion.setNombre(nombreDestinatario);
-		
+	public void crearConversacion(Conversacion conversacion) {
 		conversacionRepo.save(conversacion);
-		
 	}
 
 	

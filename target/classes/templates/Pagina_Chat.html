@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Pagina de chat</title>
+    
+    <style>
+    	
+    	#listaUsuarios{
+    		max-height: 200px;
+    		overflow: auto;
+    	}
+    	
+    	#formEnviar{
+    		display:none;
+    	}
+    	
+    	#nombreConversacion{
+    		display:none;
+    	}
+    	
+    </style>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+	<script src="FuncionalidadWebSocketMensajeria.js"></script>
+     
+</head>
+
+
+
+
+
+<body>
+	<div id="datosUsuario" 
+		data-Id="${DatosUsuario.id}" 
+		data-Nombre="${DatosUsuario.username}" 
+		data-NombreImagen="${DatosUsuario.nombreImagen}" 
+	></div>
+	
+	
+    <img id="imagenUsuario" src=""> <h1 id="nombreUsuario"></h1> <a href="/logout">Cerrar sesion</a>
+    
+    
+    <br><br>
+    
+    
+    <strong>Usuarios en linea</strong> <br>
+    <ul id="listaUsuarios"></ul> <br>
+    
+    <strong>Conversaciones</strong> <br>
+    <ul id="listaConversaciones"></ul>
+    
+    
+    
+	    <br>    
+
+	<div id="nombreConversacion"></div> <br>
+     <div id="bandejaMensajes"></div>
+    
+
+    <form id="formEnviar" data-AccionAlEnviar="">
+    
+    	<input type="text" id="campoMensaje" placeholder="Escribe aqui..."> <br>
+    	<input type="submit" value="Enviar">
+    	
+    </form>
+    
+   
+    
+    
+</body>
+
+
+
+
+</html>

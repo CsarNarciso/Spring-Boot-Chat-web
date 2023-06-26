@@ -44,6 +44,15 @@ public class Usuario {
 	
 	
 	public Usuario() {}
+	
+	
+	public Usuario(Long id, String nombre, String nombreImagen) {
+		this.id = id;
+		this.nombre = nombre;
+		this.nombreImagen = nombreImagen;
+	}
+	
+	
 
 
 	public Usuario(Long id, String nombre) {
