@@ -255,9 +255,41 @@ $(document).ready(function() {
 		
 		});
 		
+		
+		$("#conversacion" + id).on("contextmenu", function(e){
+			
+			e.preventdefault();
+			
+			$("#menu_OpcionesConversacion").css(
+				{
+					display: "block",
+					top: e.pageX,
+					left: e.pageY
+				}
+			);
+			
+		});
+		
 
 					
 	}
+	
+	
+	
+	
+	
+	
+	//////////////////ASIGNACION DE FUNCIONES A ELEMENTOS////////////////////
+	/////////////////////////////////////////////////////////////////////////
+	
+		////////////ocultar menu para eliminar conversacion
+	$(this).click(function(){
+		$("#menu_OpcionesConversacion").hide();	
+	});
+	
+		//////////eliminar conversacion en opciones de conversacion
+	$("#opcionesConversacion #eliminar").click(eliminarConversacion());
+	
 	
 	
 	
