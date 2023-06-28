@@ -23,6 +23,6 @@ public interface Conversacion_Repositorio extends JpaRepository<Conversacion, Lo
 	
 	@Modifying
 	@Query("DELETE FROM Conversacion c WHERE c.id_remitente = :id_usuario")
-	void deleteAllByUserId(@Param("id_usuario") Long id_usuario);
+	void deleteByUserId(@Param("id_usuario") Long id_usuario);
 	
 }

@@ -270,7 +270,7 @@ $(document).ready(function() {
 			);
 			
 			
-			$("#opcionesConversacion #eliminar").attr("data-IdConversacion", id);
+			$("#opcionesConversacion #eliminar").attr("idConversacion", id);
 			
 		});
 		
@@ -280,11 +280,7 @@ $(document).ready(function() {
 	
 	
 	function eliminarConversacion(){
-		
-		var idConversacion = $("#opcionesConversacion #eliminar").attr("data-IdConversacion")
-		
-		$("#menu_OpcionesConversacion").hide();	
-		
+		var idConversacion = $("#opcionesConversacion #eliminar").attr("idConversacion")
 		stomp.send(destinoEnvio_EliminarConversacion, {"id" : idConversacion});
 	}
 	
