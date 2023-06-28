@@ -22,7 +22,8 @@ $(document).ready(function() {
 	var destinoEnvio_Mensaje = "/enviarMensaje";
 	var destinoEnvio_ActualizarListaUsuarios = "/actualizarListaUsuariosOnline";
 	var destinoEnvio_ObtenerListaConversaciones = "/obtenerListaConversaciones";
-	var destinoCrearConversacion = "/crearConversacion";
+	var destinoEnvio_CrearConversacion = "/crearConversacion";
+	var destinoEnvio_EliminarConversacion = "/eliminarConversacion";
 
 
 
@@ -268,6 +269,9 @@ $(document).ready(function() {
 				}
 			);
 			
+			
+			$("#opcionesConversacion #eliminar").attr("idConversacion", id);
+			
 		});
 		
 
@@ -275,6 +279,10 @@ $(document).ready(function() {
 	}
 	
 	
+	function eliminarConversacion(){
+		var idConversacion = $("#opcionesConversacion #eliminar").attr("idConversacion")
+		stomp.send(destinoEnvio_EliminarConversacion, {"id" : idConversacion});
+	}
 	
 	
 	
