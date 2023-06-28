@@ -90,6 +90,13 @@ public class Controlador_Sockets {
 	public void crearConversacion(Conversacion conversacion) {
 		conversacionRepo.save(conversacion);
 	}
+	
+	@MessageMapping("/eliminarConversacion")
+	public void eliminarConversacion(@Headers Map<String, Long> datos) {
+		Long id = datos.get("id");
+		
+		conversacionRepo.deleteById(id);
+	}
 
 	
 	
