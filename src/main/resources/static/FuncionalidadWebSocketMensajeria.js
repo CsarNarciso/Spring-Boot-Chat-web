@@ -254,6 +254,8 @@ $(document).ready(function() {
 			$("#formEnviar").attr("data-CrearConversacion", "No");
 		
 		});
+		
+
 					
 	}
 	
