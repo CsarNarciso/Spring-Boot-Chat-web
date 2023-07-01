@@ -27,11 +27,6 @@ $(document).ready(function() {
 
 
 
-	//////AGREGAR ID DE REMITENTE Y DESTINATARIO A CONVERSACION (CLIENTE)///////////////
-	////////////////////////////////////////////////////////////////////////////////////
-
-	///////////////////SUBSCRIBIR PARA ACTUALIZAR CONVERSACION CUANDO DESTINATARIO MODIFIQUE SUS DATOS//////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//////////////ENVIO ACTUALIZAR CONVERSACION//////////////////////////
 	/////////////////////////////////////////////////////////////////////
@@ -78,7 +73,7 @@ $(document).ready(function() {
 			
 			listaConversaciones.forEach(function(c){
 				
-				agregarConversacion(c.id, c.nombre, c.nombreImagen, c.mensajesNuevos)
+				agregarConversacion(c.id, c.id_remitente, c.id_destinatario, c.nombre, c.nombreImagen, c.mensajesNuevos)
 
 			});
 			
@@ -150,7 +145,7 @@ $(document).ready(function() {
 
 		if($("#formEnviar").attr("data-CrearConversacion") == "Si"){
 			
-			agregarConversacion(idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
+			agregarConversacion(idDestinatarioActual, id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
 			
 			var conversacion = {
 				"id_remitente" : id,
@@ -236,7 +231,7 @@ $(document).ready(function() {
 	}
 	
 	
-	function agregarConversacion(id, nombre, nombreImagen, mensajesNuevos){
+	function agregarConversacion(id, idRemitente, idDestinatario, nombre, nombreImagen, mensajesNuevos){
 					
 		$("#listaConversaciones").append(
 		
@@ -248,7 +243,17 @@ $(document).ready(function() {
 		
 		);	
 	
+	
+						//////AGREGAR ID DE REMITENTE Y DESTINATARIO A CONVERSACION (CLIENTE)///////////////
+	////////////////////////////////////////////////////////////////////////////////////
+
+	///////////////////SUBSCRIBIR PARA ACTUALIZAR CONVERSACION CUANDO DESTINATARIO MODIFIQUE SUS DATOS//////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+					
 		$("#conversacion_" + id).attr("data-Id", id);
+		$("#conversacion_" + id).attr("data-IdRemitente", idRemitente);
+		$("#conversacion_" + id).attr("data-IdDestinatario", idDestinatario);
 		$("#conversacion_" + id).attr("data-Nombre", nombre);
 		$("#conversacion_" + id).attr("data-NombreImagen", nombreImagen);
 		$("#conversacion_" + id).attr("data-MensajesNuevos", mensajesNuevos);
@@ -260,14 +265,14 @@ $(document).ready(function() {
 			$("#nombreConversacion").toggle();
 			$("#formEnviar").toggle();
 			
-			idDestinatarioActual = $(this).attr("data-Id");
+			idDestinatarioActual = $(this).attr("data-IdDestinatario");
 			
 			$("#formEnviar").attr("data-CrearConversacion", "No");
 		
 		});
 		
 		
-		$("#conversacion" + id).on("contextmenu", function(e){
+		$("#conversacion_" + id).on("contextmenu", function(e){
 			
 			e.preventdefault();
 			
@@ -287,6 +292,7 @@ $(document).ready(function() {
 
 					
 	}
+	
 	
 	
 	function eliminarConversacion(){
