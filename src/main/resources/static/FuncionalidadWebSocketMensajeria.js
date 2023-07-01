@@ -19,6 +19,8 @@ $(document).ready(function() {
 	var destinoSuscripcion_ListaUsuarios = "/topic/mostrarListaUsuariosOnline";
 	var destinoSuscripcion_ListaConversaciones = "/user/" + id + "/queue/conversaciones";
 	var destinoSuscripcion_Mensajes = "/user/" + id + "/queue/mensajes";
+	var destinoSuscripcion_ActualizarDatosConversacion = "/topic/actualizarDatosConversacion/";
+	
 	var destinoEnvio_Mensaje = "/enviarMensaje";
 	var destinoEnvio_ActualizarListaUsuarios = "/actualizarListaUsuariosOnline";
 	var destinoEnvio_ObtenerListaConversaciones = "/obtenerListaConversaciones";
@@ -244,12 +246,6 @@ $(document).ready(function() {
 		);	
 	
 	
-						//////AGREGAR ID DE REMITENTE Y DESTINATARIO A CONVERSACION (CLIENTE)///////////////
-	////////////////////////////////////////////////////////////////////////////////////
-
-	///////////////////SUBSCRIBIR PARA ACTUALIZAR CONVERSACION CUANDO DESTINATARIO MODIFIQUE SUS DATOS//////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 					
 		$("#conversacion_" + id).attr("data-Id", id);
 		$("#conversacion_" + id).attr("data-IdRemitente", idRemitente);
@@ -257,6 +253,8 @@ $(document).ready(function() {
 		$("#conversacion_" + id).attr("data-Nombre", nombre);
 		$("#conversacion_" + id).attr("data-NombreImagen", nombreImagen);
 		$("#conversacion_" + id).attr("data-MensajesNuevos", mensajesNuevos);
+		
+		
 		
 		$("#conversacion_" + id).click(function(){
 
@@ -270,6 +268,7 @@ $(document).ready(function() {
 			$("#formEnviar").attr("data-CrearConversacion", "No");
 		
 		});
+		
 		
 		
 		$("#conversacion_" + id).on("contextmenu", function(e){
@@ -288,6 +287,20 @@ $(document).ready(function() {
 			$("#opcionesConversacion #eliminar").attr("idConversacion", id);
 			
 		});
+		
+		///////////////////SUBSCRIBIR PARA ACTUALIZAR CONVERSACION CUANDO DESTINATARIO MODIFIQUE SUS DATOS//////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + c.idDestinatario, function(message){
+		
+		var conversacionActualizada = JSON.parse(message.body);
+		
+		$("#conversacion_" + id).attr("data-Nombre", conversacionActualizada.nombre);
+		$("#conversacion_" + id).attr("data-NombreImagen", conversacionActualizada.nombreImagen);
+		
+		$("#conversacion_" + id +" #elemento_nombre").text(conversacionActualizada.nombre);
+		$("#conversacion_" + id +" #elemento_imagen").attr("src", rutaImagenesPerfil + conversacionActualizada.nombreImagen);
+	});
 		
 
 					
