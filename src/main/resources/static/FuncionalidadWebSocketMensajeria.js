@@ -336,6 +336,9 @@ $(document).ready(function() {
 	
 	
 	$("#botonEditarPerfil").click(function(e){
+		
+		$("#menu_OpcionesPerfil").hide();
+		
 		$("#menu_EditarPerfil").css({
 			display:"block"
 		});
