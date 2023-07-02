@@ -328,6 +328,13 @@ $(document).ready(function() {
 	$("#opcionesConversacion #eliminar").click(eliminarConversacion());
 	
 	
+	$("#imagenUsuario").click(function(e){
+		$("#menu_OpcionesPerfil").css({
+			display:"block";
+		});
+	});
+	
+	
 
 	
 	
