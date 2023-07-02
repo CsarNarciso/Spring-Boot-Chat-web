@@ -330,7 +330,14 @@ $(document).ready(function() {
 	
 	$("#imagenUsuario").click(function(e){
 		$("#menu_OpcionesPerfil").css({
-			display:"block";
+			display:"block"
+		});
+	});
+	
+	
+	$("#botonEditarPerfil").click(function(e){
+		$("#menu_EditarPerfil").css({
+			display:"block"
 		});
 	});
 	
