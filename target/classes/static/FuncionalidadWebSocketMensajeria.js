@@ -389,13 +389,20 @@ $(document).ready(function() {
 	
 	$("#formEditarNombre").submit(function(e){
 		
-		var nuevoNombre = $("#campoNuevaImagen").val();
+		var nuevoNombre = $("#campoNuevoNombre").val();
 		
 		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "nombre", "id" : id, "nuevoNombre" : nuevoNombre});
 		
 	});
 	
 	
+	$("#formEditarImagen").submit(function(e){
+		
+		var metadatosNuevaImagen = $("#campoNuevaImagen").val();
+		
+		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "imagen", "id" : id, "nuevaImagen" : metadatosNuevaImagen});
+		
+	});
 	
 	
 	
