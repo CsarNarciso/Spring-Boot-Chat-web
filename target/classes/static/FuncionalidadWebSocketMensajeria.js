@@ -370,6 +370,19 @@ $(document).ready(function() {
 	
 	
 
+	$("#campoNuevaImagen").on("input", function(){
+		
+		var nuevoNombre = $(this).val(); 
+		
+		if( nuevoNombre !== "" ){
+
+			$("#botonEditarImagen").prop("disabled", false);
+		}
+		else{
+			$("#botonEditarImagen").prop("disabled", true);
+		}
+		
+	});
 	
 	
 	
