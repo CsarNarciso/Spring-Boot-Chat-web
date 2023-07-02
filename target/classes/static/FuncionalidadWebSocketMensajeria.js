@@ -26,6 +26,7 @@ $(document).ready(function() {
 	var destinoEnvio_ObtenerListaConversaciones = "/obtenerListaConversaciones";
 	var destinoEnvio_CrearConversacion = "/crearConversacion";
 	var destinoEnvio_EliminarConversacion = "/eliminarConversacion";
+	var destinoEnvio_ActualizarDatosUsuario = "/actualizarDatosUsuario"
 
 
 
@@ -381,6 +382,16 @@ $(document).ready(function() {
 		else{
 			$("#botonEditarImagen").prop("disabled", true);
 		}
+		
+	});
+	
+	
+	
+	$("#formEditarNombre").submit(function(e){
+		
+		var nuevoNombre = $("#campoNuevaImagen").val();
+		
+		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "nombre", "id" : id, "nuevoNombre" : nuevoNombre});
 		
 	});
 	
