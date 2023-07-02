@@ -351,7 +351,22 @@ $(document).ready(function() {
 	});
 	
 	
-
+	$("#campoNuevoNombre").on("input", function(){
+		
+		var nuevoNombre = $(this).val(); 
+		
+		if( nuevoNombre.trim() !== "" ){
+			if ( nuevoNombre !== nombre ){
+				
+				$("#botonEditarNombre").prop("disabled", false);
+				
+			}
+		}
+		else{
+			$("#botonEditarNombre").prop("disabled", true);
+		}
+		
+	});
 	
 	
 
