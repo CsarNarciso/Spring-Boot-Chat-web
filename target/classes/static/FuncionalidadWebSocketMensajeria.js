@@ -329,9 +329,10 @@ $(document).ready(function() {
 	
 	
 	$("#imagenUsuario").click(function(e){
-		$("#menu_OpcionesPerfil").css({
-			display:"block"
-		});
+		
+		$("#menu_EditarPerfil").hide();
+		
+		$("#menu_OpcionesPerfil").toggle();
 	});
 	
 	
@@ -339,10 +340,18 @@ $(document).ready(function() {
 		
 		$("#menu_OpcionesPerfil").hide();
 		
+		$("#campoNuevoNombre").val(nombre);
+		
+		$("#campoNuevaImagen").val("");
+		
 		$("#menu_EditarPerfil").css({
 			display:"block"
 		});
+		
 	});
+	
+	
+
 	
 	
 
