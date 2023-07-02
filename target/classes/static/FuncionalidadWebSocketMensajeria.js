@@ -288,19 +288,17 @@ $(document).ready(function() {
 			
 		});
 		
-		///////////////////SUBSCRIBIR PARA ACTUALIZAR CONVERSACION CUANDO DESTINATARIO MODIFIQUE SUS DATOS//////////////////////
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + c.idDestinatario, function(message){
-		
-		var conversacionActualizada = JSON.parse(message.body);
-		
-		$("#conversacion_" + id).attr("data-Nombre", conversacionActualizada.nombre);
-		$("#conversacion_" + id).attr("data-NombreImagen", conversacionActualizada.nombreImagen);
-		
-		$("#conversacion_" + id +" #elemento_nombre").text(conversacionActualizada.nombre);
-		$("#conversacion_" + id +" #elemento_imagen").attr("src", rutaImagenesPerfil + conversacionActualizada.nombreImagen);
-	});
+
+		stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + c.idDestinatario, function(message){
+			
+			var conversacionActualizada = JSON.parse(message.body);
+			
+			$("#conversacion_" + id).attr("data-Nombre", conversacionActualizada.nombre);
+			$("#conversacion_" + id).attr("data-NombreImagen", conversacionActualizada.nombreImagen);
+			
+			$("#conversacion_" + id +" #elemento_nombre").text(conversacionActualizada.nombre);
+			$("#conversacion_" + id +" #elemento_imagen").attr("src", rutaImagenesPerfil + conversacionActualizada.nombreImagen);
+		});
 		
 
 					

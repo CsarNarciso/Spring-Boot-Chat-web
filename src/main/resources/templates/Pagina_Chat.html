@@ -30,6 +30,8 @@
     		display:none;
     	}
     	
+    	
+    	
     </style>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
@@ -52,7 +54,8 @@
 	></div>
 	
 	
-    <img id="imagenUsuario" src=""> <h1 id="nombreUsuario"></h1> <a href="/logout">Cerrar sesion</a>
+    <img id="imagenUsuario" src=""> 
+    <h1 id="nombreUsuario"></h1> 
     
     
     <br><br>
@@ -78,13 +81,36 @@
     	<input type="submit" value="Enviar">
     	
     </form>
-    
-    
-    //////////////////CAMPOS ACTUALIZAR DATOS USUARIO////////////
+
+
+    //////////////////MENU OPCIONES PERFIL////////////
     ////////////////////////////////////////////////////////////
+    <div id="menu_OpcionesPerfil">
+    	<a id="botonEditarPerfil">Editar perfil</a>
+    	<a href="/logout">Cerrar sesion</a>
+    </div>
     
+    //////////////////MENU EDITAR PERFIL////////////
+    ////////////////////////////////////////////////
+    <div id="menu_EditarPerfil">
     
-    ////////////MENUS DESPLEGABLES////////////////
+    	<div> <strong>Editar perfil</strong> </div> <br>
+    	
+    	<form id="formEditarNombre">
+    		Nombre de usuario: <input id="campoNuevoNombre" type="text"> <br>
+    		<input id="botonEditarNombre" type="submit" value="Actualizar">
+    	</form>
+    	
+    	<br>
+    	
+    	<form id="formEditarImagen" enctype="multipart/form-data">
+    		Subir nueva imagen de perfil: <input id="campoNuevaImagen" type="file"> <br>
+    		<input id="botonEditarImagen" type="submit" value="Actualizar">
+    	</form>
+    	
+    </div>
+    
+    ////////////MENUS OPCIONES CONVERSACION////////////////
     //////////////////////////////////////////////
    
     <div id="menu_OpcionesConversacion">
