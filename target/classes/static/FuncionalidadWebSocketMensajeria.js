@@ -320,10 +320,15 @@ $(document).ready(function() {
 		////////////ocultar menu para eliminar conversacion
 	$(this).click(function(){
 		$("#menu_OpcionesConversacion").hide();	
+		$("#menu_OpcionesPerfil").hide();
+		$("#menu_EditarPerfil").hide();
 	});
 	
 		//////////eliminar conversacion en opciones de conversacion
 	$("#opcionesConversacion #eliminar").click(eliminarConversacion());
+	
+	
+
 	
 	
 	
