@@ -128,6 +128,29 @@ $(document).ready(function() {
 	});
 	
 	
+	
+
+	///////////ENVIO ACTUALIZAR NOMBRE PERFIL/////////
+	//////////////////////////////////////////////////
+	$("#formEditarNombre").submit(function(e){
+		
+		var nuevoNombre = $("#campoNuevoNombre").val();
+		
+		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "nombre", "id" : id, "nuevoNombre" : nuevoNombre});
+		
+	});
+	
+	
+	
+	///////////ENVIO ACTUALIZAR IMAGEN PERFIL/////////
+	//////////////////////////////////////////////////
+	$("#formEditarImagen").submit(function(e){
+		
+		var metadatosNuevaImagen = $("#campoNuevaImagen").val();
+		
+		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "imagen", "id" : id, "nuevaImagen" : metadatosNuevaImagen});
+		
+	});
 
 
 	
@@ -315,8 +338,9 @@ $(document).ready(function() {
 	
 	
 	
-	//////////////////ASIGNACION DE FUNCIONES A ELEMENTOS////////////////////
+	//////////////////INICIALIZACION Y ASIGNACION DE FUNCIONES A ELEMENTOS////////////////////
 	/////////////////////////////////////////////////////////////////////////
+	
 	
 		////////////ocultar menu para eliminar conversacion
 	$(this).click(function(){
@@ -325,10 +349,14 @@ $(document).ready(function() {
 		$("#menu_EditarPerfil").hide();
 	});
 	
+	
+	
 		//////////eliminar conversacion en opciones de conversacion
 	$("#opcionesConversacion #eliminar").click(eliminarConversacion());
 	
 	
+	
+		////////mostrar menu de opciones del perfil
 	$("#imagenUsuario").click(function(e){
 		
 		$("#menu_EditarPerfil").hide();
@@ -337,6 +365,8 @@ $(document).ready(function() {
 	});
 	
 	
+	
+		////////mostrar menu para editar perfil
 	$("#botonEditarPerfil").click(function(e){
 		
 		$("#menu_OpcionesPerfil").hide();
@@ -352,6 +382,8 @@ $(document).ready(function() {
 	});
 	
 	
+	
+		/////////Comprobar valor del campo nuevoNombre para habilitar o no el boton actualizarNombre 
 	$("#campoNuevoNombre").on("input", function(){
 		
 		var nuevoNombre = $(this).val(); 
@@ -370,7 +402,9 @@ $(document).ready(function() {
 	});
 	
 	
-
+	
+	
+		/////////Comprobar valor del campo nuevaImagen para habilitar o no el boton actualizarImagen 
 	$("#campoNuevaImagen").on("input", function(){
 		
 		var nuevoNombre = $(this).val(); 
@@ -382,25 +416,6 @@ $(document).ready(function() {
 		else{
 			$("#botonEditarImagen").prop("disabled", true);
 		}
-		
-	});
-	
-	
-	
-	$("#formEditarNombre").submit(function(e){
-		
-		var nuevoNombre = $("#campoNuevoNombre").val();
-		
-		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "nombre", "id" : id, "nuevoNombre" : nuevoNombre});
-		
-	});
-	
-	
-	$("#formEditarImagen").submit(function(e){
-		
-		var metadatosNuevaImagen = $("#campoNuevaImagen").val();
-		
-		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "imagen", "id" : id, "nuevaImagen" : metadatosNuevaImagen});
 		
 	});
 	
