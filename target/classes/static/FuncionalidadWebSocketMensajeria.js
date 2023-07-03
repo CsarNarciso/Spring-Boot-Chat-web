@@ -163,8 +163,6 @@ $(document).ready(function() {
 
 		if($("#formEnviar").attr("data-CrearConversacion") == "Si"){
 			
-			agregarConversacion(idDestinatarioActual, id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
-			
 			var conversacion = {
 				"id_remitente" : id,
 				"id_destinatario" : idDestinatarioActual, 
@@ -173,14 +171,20 @@ $(document).ready(function() {
 				"mensajesNuevos" : 0
 			}
 			
+			agregarConversacion(idDestinatarioActual, id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
+
 			stomp.send(destinoCrearConversacion, JSON.stringify(conversacion));
 		}
+		
+		var envio = {
+			"idRemitente" : id,
+			"nombre" : nombre,
+			"nombreImagen" : nombreImagen,
+			"id_destinatario" : idDestinatarioActual
+		}
 
-
-		stomp.send(destinoEnvio_Mensaje);
+		stomp.send(destinoEnvio_Mensaje, {}, envio);
 						
-
-		$("#campoMensaje").val(""); 
 	});
 	
 	

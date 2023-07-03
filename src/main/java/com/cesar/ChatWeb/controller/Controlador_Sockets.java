@@ -66,19 +66,11 @@ public class Controlador_Sockets {
 	
 
 	@MessageMapping("/enviarMensaje")
-	public void enviarMensaje(Mensaje mensaje) {
-
-		if (!mensaje.getContenido().isBlank()) {
-			
-			Long idDestinatario = mensaje.getId_destinatario();
-
-			String destinoMensaje = "/user/" + idDestinatario + "/queue/mensajes";
-			
-			mensajeRepo.save(mensaje);
-			
-			simp.convertAndSend(destinoMensaje, mensaje);
-			
-		}
+	public void enviarMensaje(Map<String, Object> envio) {
+		
+		String destinoEnvio = "/user/" + envio.get("idDestinatario") + "/queue/mensajes";
+		
+		simp.convertAndSend(destinoEnvio, envio);
 		
 	}
 	
