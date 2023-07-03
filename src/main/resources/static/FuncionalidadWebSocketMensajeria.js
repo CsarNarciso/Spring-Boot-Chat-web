@@ -160,14 +160,6 @@ $(document).ready(function() {
 		
 		event.preventDefault(); 
 
-		var contenido = $("#campoMensaje").val();
-		
-	 	var mensaje = {
-		 	"id_remitente" : id, 
-			"id_destinatario" : idDestinatarioActual,
-			"contenido" : contenido
-			};
-			
 
 		if($("#formEnviar").attr("data-CrearConversacion") == "Si"){
 			
@@ -185,7 +177,7 @@ $(document).ready(function() {
 		}
 
 
-		stomp.send(destinoEnvio_Mensaje, JSON.stringify(mensaje));
+		stomp.send(destinoEnvio_Mensaje);
 						
 
 		$("#campoMensaje").val(""); 
