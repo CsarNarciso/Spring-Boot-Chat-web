@@ -94,7 +94,10 @@ public class Controlador_Sockets {
 	
 	
 	
-
+	@MessageMapping("/eliminarConversacion")
+	public void eliminarConversacion(Long id) {
+		conversacionRepo.deleteById(id);
+	}
 	
 	
 	

@@ -317,7 +317,11 @@ $(document).ready(function() {
 	
 	
 	function eliminarConversacion(id){
+		
 		var id = id;
+		
+		$("#conversacion_" + id).remove();
+		
 		stomp.send(destinoEnvio_EliminarConversacion, {"id" : id});
 	}
 	
