@@ -31,8 +31,8 @@ $(document).ready(function() {
 
 
 	
-	//////////////ENVIO ACTUALIZAR CONVERSACION//////////////////////////
-	/////////////////////////////////////////////////////////////////////
+	////////ENVIO ACTUALIZAR CONVERSACIONES PERTENECIENTES A USUARIO MODIFICADO////////
+	///////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -220,7 +220,7 @@ $(document).ready(function() {
 						
 						"<li id='usuario_" + idP + "'>" + 
 							"<span id='elemento_nombre'>" + nombreP + "</span>" +
-							"<img id='elemento_imagen' scr='" + (rutaImagenesPerfil + nombreImagenP) + "'></img>" +
+							"<img id='elemento_imagen' src='" + (rutaImagenesPerfil + nombreImagenP) + "'></img>" +
 						"</li>"
 						
 					);
@@ -262,8 +262,9 @@ $(document).ready(function() {
 		$("#listaConversaciones").append(
 		
 			"<li id='conversacion_" + id + "'>" + 
+				"<img id='elemento_eliminar' src='" + (rutaImagenesGenerales + "EliminarConversacion.png") + "'></img>" +
+				"<img id='elemento_imagen' src='" + (rutaImagenesPerfil + nombreImagen) + "'></img>" +
 				"<span id='elemento_nombre'>" + nombre + "</span>" +
-				"<img id='elemento_imagen' scr='" + (rutaImagenesPerfil + nombreImagen) + "'></img>" +
 				"<span id='elemento_mensajesNuevos'>" + mensajesNuevos + "</span>" +
 			"</li>"
 		
@@ -295,22 +296,7 @@ $(document).ready(function() {
 		
 		
 		
-		$("#conversacion_" + id).on("contextmenu", function(e){
-			
-			e.preventdefault();
-			
-			$("#menu_OpcionesConversacion").css(
-				{
-					display: "block",
-					top: e.pageX,
-					left: e.pageY
-				}
-			);
-			
-			
-			$("#opcionesConversacion #eliminar").attr("idConversacion", id);
-			
-		});
+		$("#conversacion_" + id + " #elemento_eliminar").click( eliminarConversacion(id) );
 		
 
 		stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + c.idDestinatario, function(message){
@@ -330,9 +316,9 @@ $(document).ready(function() {
 	
 	
 	
-	function eliminarConversacion(){
-		var idConversacion = $("#opcionesConversacion #eliminar").attr("idConversacion")
-		stomp.send(destinoEnvio_EliminarConversacion, {"id" : idConversacion});
+	function eliminarConversacion(id){
+		var id = id;
+		stomp.send(destinoEnvio_EliminarConversacion, {"id" : id});
 	}
 	
 	
@@ -344,18 +330,11 @@ $(document).ready(function() {
 	
 		////////////ocultar menu para eliminar conversacion
 	$(this).click(function(){
-		$("#menu_OpcionesConversacion").hide();	
 		$("#menu_OpcionesPerfil").hide();
 		$("#menu_EditarPerfil").hide();
 	});
 	
-	
-	
-		//////////eliminar conversacion en opciones de conversacion
-	$("#opcionesConversacion #eliminar").click(eliminarConversacion());
-	
-	
-	
+
 		////////mostrar menu de opciones del perfil
 	$("#imagenUsuario").click(function(e){
 		
