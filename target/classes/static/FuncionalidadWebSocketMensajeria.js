@@ -13,8 +13,9 @@ $(document).ready(function() {
 	var idDestinatarioActual;
 	var nombreDestinatarioActual;
 	var nombreImagenDestinatarioActual;
-	
+
 	var rutaImagenesPerfil = "/imagenesDePerfil/";
+	var rutaImagenesGenerales = "/imagenesGenerales/";
 	
 	var destinoSuscripcion_ListaUsuarios = "/topic/mostrarListaUsuariosOnline";
 	var destinoSuscripcion_ListaConversaciones = "/user/" + id + "/queue/conversaciones";
@@ -109,14 +110,12 @@ $(document).ready(function() {
 		/////////////////////////////////////////////////////////////////
 		stomp.subscribe(destinoSuscripcion_Mensajes, function(message){
 			
-			var mensaje = JSON.parse(message.body);
+			var c = JSON.parse(message.body);
 			
-			$("#bandejaMensajes").append(
-				"<br><br>" + 
-				"De " + mensaje.remitente +
-				"<br>" +
-				mensaje.contenido
-				);
+			if ( $("#conversacion_" + c.idRemitente).length === 0) {
+				
+				agregarConversacion();
+			}
 			
 		});
 		
