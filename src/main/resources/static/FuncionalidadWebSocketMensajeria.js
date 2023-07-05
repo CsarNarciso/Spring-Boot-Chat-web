@@ -77,7 +77,7 @@ $(document).ready(function() {
 			
 			listaConversaciones.forEach(function(c){
 				
-				agregarConversacion(c.id, c.id_remitente, c.id_destinatario, c.nombre, c.nombreImagen, c.mensajesNuevos)
+				agregarConversacion(c.id_remitente, c.id_destinatario, c.nombre, c.nombreImagen, c.mensajesNuevos)
 
 			});
 			
@@ -160,7 +160,7 @@ $(document).ready(function() {
 		event.preventDefault(); 
 
 
-		if($("#formEnviar").attr("data-CrearConversacion") == "Si"){
+		if( $("#formEnviar").attr("data-CrearConversacion") === "Si" ){
 			
 			var conversacion = {
 				"id_remitente" : id,
@@ -170,7 +170,7 @@ $(document).ready(function() {
 				"mensajesNuevos" : 0
 			}
 			
-			agregarConversacion(idDestinatarioActual, id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
+			agregarConversacion(id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
 
 			stomp.send(destinoCrearConversacion, JSON.stringify(conversacion));
 		}
@@ -179,7 +179,7 @@ $(document).ready(function() {
 			"idRemitente" : id,
 			"nombre" : nombre,
 			"nombreImagen" : nombreImagen,
-			"id_destinatario" : idDestinatarioActual
+			"idDestinatario" : idDestinatarioActual
 		}
 
 		stomp.send(destinoEnvio_Mensaje, {}, envio);
@@ -252,11 +252,11 @@ $(document).ready(function() {
 	}
 	
 	
-	function agregarConversacion(id, idRemitente, idDestinatario, nombre, nombreImagen, mensajesNuevos){
+	function agregarConversacion(idRemitente, idDestinatario, nombre, nombreImagen, mensajesNuevos){
 					
 		$("#listaConversaciones").append(
 		
-			"<li id='conversacion_" + id + "'>" + 
+			"<li id='conversacion_" + idDestinatario + "'>" + 
 				"<img id='elemento_eliminar' src='" + (rutaImagenesGenerales + "EliminarConversacion.png") + "'></img>" +
 				"<img id='elemento_imagen' src='" + (rutaImagenesPerfil + nombreImagen) + "'></img>" +
 				"<span id='elemento_nombre'>" + nombre + "</span>" +
@@ -266,24 +266,29 @@ $(document).ready(function() {
 		);	
 	
 	
-					
-		$("#conversacion_" + id).attr("data-Id", id);
-		$("#conversacion_" + id).attr("data-IdRemitente", idRemitente);
-		$("#conversacion_" + id).attr("data-IdDestinatario", idDestinatario);
-		$("#conversacion_" + id).attr("data-Nombre", nombre);
-		$("#conversacion_" + id).attr("data-NombreImagen", nombreImagen);
-		$("#conversacion_" + id).attr("data-MensajesNuevos", mensajesNuevos);
+		$("#conversacion_" + idDestinatario).attr("data-IdRemitente", idRemitente);
+		$("#conversacion_" + idDestinatario).attr("data-IdDestinatario", idDestinatario);
+		$("#conversacion_" + idDestinatario).attr("data-Nombre", nombre);
+		$("#conversacion_" + idDestinatario).attr("data-NombreImagen", nombreImagen);
+		$("#conversacion_" + idDestinatario).attr("data-MensajesNuevos", mensajesNuevos);
 		
 		
 		
-		$("#conversacion_" + id).click(function(){
+		
+		$("#conversacion_" + idDestinatario).click(function(){
+
 
 			$("#nombreConversacion").text( $(this).attr("data-Nombre") );
+			
 			
 			$("#nombreConversacion").toggle();
 			$("#formEnviar").toggle();
 			
+			
 			idDestinatarioActual = $(this).attr("data-IdDestinatario");
+			nombreDestinatarioActual = $(this).attr("data-Nombre");
+			nombreImagenDestinatarioActual = $(this).attr("data-NombreImagen");
+			
 			
 			$("#formEnviar").attr("data-CrearConversacion", "No");
 		
@@ -291,18 +296,19 @@ $(document).ready(function() {
 		
 		
 		
-		$("#conversacion_" + id + " #elemento_eliminar").click( eliminarConversacion(id) );
+		
+		$("#conversacion_" + idDestinatario + " #elemento_eliminar").click( eliminarConversacion(idDestinatario) );
 		
 
-		stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + c.idDestinatario, function(message){
+		stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + idDestinatario, function(message){
 			
 			var conversacionActualizada = JSON.parse(message.body);
 			
-			$("#conversacion_" + id).attr("data-Nombre", conversacionActualizada.nombre);
-			$("#conversacion_" + id).attr("data-NombreImagen", conversacionActualizada.nombreImagen);
+			$("#conversacion_" + idDestinatario).attr("data-Nombre", conversacionActualizada.nombre);
+			$("#conversacion_" + idDestinatario).attr("data-NombreImagen", conversacionActualizada.nombreImagen);
 			
-			$("#conversacion_" + id +" #elemento_nombre").text(conversacionActualizada.nombre);
-			$("#conversacion_" + id +" #elemento_imagen").attr("src", rutaImagenesPerfil + conversacionActualizada.nombreImagen);
+			$("#conversacion_" + idDestinatario +" #elemento_nombre").text(conversacionActualizada.nombre);
+			$("#conversacion_" + idDestinatario +" #elemento_imagen").attr("src", rutaImagenesPerfil + conversacionActualizada.nombreImagen);
 		});
 		
 
@@ -312,12 +318,10 @@ $(document).ready(function() {
 	
 	
 	function eliminarConversacion(id){
-		
-		var id = id;
-		
+
 		$("#conversacion_" + id).remove();
 		
-		stomp.send(destinoEnvio_EliminarConversacion, {"id" : id});
+		stomp.send(destinoEnvio_EliminarConversacion, {}, {"id" : id});
 	}
 	
 	
