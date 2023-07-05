@@ -114,9 +114,9 @@ $(document).ready(function() {
 			
 			if ( $("#conversacion_" + c.idRemitente).length === 0) {
 				
-				agregarConversacion(id, c.idRemitente, c.nombre, c.nombreImagen, 0);
+				agregarConversacionAndGuardarBBDD(id, c.idRemitente, c.nombre, c.nombreImagen, 0);
 			}
-			
+
 		});
 		
 		
@@ -131,7 +131,7 @@ $(document).ready(function() {
 
 	///////////ENVIO ACTUALIZAR NOMBRE PERFIL/////////
 	//////////////////////////////////////////////////
-	$("#formEditarNombre").submit(function(e){
+	$("#formEditarNombre").submit(function(event) {
 		
 		var nuevoNombre = $("#campoNuevoNombre").val();
 		
@@ -143,7 +143,7 @@ $(document).ready(function() {
 	
 	///////////ENVIO ACTUALIZAR IMAGEN PERFIL/////////
 	//////////////////////////////////////////////////
-	$("#formEditarImagen").submit(function(e){
+	$("#formEditarImagen").submit(function(event){
 		
 		var metadatosNuevaImagen = $("#campoNuevaImagen").val();
 		
@@ -162,17 +162,7 @@ $(document).ready(function() {
 
 		if( $("#formEnviar").attr("data-CrearConversacion") === "Si" ){
 			
-			var conversacion = {
-				"id_remitente" : id,
-				"id_destinatario" : idDestinatarioActual, 
-				"nombre" : nombreDestinatarioActual, 
-				"nombreImagen" : nombreImagenDestinatarioActual,
-				"mensajesNuevos" : 0
-			}
-			
-			agregarConversacion(id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
-
-			stomp.send(destinoCrearConversacion, JSON.stringify(conversacion));
+			agregarConversacionAndGuardarBBDD(id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
 		}
 		
 		var envio = {
@@ -313,6 +303,22 @@ $(document).ready(function() {
 		
 
 					
+	}
+	
+	
+	function agregarConversacionAndGuardarBBDD(idRemitente, idDestinatario, nombre, nombreImagen, mensajesNuevos){
+		
+		agregarConversacion(idRemitente, idDestinatario, nombre, nombreImagen, mensajesNuevos);
+		
+		var conversacion = {
+			"id_remitente" : idRemitente,
+			"id_destinatario" : idDestinatario, 
+			"nombre" : nombre, 
+			"nombreImagen" : nombreImagen,
+			"mensajesNuevos" : mensajesNuevos
+		}
+			
+		stomp.send(destinoCrearConversacion, JSON.stringify(conversacion));
 	}
 	
 	
