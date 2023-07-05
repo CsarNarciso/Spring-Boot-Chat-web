@@ -114,7 +114,7 @@ $(document).ready(function() {
 			
 			if ( $("#conversacion_" + c.idRemitente).length === 0) {
 				
-				agregarConversacion();
+				agregarConversacion(id, c.idRemitente, c.nombre, c.nombreImagen, 0);
 			}
 			
 		});
