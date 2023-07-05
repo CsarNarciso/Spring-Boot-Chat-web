@@ -85,27 +85,6 @@ $(document).ready(function() {
 		
 		
 		
-		
-		//////////ENVIO NOTIFICACION OBTENER Y ACTUALIZAR GLOBALMENTE USUARIOS ONLINE///////////////
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		stomp.send(destinoEnvio_ActualizarListaUsuarios, {
-			"accion" : "agregar", 
-			"id" : id, 
-			"nombre" : nombre,
-			"nombreImagen" : nombreImagen
-		});
-		
-		
-		//////////ENVIO NOTIFICACION OBTENER LISTA CONVERSACIONES///////////////
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		stomp.send(destinoEnvio_ObtenerListaConversaciones, {"id" : id});
-	
-		
-		
-		
-		
-		
-		
 		/////////SUSCRIPCION PARA PROCESAMIENTO DE MENSAJES//////////
 		/////////////////////////////////////////////////////////////////
 		stomp.subscribe(destinoSuscripcion_Mensajes, function(message){
@@ -123,6 +102,23 @@ $(document).ready(function() {
 		
 		
 		
+		
+		//////////ENVIO NOTIFICACION OBTENER Y ACTUALIZAR GLOBALMENTE USUARIOS ONLINE///////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, {
+			"accion" : "agregar", 
+			"id" : id, 
+			"nombre" : nombre,
+			"nombreImagen" : nombreImagen
+		});
+		
+		
+		//////////ENVIO NOTIFICACION OBTENER LISTA CONVERSACIONES///////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		stomp.send(destinoEnvio_ObtenerListaConversaciones, {"id" : id});
+	
+		
+
 		
 	});
 	
@@ -185,7 +181,10 @@ $(document).ready(function() {
  	$(window).on('unload', function() {
 		 
 		//ACTUALIZAR LISTA USUARIOS ONLINE
-        stomp.send(destinoEnvio_ActualizarListaUsuarios, {"accion" : "quitar"});
+        stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, {
+			"accion" : "quitar",
+			"id" : id, 
+        });
         
         stomp.disconnect(function() {});
         

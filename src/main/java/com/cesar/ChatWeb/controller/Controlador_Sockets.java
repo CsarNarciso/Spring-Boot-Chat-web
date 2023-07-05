@@ -23,21 +23,26 @@ public class Controlador_Sockets {
 	
 	
 	@MessageMapping("/actualizarUsuariosOnline")
-	public void actualizarUsuariosOnline(@Headers Map<String, Object> headers) {
+	public void actualizarUsuariosOnline(Map<String, Object> datos) {
 		
-		Long id = (Long) headers.get("id");
-		String nombre = (String) headers.get("nombre");
-		String nombreImagen = (String) headers.get("nombreImagen");
-		
-		Usuario usuario = new Usuario(id, nombre, nombreImagen);
+		Long id = (Long) datos.get("id");
 	
-		if( headers.get("accion") == "agregar" ) {
+		if( datos.get("accion") == "agregar" ) {
+			
 			if(!usuariosOnline.containsKey(id)) {
+				
+				String nombre = (String) datos.get("nombre");
+				String nombreImagen = (String) datos.get("nombreImagen");
+				
+				Usuario usuario = new Usuario(id, nombre, nombreImagen);
+				
 				usuariosOnline.put(id, usuario);
 			}
 		}
 		else {
+			
 			if(usuariosOnline.containsKey(id)) {
+				
 				usuariosOnline.remove(id);
 			}
 		}
