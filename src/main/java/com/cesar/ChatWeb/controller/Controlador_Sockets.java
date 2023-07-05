@@ -56,10 +56,8 @@ public class Controlador_Sockets {
 	
 	
 	@MessageMapping("/obtenerListaConversaciones")
-	public void obtenerListaConversaciones(@Headers Map<String, Long> headers) {
+	public void obtenerListaConversaciones(Long id) {
 	
-		Long id = headers.get("id");
-		
 		List<Conversacion> conversaciones = conversacionRepo.findAllByUserID(id);
 		
 		simp.convertAndSend("/user/" + id + "/queue/conversaciones", conversaciones);

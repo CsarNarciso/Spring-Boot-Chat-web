@@ -115,7 +115,7 @@ $(document).ready(function() {
 		
 		//////////ENVIO NOTIFICACION OBTENER LISTA CONVERSACIONES///////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		stomp.send(destinoEnvio_ObtenerListaConversaciones, {"id" : id});
+		stomp.send(destinoEnvio_ObtenerListaConversaciones, {}, id);
 	
 		
 
