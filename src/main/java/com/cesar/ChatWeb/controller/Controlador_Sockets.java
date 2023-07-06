@@ -99,11 +99,6 @@ public class Controlador_Sockets {
 	
 	
 	
-	@MessageMapping("/actualizarDatosUsuario")
-	public void eliminarConversacion(Map<String, Object> datos) {
-		
-		
-	}
 	
 	
 	
