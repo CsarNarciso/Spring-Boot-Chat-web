@@ -295,7 +295,7 @@ $(document).ready(function() {
 
 		stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + idDestinatario, function(message){
 			
-			var conversacionActualizada = JSON.parse(message.body);
+			var datosUsuarioActualizado = JSON.parse(message.body);
 			
 			$("#conversacion_" + idDestinatario).attr("data-Nombre", conversacionActualizada.nombre);
 			$("#conversacion_" + idDestinatario).attr("data-NombreImagen", conversacionActualizada.nombreImagen);
