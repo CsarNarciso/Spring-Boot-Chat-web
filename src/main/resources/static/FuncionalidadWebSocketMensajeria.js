@@ -31,12 +31,6 @@ $(document).ready(function() {
 
 
 
-	
-	////////ENVIO ACTUALIZAR CONVERSACIONES PERTENECIENTES A USUARIO MODIFICADO////////
-	///////////////////////////////////////////////////////////////////////////////////
-
-
-
 	//////////////////////MOSTRAR NOMBRE E IMAGEN DEL USUARIO EN LA INTERFAZ////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 	$("#nombreUsuario").text(nombre);
@@ -103,7 +97,7 @@ $(document).ready(function() {
 		
 		
 		
-		//////////ENVIO NOTIFICACION OBTENER Y ACTUALIZAR GLOBALMENTE USUARIOS ONLINE///////////////
+		//////////ENVIO OBTENER Y ACTUALIZAR GLOBALMENTE USUARIOS ONLINE///////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, {
 			"accion" : "agregar", 
@@ -113,7 +107,7 @@ $(document).ready(function() {
 		});
 		
 		
-		//////////ENVIO NOTIFICACION OBTENER LISTA CONVERSACIONES///////////////
+		//////////ENVIO OBTENER LISTA CONVERSACIONES///////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		stomp.send(destinoEnvio_ObtenerListaConversaciones, {}, id);
 	
@@ -131,7 +125,12 @@ $(document).ready(function() {
 		
 		var nuevoNombre = $("#campoNuevoNombre").val();
 		
-		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "nombre", "id" : id, "nuevoNombre" : nuevoNombre});
+		stomp.send(destinoEnvio_ActualizarDatosUsuario, {
+			"actualizar" : "nombre", 
+			"id" : id, 
+			"nuevoNombre" : nuevoNombre, 
+			"nombreImagen" : nombreImagen
+		});
 		
 	});
 	
@@ -143,7 +142,12 @@ $(document).ready(function() {
 		
 		var metadatosNuevaImagen = $("#campoNuevaImagen").val();
 		
-		stomp.send(destinoEnvio_ActualizarDatosUsuario, {"actualizar" : "imagen", "id" : id, "nuevaImagen" : metadatosNuevaImagen});
+		stomp.send(destinoEnvio_ActualizarDatosUsuario, {
+			"actualizar" : "imagen", 
+			"id" : id, 
+			"nuevaImagen" : metadatosNuevaImagen,
+			"nombre" : nombre
+		});
 		
 	});
 

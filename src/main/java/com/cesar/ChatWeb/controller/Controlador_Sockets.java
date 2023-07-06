@@ -5,17 +5,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cesar.ChatWeb.entity.Conversacion;
-import com.cesar.ChatWeb.entity.Mensaje;
 import com.cesar.ChatWeb.entity.Usuario;
 import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Mensaje_Repositorio;
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
+import com.cesar.Methods.ActualizarDatosUsuario;
 
 @Controller
 public class Controlador_Sockets {
@@ -25,11 +25,16 @@ public class Controlador_Sockets {
 	@MessageMapping("/actualizarUsuariosOnline")
 	public void actualizarUsuariosOnline(Map<String, Object> datos) {
 		
+		String accion = (String) datos.get("accion")
 		Long id = (Long) datos.get("id");
 	
-		if( datos.get("accion") == "agregar" ) {
+		if( accion == "agregar" || accion == "actualizar" ) {
 			
-			if(!usuariosOnline.containsKey(id)) {
+			if ( accion == "actualizar" ) {
+				usuariosOnline.remove(id);
+			}
+			
+			if( !usuariosOnline.containsKey(id) ) {
 				
 				String nombre = (String) datos.get("nombre");
 				String nombreImagen = (String) datos.get("nombreImagen");
@@ -39,7 +44,8 @@ public class Controlador_Sockets {
 				usuariosOnline.put(id, usuario);
 			}
 		}
-		else {
+		
+		else if ( accion == "quitar" ){
 			
 			if(usuariosOnline.containsKey(id)) {
 				
@@ -97,8 +103,49 @@ public class Controlador_Sockets {
 	
 	
 	
-	
-	
+
+	@MessageMapping("/actualizarDatosUsuario")
+	public void actualizarDatosUsuario(Map<String, Object> datos) {
+		
+		String actualizar = (String) datos.get("actualizar");
+		Long id = (Long) datos.get("id");
+		
+		
+		Map<String, Object> datosUsuarioActualizado = new HashMap<>();
+		datosUsuarioActualizado.put("accion", "actualizar");
+		datosUsuarioActualizado.put("id", id);
+		
+		
+		
+		if ( actualizar == "nombre" ) {
+			
+			String nuevoNombre = (String) datos.get("nuevoNombre");
+			
+			usuarioRepo.updateNombre(nuevoNombre, id);
+			
+			datosUsuarioActualizado.put("nombre", nuevoNombre);
+			datosUsuarioActualizado.put("nombreImagen", datos.get("nombreImagen"));
+		}
+		
+		else if ( actualizar == "imagen" ) {
+			
+			MultipartFile metadatosNuevaImagen = (MultipartFile) datos.get("nuevaImagen");
+		
+			String nombreNuevaImagen = ActualizarDatosUsuario.guardarImagenPerfil(metadatosNuevaImagen, id);
+			
+			datosUsuarioActualizado.put("nombre", datos.get("nombre"));
+			datosUsuarioActualizado.put("nombreImagen", nombreNuevaImagen);
+		}
+
+		
+		actualizarUsuariosOnline(datosUsuarioActualizado);
+		
+		
+		datosUsuarioActualizado.remove("accion");
+		datosUsuarioActualizado.put("actualizar", actualizar);
+		
+		simp.convertAndSend("/topic/actualizarDatosConversacion/" + id, datosUsuarioActualizado);
+	}
 	
 	
 	

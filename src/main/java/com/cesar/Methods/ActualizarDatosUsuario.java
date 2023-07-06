@@ -10,7 +10,7 @@ import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 public class ActualizarDatosUsuario {
 
 	
-	public static void guardarImagenPerfil(MultipartFile metadatosImagen, Long idUsuario) {
+	public static String guardarImagenPerfil(MultipartFile metadatosImagen, Long idUsuario) {
 			
 			String nombreImagen = "SinImagen.jpg";
 			String extension = null;
@@ -53,6 +53,8 @@ public class ActualizarDatosUsuario {
 			}
 				
 			userRepo.updateNombreImagen(nombreImagen, idUsuario);
+			
+			return nombreImagen;
 			
 		}
 			
