@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cesar.ChatWeb.entity.Conversacion;
+import com.cesar.ChatWeb.entity.Mensaje;
 import com.cesar.ChatWeb.entity.Usuario;
 import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Mensaje_Repositorio;
@@ -77,7 +78,10 @@ public class Controlador_Sockets {
 	@MessageMapping("/enviarMensaje")
 	public void enviarMensaje(Map<String, Object> envio) {
 		
-		String destinoEnvio = "/user/" + envio.get("idDestinatario") + "/queue/mensajes";
+		Mensaje mensaje = (Mensaje) envio.get("mensaje");
+		
+		Long idDestinatario = mensaje.getId_destinatario();
+		String destinoEnvio = "/user/" + idDestinatario + "/queue/mensajes";
 		
 		simp.convertAndSend(destinoEnvio, envio);
 		

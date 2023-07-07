@@ -166,7 +166,6 @@ $(document).ready(function() {
 		
 		
 		var datosRemitente = {
-			"id" : id,
 			"nombre" : nombre,
 			"nombreImagen" : nombreImagen
 		}
