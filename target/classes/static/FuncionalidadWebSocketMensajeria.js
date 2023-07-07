@@ -204,44 +204,56 @@ $(document).ready(function() {
 		
 		if( idP !== id ) {
 					
-					$("#listaUsuarios").append(
-						
-						"<li id='usuario_" + idP + "'>" + 
-							"<span id='elemento_nombre'>" + nombreP + "</span>" +
-							"<img id='elemento_imagen' src='" + (rutaImagenesPerfil + nombreImagenP) + "'></img>" +
-						"</li>"
-						
-					);
+			$("#listaUsuarios").append(
+				
+				"<li id='usuario_" + idP + "'>" + 
+					"<span id='elemento_nombre'>" + nombreP + "</span>" +
+					"<img id='elemento_imagen' src='" + (rutaImagenesPerfil + nombreImagenP) + "'></img>" +
+				"</li>"
+				
+			);
+			
+			$("#usuario_" + idP).attr("data-Id", idP);
+			$("#usuario_" + idP).attr("data-Nombre", nombreP);
+			$("#usuario_" + idP).attr("data-NombreImagen", nombreImagenP);
+			
+
+			$("#usuario_" + idP).click(function(){
+				
+				$("#nombreConversacion").text( $(this).attr("data-Nombre") );
+				
+				$("#nombreConversacion").toggle();
+				$("#formEnviar").toggle();
+				
+				idDestinatarioActual = $(this).attr("data-Id");
+				nombreDestinatarioActual = $(this).attr("data-Nombre");
+				nombreImagenDestinatarioActual = $(this).attr("data-NombreImagen");
+				
+				
+				if( $("#conversacion_" + idP).length ){
 					
-					$("#usuario_" + idP).attr("data-Id", idP);
-					$("#usuario_" + idP).attr("data-Nombre", nombreP);
-					$("#usuario_" + idP).attr("data-NombreImagen", nombreImagenP);
-					
-		
-					$("#usuario_" + idP).click(function(){
-						
-						$("#nombreConversacion").text( $(this).attr("data-Nombre") );
-						
-						$("#nombreConversacion").toggle();
-						$("#formEnviar").toggle();
-						
-						idDestinatarioActual = $(this).attr("data-Id");
-						nombreDestinatarioActual = $(this).attr("data-Nombre");
-						nombreImagenDestinatarioActual = $(this).attr("data-NombreImagen");
-						
-						
-						if( $("#conversacion_" + idP).length ){
-							
-							$("#formEnviar").attr("data-CrearConversacion", "No");
-						}
-						else{
-							
-							$("#formEnviar").attr("data-CrearConversacion", "Si");
-						}
-						
-					});
-					
+					$("#formEnviar").attr("data-CrearConversacion", "No");
 				}
+				else{
+					
+					$("#formEnviar").attr("data-CrearConversacion", "Si");
+				}
+				
+			});
+					
+		}
+		else{
+			
+			nombre = nombreP;
+			$("#nombreUsuario").text(nombreP);
+			$("#datosUsuario").attr("data-Nombre", nombreP);
+			
+			nombreImagen = nombreImagenP;
+			$("#imagenUsuario").attr("src", nombreImagenP);
+			$("#datosUsuario").attr("data-NombreImagen", nombreImagenP);
+		}
+		
+		
 	}
 	
 	
@@ -295,13 +307,31 @@ $(document).ready(function() {
 
 		stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + idDestinatario, function(message){
 			
+			
 			var datosUsuarioActualizado = JSON.parse(message.body);
+
+
+			if ( datosUsuarioActualizado.actualizar === "nombre" ){
+				
+				var nuevoNombre = datosUsuarioActualizado.nombre;
+				
+				$("#conversacion_" + idDestinatario).attr("data-Nombre", nuevoNombre);
+				$("#conversacion_" + idDestinatario +" #elemento_nombre").text(nuevoNombre);
+				
+				$("#nombreConversacion").text(nuevoNombre);
+				
+			}
+			else{
+				
+				var nuevoNombreImagen = datosUsuarioActualizado.nombreImagen;
+				
+				$("#conversacion_" + idDestinatario).attr("data-NombreImagen", nuevoNombreImagen);
+				$("#conversacion_" + idDestinatario +" #elemento_imagen").attr("src", rutaImagenesPerfil + nuevoNombreImagen);
+				
+			}
 			
-			$("#conversacion_" + idDestinatario).attr("data-Nombre", conversacionActualizada.nombre);
-			$("#conversacion_" + idDestinatario).attr("data-NombreImagen", conversacionActualizada.nombreImagen);
 			
-			$("#conversacion_" + idDestinatario +" #elemento_nombre").text(conversacionActualizada.nombre);
-			$("#conversacion_" + idDestinatario +" #elemento_imagen").attr("src", rutaImagenesPerfil + conversacionActualizada.nombreImagen);
+			
 		});
 		
 
