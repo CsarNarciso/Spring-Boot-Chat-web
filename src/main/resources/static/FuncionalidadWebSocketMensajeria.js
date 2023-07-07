@@ -159,14 +159,16 @@ $(document).ready(function() {
 		
 		event.preventDefault(); 
 
-
 		if( $("#formEnviar").attr("data-CrearConversacion") === "Si" ){
 			
 			agregarConversacionAndGuardarBBDD(id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
 		}
 		
-		var envio = {
-			"idRemitente" : id,
+		
+		
+		
+		var datosRemitente = {
+			"id" : id,
 			"nombre" : nombre,
 			"nombreImagen" : nombreImagen,
 			"idDestinatario" : idDestinatarioActual
@@ -449,9 +451,9 @@ $(document).ready(function() {
 		/////////Comprobar valor del campo nuevaImagen para habilitar o no el boton actualizarImagen 
 	$("#campoNuevaImagen").on("input", function(){
 		
-		var nuevoNombre = $(this).val(); 
+		var metadatosNuevaImagen = $(this).val(); 
 		
-		if( nuevoNombre !== "" ){
+		if( metadatosNuevaImagen !== "" ){
 
 			$("#botonEditarImagen").prop("disabled", false);
 		}
@@ -460,6 +462,21 @@ $(document).ready(function() {
 		}
 		
 	});
+	
+	
+		//////////comprobar valor de campoMensaje para habilitar o no botonEnviarMensaje
+		$("#campoMensaje").on("input", function(){
+			
+			if ( $(this).val().trim() !== "" ){
+				
+				$("#botonEnviarMensaje").prop("disabled", false);
+			}
+			else{
+				
+				$("#botonEnviarMensaje").prop("disabled", true);
+			}
+			
+		});
 	
 	
 	
