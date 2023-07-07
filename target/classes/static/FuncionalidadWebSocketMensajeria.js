@@ -165,14 +165,23 @@ $(document).ready(function() {
 		}
 		
 		
-		
-		
 		var datosRemitente = {
 			"id" : id,
 			"nombre" : nombre,
-			"nombreImagen" : nombreImagen,
-			"idDestinatario" : idDestinatarioActual
+			"nombreImagen" : nombreImagen
 		}
+		
+		var mensaje = {
+			"id_remitente" : id,
+			"id_destinatario" : idDestinatarioActual,
+			"contenido" : $("#campoMensaje").val()
+		}
+		
+		var envio = {
+			"datosRemitente" : datosRemitente,
+			"mensaje" : mensaje
+		}
+		
 
 		stomp.send(destinoEnvio_Mensaje, {}, envio);
 						
