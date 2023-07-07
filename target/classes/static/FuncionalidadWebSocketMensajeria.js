@@ -318,8 +318,7 @@ $(document).ready(function() {
 				$("#conversacion_" + idDestinatario).attr("data-Nombre", nuevoNombre);
 				$("#conversacion_" + idDestinatario +" #elemento_nombre").text(nuevoNombre);
 				
-				$("#nombreConversacion").text(nuevoNombre);
-				
+
 			}
 			else{
 				
@@ -328,6 +327,28 @@ $(document).ready(function() {
 				$("#conversacion_" + idDestinatario).attr("data-NombreImagen", nuevoNombreImagen);
 				$("#conversacion_" + idDestinatario +" #elemento_imagen").attr("src", rutaImagenesPerfil + nuevoNombreImagen);
 				
+			}
+			
+			
+			
+			if ( $("#formEnviar").is(":visible") ){
+				
+				if ( idDestinatarioActual === idDestinatario ){
+					
+					if ( datosUsuarioActualizado.actualizar === "nombre" ){
+						
+						var nuevoNombre = datosUsuarioActualizado.nombre;
+						
+						$("#nombreConversacion").text(nuevoNombre);
+						nombreDestinatarioActual = nuevoNombre;	
+					}
+					else{
+						
+						var nuevoNombreImagen = datosUsuarioActualizado.nombreImagen;
+
+						nombreImagenDestinatarioActual = nuevoNombreImagen;	
+					}
+				}	
 			}
 			
 			
