@@ -97,6 +97,17 @@ $(document).ready(function() {
 				
 				agregarConversacionAndGuardarBBDD(id, idRemitente, nombreRemitente, nombreImagenRemitente, 1);
 			}
+			else{
+				
+				if ( $("#formEnviar").is(":visible") ){
+					
+					if ( idDestinatarioActual === idRemitente ){
+						
+						$("#bandejaMensajes").append(mensaje.contenido);
+					}
+				}
+			}
+			
 			
 		});
 		
