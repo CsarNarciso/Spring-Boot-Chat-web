@@ -28,6 +28,7 @@ $(document).ready(function() {
 	var destinoEnvio_CrearConversacion = "/crearConversacion";
 	var destinoEnvio_EliminarConversacion = "/eliminarConversacion";
 	var destinoEnvio_ActualizarDatosUsuario = "/actualizarDatosUsuario"
+	var destinoEnvio_ActualizarMensajesNuevos = "/actualizarMensajesNuevos";
 
 
 
@@ -76,20 +77,27 @@ $(document).ready(function() {
 			});
 			
 		});
-		
-		
-		
+
 		/////////SUSCRIPCION PARA PROCESAMIENTO DE MENSAJES//////////
 		/////////////////////////////////////////////////////////////////
 		stomp.subscribe(destinoSuscripcion_Mensajes, function(message){
 			
-			var c = JSON.parse(message.body);
+			var envio = JSON.parse(message.body);
 			
-			if ( $("#conversacion_" + c.idRemitente).length === 0) {
+			var datosRemitente = envio.datosRemitente;
+			var mensaje = envio.mensaje;
+			
+			var idRemitente = mensaje.id_remitente;
+			
+			var nombreRemitente = datosRemitente.nombre;
+			var nombreImagenRemitente = datosRemitente.nombreImagen;
+			
+			
+			if ( $("#conversacion_" + idRemitente).length === 0) {
 				
-				agregarConversacionAndGuardarBBDD(id, c.idRemitente, c.nombre, c.nombreImagen, 0);
+				agregarConversacionAndGuardarBBDD(id, idRemitente, nombreRemitente, nombreImagenRemitente, 1);
 			}
-
+			
 		});
 		
 		
