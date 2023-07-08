@@ -116,6 +116,8 @@ $(document).ready(function() {
 						"mensajesNuevos" : mensajesNuevos
 					}
 					
+					stomp.send(destinoEnvio_ActualizarMensajesNuevos, {}, datosActualizacion);
+					
 					$("#conversacion_" + idRemitente).attr("data-MensajesNuevos", mensajesNuevos);
 					$("#conversacion_" + idRemitente + " #elemento_mensajesNuevos").text(mensajesNuevos);
 				}
