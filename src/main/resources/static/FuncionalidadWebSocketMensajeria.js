@@ -106,6 +106,19 @@ $(document).ready(function() {
 						$("#bandejaMensajes").append(mensaje.contenido);
 					}
 				}
+				else{
+					
+					var mensajesNuevos = $("#conversacion_" + idRemitente).attr("data-MensajesNuevos") + 1;
+					
+					var datosActualizacion = {
+						"idRemitente" : id,
+						"idDestinatario" : idRemitente,
+						"mensajesNuevos" : mensajesNuevos
+					}
+					
+					$("#conversacion_" + idRemitente).attr("data-MensajesNuevos", mensajesNuevos);
+					$("#conversacion_" + idRemitente + " #elemento_mensajesNuevos").text(mensajesNuevos);
+				}
 			}
 			
 			
