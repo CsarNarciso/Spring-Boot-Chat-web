@@ -154,6 +154,17 @@ public class Controlador_Sockets {
 	
 	
 	
+	@MessageMapping("/actualizarMensajesNuevos")
+	public void actualizarMensajesNuevos(Map<String, Object> datos) {
+		
+		conversacionRepo.updateMensajesNuevosByIDs( 
+			(Long) datos.get("idRemitente"), 
+			(Long) datos.get("idDestintatario"), 
+			(Integer) datos.get("mensajesNuevos") 
+		);
+	}
+	
+	
 	
 	
 	
