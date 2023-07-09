@@ -11,9 +11,6 @@ import com.cesar.ChatWeb.entity.Conversacion;
 
 public interface Conversacion_Repositorio extends JpaRepository<Conversacion, Long> {
 
-	@Query("SELECT c FROM Conversacion c WHERE c.id_remitente = :remitente AND c.id_destinatario = :destinatario")
-	Conversacion findByUserIDs(@Param("remitente") Long id_remitente, @Param("destinatario") Long id_destinatario);
-	
 	@Query("SELECT c FROM Conversacion c WHERE c.id_remitente = :remitente")
 	List<Conversacion> findAllByUserID(@Param("remitente") Long id_usuario);
 	
