@@ -108,18 +108,7 @@ $(document).ready(function() {
 				}
 				else{
 					
-					var mensajesNuevos = $("#conversacion_" + idRemitente).attr("data-MensajesNuevos") + 1;
 					
-					var datosActualizacion = {
-						"idRemitente" : id,
-						"idDestinatario" : idRemitente,
-						"mensajesNuevos" : mensajesNuevos
-					}
-					
-					stomp.send(destinoEnvio_ActualizarMensajesNuevos, {}, datosActualizacion);
-					
-					$("#conversacion_" + idRemitente).attr("data-MensajesNuevos", mensajesNuevos);
-					$("#conversacion_" + idRemitente + " #elemento_mensajesNuevos").text(mensajesNuevos);
 				}
 			}
 			
@@ -340,7 +329,16 @@ $(document).ready(function() {
 			
 			
 			$("#formEnviar").attr("data-CrearConversacion", "No");
-		
+			
+			
+			
+			if ( $(this).attr("data-MensajesNuevos") > 0 ){
+			
+				
+			}
+			
+			
+
 		});
 		
 		
@@ -421,11 +419,46 @@ $(document).ready(function() {
 	
 	
 	
+	
+	
 	function eliminarConversacion(id){
 
 		$("#conversacion_" + id).remove();
 		
 		stomp.send(destinoEnvio_EliminarConversacion, {}, {"id" : id});
+	}
+	
+	
+	
+	
+	function actualizarMensajesNuevos(idConversacion, accion){
+		
+		var mensajesNuevos;
+		
+		
+		if ( accion === "+" ){
+			
+			mensajesNuevos = $("#conversacion_" + idConversacion).attr("data-MensajesNuevos") + 1;
+		}
+		
+		else if ( accion === "0" ) {
+			
+			mensajesNuevos = 0;
+		}
+		
+				
+		var datosActualizacion = {
+			"idRemitente" : id,
+			"idDestinatario" : idConversacion,
+			"mensajesNuevos" : mensajesNuevos
+		}
+		
+		
+		$("#conversacion_" + idConversacion).attr("data-MensajesNuevos", mensajesNuevos);
+		$("#conversacion_" + idConversacion + " #elemento_mensajesNuevos").text(mensajesNuevos);
+		
+		
+		stomp.send(destinoEnvio_ActualizarMensajesNuevos, {}, datosActualizacion);
 	}
 	
 	
