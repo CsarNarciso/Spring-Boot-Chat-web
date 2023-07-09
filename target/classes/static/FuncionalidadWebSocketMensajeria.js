@@ -103,7 +103,7 @@ $(document).ready(function() {
 					
 					if ( idDestinatarioActual === idRemitente ){
 						
-						$("#bandejaMensajes").append(mensaje.contenido);
+						agregarMensajeBandejaConversacion(mensaje.contenido);
 					}
 				}
 				else{
@@ -188,6 +188,7 @@ $(document).ready(function() {
 		}
 		
 		
+
 		var datosRemitente = {
 			"nombre" : nombre,
 			"nombreImagen" : nombreImagen
@@ -204,6 +205,8 @@ $(document).ready(function() {
 			"mensaje" : mensaje
 		}
 		
+		
+		agregarMensajeBandejaConversacion(mensaje);
 
 		stomp.send(destinoEnvio_Mensaje, {}, envio);
 						
@@ -459,6 +462,13 @@ $(document).ready(function() {
 		
 		
 		stomp.send(destinoEnvio_ActualizarMensajesNuevos, {}, datosActualizacion);
+	}
+	
+	
+	
+	function agregarMensajeBandejaConversacion(mensaje){
+		
+		$("#bandejaConversacion").append(mensaje.contenido);
 	}
 	
 	
