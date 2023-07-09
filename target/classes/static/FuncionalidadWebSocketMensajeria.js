@@ -108,7 +108,7 @@ $(document).ready(function() {
 				}
 				else{
 					
-					
+					actualizarMensajesNuevos(idRemitente, "+");
 				}
 			}
 			
@@ -334,7 +334,7 @@ $(document).ready(function() {
 			
 			if ( $(this).attr("data-MensajesNuevos") > 0 ){
 			
-				
+				actualizarMensajesNuevos(idDestinatario, "0");
 			}
 			
 			
