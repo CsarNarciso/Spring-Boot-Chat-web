@@ -156,6 +156,7 @@ public class Controlador_Sockets {
 	
 	
 	
+	
 	@Autowired
 	private SimpMessagingTemplate simp; 
 	
