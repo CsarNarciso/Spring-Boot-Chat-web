@@ -81,7 +81,10 @@ public class Controlador_Sockets {
 		Mensaje mensaje = (Mensaje) envio.get("mensaje");
 		
 		Long idDestinatario = mensaje.getId_destinatario();
+		
 		String destinoEnvio = "/user/" + idDestinatario + "/queue/mensajes";
+		
+		mensajeRepo.save(mensaje);
 		
 		simp.convertAndSend(destinoEnvio, envio);
 		
