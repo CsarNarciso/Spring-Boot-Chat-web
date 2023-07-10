@@ -10,7 +10,7 @@ import com.cesar.ChatWeb.entity.Mensaje;
 
 public interface Mensaje_Repositorio extends JpaRepository<Mensaje, Long> {
 
-	@Query("SELECT m FROM Mensaje m WHERE (m.id_remitente = :remitente OR m.id_remitente = :destinatario) AND (m.id_destinatario = :destinatario OR m.id_destinatario = :remitente)")
+	@Query("SELECT m FROM Mensaje m WHERE (m.id_remitente = :remitente OR m.id_remitente = :destinatario) AND (m.id_destinatario = :destinatario OR m.id_destinatario = :remitente) ORDER BY m.fecha ASC")
 	List<Mensaje> findAllByIDs(@Param("remitente") Long id_remitente, @Param("destinatario") Long id_destinatario);
 	
 }
