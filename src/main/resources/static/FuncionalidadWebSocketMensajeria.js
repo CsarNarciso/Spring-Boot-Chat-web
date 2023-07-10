@@ -21,6 +21,7 @@ $(document).ready(function() {
 	var destinoSuscripcion_ListaConversaciones = "/user/" + id + "/queue/conversaciones";
 	var destinoSuscripcion_Mensajes = "/user/" + id + "/queue/mensajes";
 	var destinoSuscripcion_ActualizarDatosConversacion = "/topic/actualizarDatosConversacion/";
+	var destinoSuscripcion_ListaMensajes = "/user/" + id + "/queue/mensajes";
 	
 	var destinoEnvio_Mensaje = "/enviarMensaje";
 	var destinoEnvio_ActualizarListaUsuarios = "/actualizarListaUsuariosOnline";
@@ -77,6 +78,23 @@ $(document).ready(function() {
 			});
 			
 		});
+		
+		
+		/////////SUSCRIPCION MOSTRAR LISTA DE CONVERSACIONES//////////
+		/////////////////////////////////////////////////////////////////
+		stomp.subscribe(destinoSuscripcion_ListaMensajes, function(message){
+			
+			var listaMensajes = JSON.parse(message.body);
+
+			$("#bandejaConversacion").empty();
+			
+			listaMensajes.forEach(function(m){
+				
+				agregarMensajeBandejaConversacion(m);
+			})
+			
+		});
+		
 
 		/////////SUSCRIPCION PARA PROCESAMIENTO DE MENSAJES//////////
 		/////////////////////////////////////////////////////////////////
@@ -275,6 +293,7 @@ $(document).ready(function() {
 					
 					$("#formEnviar").attr("data-CrearConversacion", "Si");
 				}
+				
 				
 			});
 					
