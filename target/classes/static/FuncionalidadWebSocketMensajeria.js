@@ -197,7 +197,8 @@ $(document).ready(function() {
 		var mensaje = {
 			"id_remitente" : id,
 			"id_destinatario" : idDestinatarioActual,
-			"contenido" : $("#campoMensaje").val()
+			"contenido" : $("#campoMensaje").val(),
+			"fecha" : new Date().toISOString
 		}
 		
 		var envio = {
