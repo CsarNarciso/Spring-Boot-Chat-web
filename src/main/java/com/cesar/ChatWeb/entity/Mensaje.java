@@ -1,10 +1,14 @@
 package com.cesar.ChatWeb.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "mensajes")
@@ -17,6 +21,8 @@ public class Mensaje {
 	private Long id_remitente;
 	private Long id_destinatario;
 	private String contenido;
+	@Temporal(TemporalType.TIMESTAMP)
+	private LocalDateTime fecha;
 	
 	
 	
@@ -43,6 +49,12 @@ public class Mensaje {
 	}
 	public void setContenido(String contenido) {
 		this.contenido = contenido;
+	}
+	public LocalDateTime getFecha() {
+		return fecha;
+	}
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
 	}
 	
 
