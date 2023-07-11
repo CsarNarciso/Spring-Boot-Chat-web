@@ -19,7 +19,7 @@ $(document).ready(function() {
 	
 	var destinoSuscripcion_ListaUsuarios = "/topic/mostrarListaUsuariosOnline";
 	var destinoSuscripcion_ListaConversaciones = "/user/" + id + "/queue/conversaciones";
-	var destinoSuscripcion_Mensajes = "/user/" + id + "/queue/mensajes";
+	var destinoSuscripcion_RecibirMensaje = "/user/" + id + "/queue/recibirMensaje";
 	var destinoSuscripcion_ActualizarDatosConversacion = "/topic/actualizarDatosConversacion/";
 	var destinoSuscripcion_ListaMensajes = "/user/" + id + "/queue/mensajes";
 	
@@ -99,7 +99,7 @@ $(document).ready(function() {
 
 		/////////SUSCRIPCION PARA PROCESAMIENTO DE MENSAJES//////////
 		/////////////////////////////////////////////////////////////////
-		stomp.subscribe(destinoSuscripcion_Mensajes, function(message){
+		stomp.subscribe(destinoSuscripcion_RecibirMensaje, function(message){
 			
 			var envio = JSON.parse(message.body);
 			

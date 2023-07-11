@@ -82,7 +82,7 @@ public class Controlador_Sockets {
 		
 		Long idDestinatario = mensaje.getId_destinatario();
 		
-		String destinoEnvio = "/user/" + idDestinatario + "/queue/mensajes";
+		String destinoEnvio = "/user/" + idDestinatario + "/queue/recibirMensaje";
 		
 		mensajeRepo.save(mensaje);
 		
@@ -167,6 +167,20 @@ public class Controlador_Sockets {
 		);
 	}
 	
+	
+	
+	
+	
+	@MessageMapping("/obtenerListaMensajes")
+	public void obtenerListaMensajes(Map<String, Long> ids) {
+		
+		Long idRemitente = ids.get("idRemitente");
+		Long idDestinatario = ids.get("idDestinatario");
+		
+		List<Mensaje> listaMensajes = mensajeRepo.findAllByIDs(idRemitente, idDestinatario);
+		
+		simp.convertAndSend("/user/" + idRemitente + "/queue/mensajes", listaMensajes);
+	}
 	
 	
 	
