@@ -364,6 +364,8 @@ $(document).ready(function() {
 			}
 			
 			
+			stomp.send(destinoEnvio_ObtenerListaMensajes, {}, {"idRemitente" : id, "idDestinatario" : idDestinatario});
+			
 
 		});
 		
