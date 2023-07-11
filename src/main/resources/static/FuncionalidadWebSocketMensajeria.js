@@ -30,6 +30,7 @@ $(document).ready(function() {
 	var destinoEnvio_EliminarConversacion = "/eliminarConversacion";
 	var destinoEnvio_ActualizarDatosUsuario = "/actualizarDatosUsuario"
 	var destinoEnvio_ActualizarMensajesNuevos = "/actualizarMensajesNuevos";
+	var destinoEnvio_ObtenerListaMensajes = "/obtenerListaMensajes";
 
 
 
@@ -288,6 +289,8 @@ $(document).ready(function() {
 				if( $("#conversacion_" + idP).length ){
 					
 					$("#formEnviar").attr("data-CrearConversacion", "No");
+					
+					stomp.send(destinoEnvio_ObtenerListaMensajes, {}, {"idRemitente" : id, "idDestinatario" : idP});
 				}
 				else{
 					
