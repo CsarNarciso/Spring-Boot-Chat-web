@@ -493,6 +493,41 @@ $(document).ready(function() {
 	
 	function agregarMensajeBandejaConversacion(mensaje){
 		
+		var idRemitente = mensaje.id_remitente;
+		var idDestinatario = mensaje.id_destinatario;
+		var contenido = mensaje.contenido;
+		var fechaEnvio = new Date(mensaje.fecha);
+		
+		
+		var fechaActual = new Date();
+		
+		var milisegundosDiferencia = fechaActual.getTime() - fechaEnvio.getTime();
+		
+		var segundos = Math.floor( milisegundosDiferencia / 1000 );
+		var minutos = Math.floor( segundos / 60 );
+		var horas = Math.floor( minutos / 60 );
+		var dias = Math.floor( horas / 24 );
+		
+		
+		var enviadoHace;
+		
+		if ( segundos > 0 ){
+			
+			enviadoHace = "un instante";
+		}
+		if ( minutos > 0 ){
+			
+			enviadoHace = minutos + " minutos";
+		}
+		if ( horas > 0 ){
+			
+			enviadoHace = horas + " horas";
+		}
+		if ( dias > 0 ){
+			
+			enviadoHace = dias + " dias";
+		}
+		
 		$("#bandejaConversacion").append(mensaje.contenido);
 	}
 	
