@@ -539,7 +539,11 @@ $(document).ready(function() {
 				
 				if ( $("#bandejaConversacion li").last().attr("data-DiferenciaMinutos") - minutos <= 2 ){
 					
-					$("#bandejaConversacion li").last().find("#imagen").remove();
+					if ( id === idRemitente ){
+						
+						$("#bandejaConversacion li").last().find("#imagen").remove();	
+					}
+					
 					$("#bandejaConversacion li").last().find("#fecha").remove();	
 				}	
 				else{
@@ -554,13 +558,17 @@ $(document).ready(function() {
 		}
 		
 		
-
+		var elementoImagen = "";
+		
+		if ( id !== idRemitente ){
+			
+			elementoImagen = "<img id='imagen' src='" + rutaImagenesPerfil + nombreImagenDestinatarioActual + "'></img>";
+		}
 		
 		$("#bandejaConversacion").append(
 			
 			"<li data-Remitente='" + idRemitente + "' data-DiferenciaMinutos='" + minutos + ">" +
-				
-				"<img id='imagen' src='" + rutaImagenesPerfil + nombreImagenDestinatarioActual + "'></img>" +
+				elementoImagen +
 				"<span id='contenido'>" + contenido + "</span>" + 
 				"<span id='fecha'> Enviado hace " + enviadoHace + "</span>" + 
 			
