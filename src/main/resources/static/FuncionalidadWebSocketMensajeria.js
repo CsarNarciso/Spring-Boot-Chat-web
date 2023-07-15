@@ -118,12 +118,9 @@ $(document).ready(function() {
 			}
 			else{
 				
-				if ( $("#formEnviar").is(":visible") ){
-					
-					if ( idDestinatarioActual === idRemitente ){
-						
-						agregarMensajeBandejaConversacion(mensaje.contenido);
-					}
+				if ( verificarSiConversacionEstaAbierta(idRemitente) ){
+
+					agregarMensajeBandejaConversacion(mensaje.contenido);
 				}
 				else{
 					
@@ -456,6 +453,21 @@ $(document).ready(function() {
 		stomp.send(destinoEnvio_EliminarConversacion, {}, {"id" : id});
 	}
 	
+	
+	
+	function verificarSiConversacionEstaAbierta(idDestinatario){
+		
+		if ( $("#formEnviar").is(":visible") ){
+			
+			if ( idDestinatarioActual === idDestinatario ){
+				
+				return true;
+			}
+		}
+		else{
+			return false;
+		}
+	}
 	
 	
 	
