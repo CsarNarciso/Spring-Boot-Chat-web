@@ -554,6 +554,19 @@ $(document).ready(function() {
 		}
 		
 		
+
+		
+		$("#bandejaConversacion").append(
+			
+			"<li data-Remitente='" + idRemitente + "' data-DiferenciaMinutos='" + minutos + ">" +
+				
+				"<img id='imagen' src='" + rutaImagenesPerfil + nombreImagenDestinatarioActual + "'></img>" +
+				"<span id='contenido'>" + contenido + "</span>" + 
+				"<span id='fecha'> Enviado hace " + enviadoHace + "</span>" + 
+			
+			"</li>"
+			
+		);
 	}
 	
 	
