@@ -528,7 +528,32 @@ $(document).ready(function() {
 			enviadoHace = dias + " dias";
 		}
 		
-		$("#bandejaConversacion").append(mensaje.contenido);
+		
+		
+		
+		if ( $("#bandejaConversacion li").length > 0 ){
+			
+			
+			
+			if ( idRemitente === $("#bandejaConversacion li").last().attr("data-Remitente") ){
+				
+				if ( $("#bandejaConversacion li").last().attr("data-DiferenciaMinutos") - minutos <= 2 ){
+					
+					$("#bandejaConversacion li").last().find("#imagen").remove();
+					$("#bandejaConversacion li").last().find("#fecha").remove();	
+				}	
+				else{
+					
+					$("#bandejaConversacion li").last().append("<br>");	
+				}
+			}
+			else{
+				
+				$("#bandejaConversacion li").last().append("<br>");	
+			}
+		}
+		
+		
 	}
 	
 	
