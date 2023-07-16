@@ -329,7 +329,6 @@ $(document).ready(function() {
 				$("#conversacion_" + idDestinatario).attr("data-Nombre", nuevoNombre);
 				$("#conversacion_" + idDestinatario +" #elemento_nombre").text(nuevoNombre);
 				
-
 			}
 			else{
 				
@@ -344,29 +343,35 @@ $(document).ready(function() {
 			
 			if ( verificarSiConversacionEstaAbierta(idDestinatario) ){
 					
-					if ( datosUsuarioActualizado.actualizar === "nombre" ){
-						
-						var nuevoNombre = datosUsuarioActualizado.nombre;
-						
-						$("#nombreConversacion").text(nuevoNombre);
-						nombreDestinatarioActual = nuevoNombre;	
-					}
-					else{
-						
-						var nuevoNombreImagen = datosUsuarioActualizado.nombreImagen;
+				if ( datosUsuarioActualizado.actualizar === "nombre" ){
+					
+					var nuevoNombre = datosUsuarioActualizado.nombre;
+					
+					$("#nombreConversacion").text(nuevoNombre);
+					nombreDestinatarioActual = nuevoNombre;	
+				}
+				else{
+					
+					var nuevoNombreImagen = datosUsuarioActualizado.nombreImagen;
 
-						nombreImagenDestinatarioActual = nuevoNombreImagen;	
-					}
+					nombreImagenDestinatarioActual = nuevoNombreImagen;	
+					
+					$("#bandejaConversacion").each(function(){
+						
+						if ( $(this).attr("data-Remitente") === idDestinatario ){
+							
+							if ( $(this).find("#imagen") > 0 ){
+								
+								$(this).find("#imagen").attr("src", rutaImagenesPerfil + nuevoNombreImagen);
+							}
+						}
+					});
+				}
 			}
-			
-			
 			
 		});
 		
-		
-		$("#conversacion_" + idDestinatario + " #elemento_eliminar").click( eliminarConversacion(idDestinatario, suscripcionActualizarDatosConversacion) );
-		
-					
+		$("#conversacion_" + idDestinatario + " #elemento_eliminar").click( eliminarConversacion(idDestinatario, suscripcionActualizarDatosConversacion) );			
 	}
 	
 	
