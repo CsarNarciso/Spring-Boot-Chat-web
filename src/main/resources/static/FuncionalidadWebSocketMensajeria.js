@@ -81,7 +81,7 @@ $(document).ready(function() {
 		});
 		
 		
-		/////////SUSCRIPCION MOSTRAR LISTA DE CONVERSACIONES//////////
+		/////////SUSCRIPCION MOSTRAR LISTA DE MENSAJES//////////
 		/////////////////////////////////////////////////////////////////
 		stomp.subscribe(destinoSuscripcion_ListaMensajes, function(message){
 			
@@ -271,31 +271,7 @@ $(document).ready(function() {
 			$("#usuario_" + idP).attr("data-NombreImagen", nombreImagenP);
 			
 
-			$("#usuario_" + idP).click(function(){
-				
-				$("#nombreConversacion").text( $(this).attr("data-Nombre") );
-				
-				$("#nombreConversacion").toggle();
-				$("#formEnviar").toggle();
-				
-				idDestinatarioActual = $(this).attr("data-Id");
-				nombreDestinatarioActual = $(this).attr("data-Nombre");
-				nombreImagenDestinatarioActual = $(this).attr("data-NombreImagen");
-				
-				
-				if( $("#conversacion_" + idP).length ){
-					
-					$("#formEnviar").attr("data-CrearConversacion", "No");
-					
-					stomp.send(destinoEnvio_ObtenerListaMensajes, {}, {"idRemitente" : id, "idDestinatario" : idP});
-				}
-				else{
-					
-					$("#formEnviar").attr("data-CrearConversacion", "Si");
-				}
-				
-				
-			});
+			$("#usuario_" + idP).click(abrirConversacion(idP, $(this)));
 					
 		}
 		else{
@@ -336,40 +312,12 @@ $(document).ready(function() {
 		
 		
 		
-		$("#conversacion_" + idDestinatario).click(function(){
-
-
-			$("#nombreConversacion").text( $(this).attr("data-Nombre") );
-			
-			
-			$("#nombreConversacion").toggle();
-			$("#formEnviar").toggle();
-			
-			
-			idDestinatarioActual = $(this).attr("data-IdDestinatario");
-			nombreDestinatarioActual = $(this).attr("data-Nombre");
-			nombreImagenDestinatarioActual = $(this).attr("data-NombreImagen");
-			
-			
-			$("#formEnviar").attr("data-CrearConversacion", "No");
-			
-			
-			
-			if ( $(this).attr("data-MensajesNuevos") > 0 ){
-			
-				actualizarMensajesNuevos(idDestinatario, "0");
-			}
-			
-			
-			stomp.send(destinoEnvio_ObtenerListaMensajes, {}, {"idRemitente" : id, "idDestinatario" : idDestinatario});
-			
-
-		});
-		
+		$("#conversacion_" + idDestinatario).click(abrirConversacion(idDestinatario, $(this) ));
 		
 		
 		
 		$("#conversacion_" + idDestinatario + " #elemento_eliminar").click( eliminarConversacion(idDestinatario) );
+		
 		
 
 		stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + idDestinatario, function(message){
@@ -444,9 +392,61 @@ $(document).ready(function() {
 	
 	
 	
+	function abrirConversacion(id, elemento){
+		
+		if ( verificarSiConversacionEstaAbierta(id) ){
+			
+			$("#nombreConversacion").hide();
+			$("#formEnviar").hide();
+		}
+		else{
+		
+			if ( ! $("#formEnviar").is(":visible") ){
+			
+				$("#nombreConversacion").css({
+					display:"block"
+				});
+				$("#formEnviar").css({
+					display:"block"
+				});
+			}	
+			
+			$("#nombreConversacion").text( elemento.attr("data-Nombre") );
+			
+			idDestinatarioActual = elemento.attr("data-IdDestinatario");
+			nombreDestinatarioActual = elemento.attr("data-Nombre");
+			nombreImagenDestinatarioActual = elemento.attr("data-NombreImagen");
+			
+			if ( $("#conversacion_" + id).length > 0 ) {
+				
+				$("#formEnviar").attr("data-CrearConversacion", "No");
+				
+				if ( $("#conversacion_" + id).attr("data-MensajesNuevos") > 0 ){
+			
+					actualizarMensajesNuevos(id, "0");
+				}
+			}
+			else{
+				
+				$("#formEnviar").attr("data-CrearConversacion", "Si");
+			}
+			
+			
+			stomp.send(destinoEnvio_ObtenerListaMensajes, {}, {"idRemitente" : id, "idDestinatario" : idDestinatario});
+
+		}		
+	}
+	
 	
 	
 	function eliminarConversacion(id){
+
+		if ( verificarSiConversacionEstaAbierta(id) ){
+			
+			$("#bandejaConversacion").empty();
+			
+			
+		}
 
 		$("#conversacion_" + id).remove();
 		
