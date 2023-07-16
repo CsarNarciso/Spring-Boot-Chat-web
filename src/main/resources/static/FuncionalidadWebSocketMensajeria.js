@@ -440,12 +440,12 @@ $(document).ready(function() {
 	
 	
 	function eliminarConversacion(id){
-
+		
 		if ( verificarSiConversacionEstaAbierta(id) ){
 			
+			$("formEnviar").hide();
+			$("#nombreConversacion").hide();
 			$("#bandejaConversacion").empty();
-			
-			
 		}
 
 		$("#conversacion_" + id).remove();
