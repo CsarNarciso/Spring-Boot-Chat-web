@@ -25,11 +25,11 @@ public class Usuario {
 	private Long id;
 
 	@NotBlank(message = "Nombre necesario")
-	@NombreNoDisponible
+//	@NombreNoDisponible
 	private String nombre;
 
 	@EmailPersonalizado(message = "Introduce un email correcto")
-	@EmailNoDisponible
+//	@EmailNoDisponible
 	private String email;
 	
 	private String nombreImagen;

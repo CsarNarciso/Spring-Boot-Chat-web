@@ -138,7 +138,8 @@ public class Controlador_Sockets {
 			
 			MultipartFile metadatosNuevaImagen = (MultipartFile) datos.get("nuevaImagen");
 		
-			String nombreNuevaImagen = ActualizarDatosUsuario.guardarImagenPerfil(metadatosNuevaImagen, id);
+			ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario();
+			String nombreNuevaImagen = actualizarDatosUsuario.guardarImagenPerfil(metadatosNuevaImagen, id);
 			
 			datosUsuarioActualizado.put("nombre", datos.get("nombre"));
 			datosUsuarioActualizado.put("nombreImagen", nombreNuevaImagen);

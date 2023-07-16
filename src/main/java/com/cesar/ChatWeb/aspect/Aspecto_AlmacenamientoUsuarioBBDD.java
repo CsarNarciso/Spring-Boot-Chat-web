@@ -26,7 +26,7 @@ public class Aspecto_AlmacenamientoUsuarioBBDD {
 		
 		usuario = (Usuario) parametros[0];
 		BindingResult resultadoValidacion = (BindingResult) parametros[1];
-		metadatosImagen = (MultipartFile) parametros[5];
+		metadatosImagen = (MultipartFile) parametros[6];
 		
 		
 		if(resultadoValidacion.hasErrors()==false) {
@@ -40,7 +40,8 @@ public class Aspecto_AlmacenamientoUsuarioBBDD {
 			Usuario usuarioGuardado = bbdd_Usuarios.findByNombreOrEmail(usuario.getNombre());
 			Long idUsuario = usuarioGuardado.getId();
 			
-			ActualizarDatosUsuario.guardarImagenPerfil(metadatosImagen, idUsuario);
+			ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario();
+			actualizarDatosUsuario.guardarImagenPerfil(metadatosImagen, idUsuario);
 			
 		}
 		
