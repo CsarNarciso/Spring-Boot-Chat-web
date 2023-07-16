@@ -283,6 +283,20 @@ $(document).ready(function() {
 			nombreImagen = nombreImagenP;
 			$("#imagenUsuario").attr("src", nombreImagenP);
 			$("#datosUsuario").attr("data-NombreImagen", nombreImagenP);
+			
+			if ( verificarSiConversacionEstaAbierta(idDestinatario) ){
+			
+				$("#bandejaConversacion").each(function(){
+					
+					if ( $(this).attr("data-Remitente") === id ){
+						
+						if ( $(this).find("#imagen") > 0 ){
+							
+							$(this).find("#imagen").attr("src", rutaImagenesPerfil + nombreImagenP);
+						}
+					}
+				});
+			}
 		}
 		
 		
