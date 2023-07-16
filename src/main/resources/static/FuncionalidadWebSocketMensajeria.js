@@ -314,13 +314,9 @@ $(document).ready(function() {
 		
 		$("#conversacion_" + idDestinatario).click(abrirConversacion(idDestinatario, $(this) ));
 		
-		
-		
-		$("#conversacion_" + idDestinatario + " #elemento_eliminar").click( eliminarConversacion(idDestinatario) );
-		
-		
 
-		stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + idDestinatario, function(message){
+
+		var suscripcionActualizarDatosConversacion = stomp.subscribe(destinoSuscripcion_ActualizarDatosConversacion + idDestinatario, function(message){
 			
 			
 			var datosUsuarioActualizado = JSON.parse(message.body);
@@ -346,9 +342,7 @@ $(document).ready(function() {
 			
 			
 			
-			if ( $("#formEnviar").is(":visible") ){
-				
-				if ( idDestinatarioActual === idDestinatario ){
+			if ( verificarSiConversacionEstaAbierta(idDestinatario) ){
 					
 					if ( datosUsuarioActualizado.actualizar === "nombre" ){
 						
@@ -363,14 +357,15 @@ $(document).ready(function() {
 
 						nombreImagenDestinatarioActual = nuevoNombreImagen;	
 					}
-				}	
 			}
 			
 			
 			
 		});
 		
-
+		
+		$("#conversacion_" + idDestinatario + " #elemento_eliminar").click( eliminarConversacion(idDestinatario, suscripcionActualizarDatosConversacion) );
+		
 					
 	}
 	
@@ -439,7 +434,7 @@ $(document).ready(function() {
 	
 	
 	
-	function eliminarConversacion(id){
+	function eliminarConversacion(id, suscripcionActualizarDatosConversacion){
 		
 		if ( verificarSiConversacionEstaAbierta(id) ){
 			
@@ -451,6 +446,8 @@ $(document).ready(function() {
 		$("#conversacion_" + id).remove();
 		
 		stomp.send(destinoEnvio_EliminarConversacion, {}, {"id" : id});
+		
+		stomp.unsubscribe(suscripcionActualizarDatosConversacion.id);
 	}
 	
 	
