@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 
 @Component
@@ -56,11 +57,16 @@ public class ActualizarDatosUsuario {
 				
 			userRepo.updateNombreImagen(nombreImagen, idUsuario);
 			
+			conversacionRepo.updateNombreImagenByUserID(idUsuario, nombreImagen);
+			
 			return nombreImagen;
 			
 		}
 	
 	@Autowired
-	private Usuario_Repositorio userRepo;	
+	private Usuario_Repositorio userRepo;
+	
+	@Autowired
+	private Conversacion_Repositorio conversacionRepo;
 	
 }
