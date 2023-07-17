@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 import com.cesar.ChatWeb.entity.Conversacion;
 
+import jakarta.transaction.Transactional;
+
 public interface Conversacion_Repositorio extends JpaRepository<Conversacion, Long> {
 
 	@Query("SELECT c FROM Conversacion c WHERE c.id_remitente = :remitente")
@@ -18,6 +20,7 @@ public interface Conversacion_Repositorio extends JpaRepository<Conversacion, Lo
 	@Query("UPDATE Conversacion c SET c.nombre = :nombreNuevo WHERE c.id_destinatario = :id_usuario")
 	void updateNameByUserID(@Param("id_usuario") Long id_usuario, @Param("nombreNuevo") String nombreNuevo);
 	
+	@Transactional
 	@Modifying
 	@Query("UPDATE Conversacion c SET c.mensajesNuevos = :mensajesNuevos WHERE c.id_remitente = :remitente AND c.id_destinatario = :destinatario")
 	void updateMensajesNuevosByIDs(@Param("remitente") Long id_remitente, @Param("destinatario") Long id_destinatario, @Param("mensajesNuevos") int mensajesNuevos);
