@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cesar.ChatWeb.entity.Usuario;
+import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 import com.cesar.Methods.ActualizarDatosUsuario;
 
@@ -33,14 +34,14 @@ public class Aspecto_AlmacenamientoUsuarioBBDD {
 			
 			usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
 
-			bbdd_Usuarios.save(usuario);
+			usuarioRepo.save(usuario);
 			System.out.println("Subiendo usuario " + usuario.getNombre() + " a BBDD...");
 			
 			
-			Usuario usuarioGuardado = bbdd_Usuarios.findByNombreOrEmail(usuario.getNombre());
+			Usuario usuarioGuardado = usuarioRepo.findByNombreOrEmail(usuario.getNombre());
 			Long idUsuario = usuarioGuardado.getId();
 			
-			ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario();
+			ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario(usuarioRepo, conversacionRepo);
 			actualizarDatosUsuario.guardarImagenPerfil(metadatosImagen, idUsuario);
 			
 		}
@@ -58,7 +59,9 @@ public class Aspecto_AlmacenamientoUsuarioBBDD {
 	@Autowired 
 	private PasswordEncoder passwordEncoder;
 	@Autowired
-	private Usuario_Repositorio bbdd_Usuarios;
+	private Usuario_Repositorio usuarioRepo;
+	@Autowired
+	private Conversacion_Repositorio conversacionRepo;
 	
 	private Usuario usuario;
 	private MultipartFile metadatosImagen;
