@@ -130,6 +130,8 @@ public class Controlador_Sockets {
 			
 			usuarioRepo.updateNombre(nuevoNombre, id);
 			
+			conversacionRepo.updateNombreByUserID(id, nuevoNombre);
+			
 			datosUsuarioActualizado.put("nombre", nuevoNombre);
 			datosUsuarioActualizado.put("nombreImagen", datos.get("nombreImagen"));
 		}
