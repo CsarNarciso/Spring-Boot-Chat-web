@@ -23,6 +23,11 @@ public interface Conversacion_Repositorio extends JpaRepository<Conversacion, Lo
 	
 	@Transactional
 	@Modifying
+	@Query("UPDATE Conversacion c SET c.nombreImagen = :nombreImagenNuevo WHERE c.id_destinatario = :id_usuario")
+	void updateNombreImagenByUserID(@Param("id_usuario") Long id_usuario, @Param("nombreImagenNuevo") String nombreImagenNuevo);
+	
+	@Transactional
+	@Modifying
 	@Query("UPDATE Conversacion c SET c.mensajesNuevos = :mensajesNuevos WHERE c.id_remitente = :remitente AND c.id_destinatario = :destinatario")
 	void updateMensajesNuevosByIDs(@Param("remitente") Long id_remitente, @Param("destinatario") Long id_destinatario, @Param("mensajesNuevos") int mensajesNuevos);
 	
