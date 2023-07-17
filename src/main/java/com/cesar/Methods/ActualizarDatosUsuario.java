@@ -3,10 +3,12 @@ package com.cesar.Methods;
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 
+@Component
 public class ActualizarDatosUsuario {
 
 	
@@ -29,7 +31,7 @@ public class ActualizarDatosUsuario {
 				
 				if ( extension != null ) {
 				
-					String rutaImagen = "\\resources\\static\\ImagenesDePerfil\\" + idUsuario;
+					String rutaImagen = "C:\\Users\\cesar\\Desktop\\Programacion\\SPRING\\Practica\\ChatWeb\\src\\main\\resources\\static\\ImagenesDePerfil" + idUsuario;
 					
 					File imagen = new File(rutaImagen);
 					
@@ -57,11 +59,8 @@ public class ActualizarDatosUsuario {
 			return nombreImagen;
 			
 		}
-			
-				
-			
-
+	
 	@Autowired
-	private Usuario_Repositorio userRepo;
+	private Usuario_Repositorio userRepo;	
 	
 }

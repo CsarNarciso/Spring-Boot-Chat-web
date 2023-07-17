@@ -40,7 +40,7 @@ public class Aspecto_AlmacenamientoUsuarioBBDD {
 			Usuario usuarioGuardado = bbdd_Usuarios.findByNombreOrEmail(usuario.getNombre());
 			Long idUsuario = usuarioGuardado.getId();
 			
-			ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario();
+			ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario(bbdd_Usuarios);
 			actualizarDatosUsuario.guardarImagenPerfil(metadatosImagen, idUsuario);
 			
 		}
