@@ -15,7 +15,7 @@ public class Validador_EmailNoDisponible implements ConstraintValidator<EmailNoD
 	@Override
 	public boolean isValid(String email, ConstraintValidatorContext context) {
 
-		Usuario u = userRepo.findByNombreOrEmail(email);
+		Usuario u = userRepo.buscarPorNombre_Email(email);
 		
 		return u == null ? true : false;
 	}
