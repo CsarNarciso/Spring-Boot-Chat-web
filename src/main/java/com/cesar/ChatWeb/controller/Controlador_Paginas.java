@@ -2,6 +2,9 @@
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cesar.ChatWeb.entity.Usuario;
 import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
+import com.cesar.ChatWeb.service.Usuario_UserDetailsService;
 import com.cesar.Methods.AccederUsuarioAutenticado;
 import com.cesar.Methods.ActualizarDatosUsuario;
 
@@ -106,11 +110,28 @@ public class Controlador_Paginas {
 				
 				//Autenticar 
 				
+				UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getNombre());
 				
-			
-			
+				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+					userDetails.getUsername(),
+					userDetails.getPassword(),
+					userDetails.getAuthorities()
+				);
 				
-			
+				autManager.authenticate(token);
+				
+				
+				if ( SecurityContextHolder.getContext().getAuthentication().isAuthenticated() ) {
+					
+					System.out.println("Usuario autenticado");
+				}
+				else {
+					
+					System.out.println("Usuario NO autenticado");
+				}
+				
+				
+				
 				//Cargar datos de usuario autenticado en el modelo
 
 				AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
@@ -132,6 +153,10 @@ public class Controlador_Paginas {
 	
 	@Autowired 
 	private PasswordEncoder passwordEncoder;
+	@Autowired 
+	private AuthenticationManager autManager;
+	@Autowired 
+	private Usuario_UserDetailsService userDetailsService;
 	@Autowired
 	private Usuario_Repositorio userRepo;
 	@Autowired
