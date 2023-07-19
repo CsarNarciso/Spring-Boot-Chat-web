@@ -90,11 +90,9 @@ public class Controlador_Paginas {
 			else {
 				
 				//Subir ususario a BBDD
-				
-				
-				
+
 				UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getNombre());
-				
+
 				usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
 
 				userRepo.save(usuario);
@@ -108,13 +106,12 @@ public class Controlador_Paginas {
 				Long idUsuario = usuarioGuardado.getId();
 				
 				ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario();
+
 				actualizarDatosUsuario.guardarImagenPerfil(metadatosImagenPerfil, idUsuario);
 				
 				
 				
 				//Autenticar 
-				
-				
 				
 				System.out.println("Nombre: " + userDetails.getUsername() + "\n" +
 					"Contraseña: " + userDetails.getPassword() + "\n" +
@@ -136,9 +133,7 @@ public class Controlador_Paginas {
 					e.printStackTrace();
 				}
 				
-				
-				
-				
+	
 				if ( SecurityContextHolder.getContext().getAuthentication().isAuthenticated() ) {
 					
 					System.out.println("Usuario autenticado");
@@ -155,11 +150,10 @@ public class Controlador_Paginas {
 				AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
 				
 				modelo.addAttribute("DatosUsuario", accederUsuarioAutenticado.getDatos());
-				
+
 				System.out.println("datos de usuario autenticado cargados en el modelo");
 				
-				
-				
+	
 				//Dar acceso. Redirigir a pagina de chat
 				
 				System.out.println("Acceso exitoso!");
