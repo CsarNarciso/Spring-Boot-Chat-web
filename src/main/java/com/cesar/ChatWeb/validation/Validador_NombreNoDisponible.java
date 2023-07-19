@@ -14,7 +14,7 @@ public class Validador_NombreNoDisponible implements ConstraintValidator<NombreN
 	@Override
 	public boolean isValid(String nombre, ConstraintValidatorContext context) {
 		
-		Usuario u = userRepo.findByNombreOrEmail(nombre);
+		Usuario u = userRepo.buscarPorNombre_Email(nombre);
 		
 		return u == null ? true : false;
 		

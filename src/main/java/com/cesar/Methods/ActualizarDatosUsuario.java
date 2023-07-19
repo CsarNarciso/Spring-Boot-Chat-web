@@ -9,15 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 
+@Component
 public class ActualizarDatosUsuario {
 
-	
-	public ActualizarDatosUsuario(Usuario_Repositorio userRepo, Conversacion_Repositorio conversacionRepo) {
-		this.userRepo = userRepo;
-		this.conversacionRepo = conversacionRepo;
-	}
-	
-	
 	
 	public String guardarImagenPerfil(MultipartFile metadatosImagen, Long idUsuario) {
 			
@@ -38,7 +32,7 @@ public class ActualizarDatosUsuario {
 				
 				if ( extension != null ) {
 				
-					String rutaImagen = "C:\\Users\\cesar\\Desktop\\Programacion\\SPRING\\Practica\\ChatWeb\\src\\main\\resources\\static\\ImagenesDePerfil\\" + idUsuario + extension;
+					String rutaImagen = "C:\\Users\\cesar\\Desktop\\Programacion\\SPRING\\Practica\\ChatWeb\\src\\main\\resources\\static\\ImagenesDePerfil" + idUsuario;
 					
 					File imagen = new File(rutaImagen);
 					
@@ -69,8 +63,10 @@ public class ActualizarDatosUsuario {
 			
 		}
 	
+	@Autowired
 	private Usuario_Repositorio userRepo;
+	
+	@Autowired
 	private Conversacion_Repositorio conversacionRepo;
 	
-
 }

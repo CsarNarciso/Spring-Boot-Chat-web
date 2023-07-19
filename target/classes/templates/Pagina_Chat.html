@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html>
 
-
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -23,10 +22,6 @@
     	}
     	
     	#nombreConversacion{
-    		display:none;
-    	}
-    	
-    	#menu_OpcionesConversacion{
     		display:none;
     	}
     	
@@ -56,7 +51,7 @@
 <body>
 	<div id="datosUsuario" 
 		data-Id="${DatosUsuario.id}" 
-		data-Nombre="${DatosUsuario.username}" 
+		data-Nombre="${DatosUsuario.nombre}" 
 		data-NombreImagen="${DatosUsuario.nombreImagen}" 
 	></div>
 	
@@ -65,7 +60,10 @@
     <h1 id="nombreUsuario"></h1> 
     
     
+    
     <br><br>
+    
+    
     
     
     <strong>Usuarios en linea</strong> <br>
@@ -78,8 +76,11 @@
 
 
 
+
 	<div id="nombreConversacion"></div> <br>
     <ul id="bandejaMensajes"></ul> <br>
+    
+    
     
 
     <form id="formEnviar" data-AccionAlEnviar="">
@@ -90,15 +91,15 @@
     </form>
 
 
-    //////////////////MENU OPCIONES PERFIL////////////
-    ////////////////////////////////////////////////////////////
+
+
     <div id="menu_OpcionesPerfil">
     	<a id="botonEditarPerfil">Editar perfil</a>
     	<a href="/logout">Cerrar sesion</a>
     </div>
-    
-    //////////////////MENU EDITAR PERFIL////////////
-    ////////////////////////////////////////////////
+
+
+
     <div id="menu_EditarPerfil">
     
     	<div> <strong>Editar perfil</strong> </div> <br>

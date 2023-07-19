@@ -1,34 +1,29 @@
 package com.cesar.Methods;
 
-import java.io.File;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cesar.ChatWeb.service.CustomUserDetails;
+import com.cesar.ChatWeb.entity.Usuario;
+import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 
 public class AccederUsuarioAutenticado {
-
 	
-	public static CustomUserDetails getDatos(Principal p) {
+	public AccederUsuarioAutenticado(Usuario_Repositorio userRepo) {
 		
-		CustomUserDetails c = null;
-		
-		if ( p instanceof Authentication ) {
-			
-			Authentication a = (Authentication) p;
-			
-			if ( a.getPrincipal() instanceof  CustomUserDetails ) {
-				
-				c = (CustomUserDetails) a;
-			}
-		}
-		
-		return c;
+		this.userRepo = userRepo;
 	}
 	
 	
+	public Usuario getDatos() {
+
+		Authentication a = SecurityContextHolder.getContext().getAuthentication();
+		
+		return userRepo.buscarPorNombre_Email(a.getPrincipal().toString());
+	}
 	
+	
+	private Usuario_Repositorio userRepo;
 }

@@ -17,7 +17,7 @@ public class Usuario_UserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
 		
-		Usuario usuario = repositorio_usuario.findByNombreOrEmail(usernameOrEmail);
+		Usuario usuario = repositorio_usuario.buscarPorNombre_Email(usernameOrEmail);
 		
 		if( usuario == null) {
 			throw new UsernameNotFoundException("--Usuario no encontrado--");
@@ -26,14 +26,13 @@ public class Usuario_UserDetailsService implements UserDetailsService {
 			System.out.println("Usuario " + usuario.getNombre() + " encontrado en la base de datos");
 		}
 		
-		return new CustomUserDetails(
-				usuario.getId(),
-				usuario.getNombre(),
-				usuario.getEmail(),
-				usuario.getNombreImagen(),
-				usuario.getContraseña()
-				);
+		return User.builder()
+				.username(usuario.getNombre())
+	            .password(usuario.getContraseña())
+	            .roles("USER") 
+	            .build();
 	
 	}
+	
 
 }
