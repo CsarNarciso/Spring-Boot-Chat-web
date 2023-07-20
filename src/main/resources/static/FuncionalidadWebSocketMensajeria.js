@@ -14,7 +14,7 @@ $(document).ready(function() {
 	var nombreDestinatarioActual;
 	var nombreImagenDestinatarioActual;
 
-	var rutaImagenesPerfil = "/imagenesDePerfil/";
+	var rutaImagenesPerfil = "/ImagenesDePerfil/";
 	var rutaImagenesGenerales = "/imagenesGenerales/";
 	
 	var destinoSuscripcion_ListaUsuarios = "/topic/mostrarListaUsuariosOnline";

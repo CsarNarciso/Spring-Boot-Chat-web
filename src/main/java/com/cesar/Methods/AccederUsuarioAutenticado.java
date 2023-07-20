@@ -18,10 +18,6 @@ public class AccederUsuarioAutenticado {
 	
 	
 	public Usuario getDatos() {
-		
-		System.out.println("---------ACCEDER USUARIO AUTENTICADO-------------");
-		
-		System.out.println("Repo: " + userRepo);
 
 		Authentication a = SecurityContextHolder.getContext().getAuthentication();
 		
