@@ -41,7 +41,7 @@ public class Controlador_Paginas {
 	
 
 
-	@RequestMapping("/login/formularioRegistro")
+	@RequestMapping("/registro")
 	public String damePagina_Registro(Model modelo){
 
 		modelo.addAttribute("usuario", new Usuario());
