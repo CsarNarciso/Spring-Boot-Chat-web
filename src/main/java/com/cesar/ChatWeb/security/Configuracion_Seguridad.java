@@ -25,7 +25,7 @@ public class Configuracion_Seguridad{
 		.csrf()
 			.disable()
 		.authorizeHttpRequests()
-			.requestMatchers("/login/formularioRegistro/**").permitAll()
+			.requestMatchers("/registro/**").permitAll()
 			.anyRequest()
 			.authenticated()
 		.and()
