@@ -35,14 +35,14 @@ public class Controlador_Paginas {
 
 
 	@RequestMapping("/login")
-	public String dameLogin() {
+	public String login() {
         return "Login";
 	}
 	
 
 
 	@RequestMapping("/registro")
-	public String damePagina_Registro(Model modelo){
+	public String registro(Model modelo){
 
 		modelo.addAttribute("usuario", new Usuario());
 
@@ -54,7 +54,8 @@ public class Controlador_Paginas {
 
 	
 	@PostMapping("/registro/validar")
-	public String damePagina_Index_desdeRegistro(
+	public String validarRegistro(
+			
 			@Valid @ModelAttribute("usuario") Usuario usuario, 
 			BindingResult resultadoValidacion,
 			@RequestParam("imagenPerfil") MultipartFile metadatosImagenPerfil,
@@ -179,7 +180,7 @@ public class Controlador_Paginas {
 	
 	
 	@RequestMapping("/chat")
-	public String dameChat(Model modelo){
+	public String chat(Model modelo){
 		
 		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
 		
