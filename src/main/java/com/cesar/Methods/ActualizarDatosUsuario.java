@@ -37,7 +37,7 @@ public class ActualizarDatosUsuario {
 				
 				if ( extension != null ) {
 				
-					String rutaImagen = "C:\\Users\\cesar\\Desktop\\Programacion\\SPRING\\Practica\\ChatWeb\\src\\main\\resources\\static\\ImagenesDePerfil" + idUsuario;
+					String rutaImagen = "C:\\Users\\cesar\\Desktop\\Programacion\\SPRING\\Practica\\ChatWeb\\src\\main\\resources\\static\\ImagenesDePerfil\\" + idUsuario + extension;
 					
 					File imagen = new File(rutaImagen);
 					
