@@ -50,9 +50,7 @@ public class Controlador_Paginas {
 	}
 	
 	
-	
-	
-	
+
 	@RequestMapping("/index")
 	public String dameIndex_desdeLogin(Model modelo){
 		
@@ -63,11 +61,7 @@ public class Controlador_Paginas {
 		return "Pagina_Chat";
 	}
 	
-	@RequestMapping("/ii")
-	public String dameI(){
-
-		return "Pagina_Chat";
-	}
+	
 	
 	
 	@PostMapping("login/formularioRegistro/validar")
@@ -195,10 +189,17 @@ public class Controlador_Paginas {
 				
 				System.out.println("Acceso exitoso!");
 				
-				return "redirect:/ii";
+				return "redirect:/chat";
 				
 		}
 		
+	}
+	
+	
+	@RequestMapping("/chat")
+	public String dameChat(){
+		
+		return "Pagina_Chat";
 	}
 
 	
