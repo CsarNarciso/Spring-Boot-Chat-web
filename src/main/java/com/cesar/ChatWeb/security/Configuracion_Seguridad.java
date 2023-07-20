@@ -32,7 +32,7 @@ public class Configuracion_Seguridad{
 			.formLogin()
 			.loginPage("/login")
 			.loginProcessingUrl("/verificacionLogin")
-			.defaultSuccessUrl("/index", true)
+			.defaultSuccessUrl("/chat", true)
 			.usernameParameter("usernameOrEmail")
 			.permitAll()
 		.and()

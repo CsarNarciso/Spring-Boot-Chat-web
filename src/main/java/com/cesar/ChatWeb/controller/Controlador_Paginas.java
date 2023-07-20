@@ -184,12 +184,17 @@ public class Controlador_Paginas {
 	}
 	
 	
+	
+	
+	
 	@RequestMapping("/chat")
 	public String dameChat(){
 		
 		return "Pagina_Chat";
 	}
 
+	
+	
 	
 	@Autowired 
 	private PasswordEncoder passwordEncoder;
