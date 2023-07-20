@@ -84,7 +84,7 @@
 				<p class="divider-text">
 					<span class="bg-light">O</span>
 				</p>
-				<form action="/login/formularioRegistro/validar" method="post" enctype="multipart/form-data" th:object="${usuario}">
+				<form action="/registro/validar" method="post" enctype="multipart/form-data" th:object="${usuario}">
 					
 					<div class="formatoError" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
 					<div class="form-group input-group">

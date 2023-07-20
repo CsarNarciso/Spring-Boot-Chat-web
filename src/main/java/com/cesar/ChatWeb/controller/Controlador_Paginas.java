@@ -50,9 +50,10 @@ public class Controlador_Paginas {
 	}
 	
 	
+	
 
 	
-	@PostMapping("login/formularioRegistro/validar")
+	@PostMapping("/registro/validar")
 	public String damePagina_Index_desdeRegistro(
 			@Valid @ModelAttribute("usuario") Usuario usuario, 
 			BindingResult resultadoValidacion,
