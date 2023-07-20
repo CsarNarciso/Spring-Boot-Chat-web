@@ -64,11 +64,12 @@ public class Controlador_Paginas {
 			) {
 
 		
-			//Guardar contraseña con formato original
+		
+			//Almacenar contraseña original para autenticar
 			String contraseña = usuario.getContraseña();
 		
 		
-		
+			
 			//Comprobar registro
 		
 		
@@ -105,70 +106,26 @@ public class Controlador_Paginas {
 				
 				
 				//Autenticar 
-				
-				
-				UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getNombre());
-				System.out.println("1");
-				
-				System.out.println("Nombre: " + userDetails.getUsername() + "\n" +
-					"Contraseña: " + userDetails.getPassword() + "\n" +
-					"Roles: " + userDetails.getAuthorities());
-				
-				
-				
-				
+
 				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-					userDetails,
-					contraseña,
-					userDetails.getAuthorities()
+					usuario.getNombre(),
+					contraseña
 				);
-				System.out.println("2");
 				
-				
-				
-				Authentication auth = null;
-				
-				
-				try {
-					auth = autManager.authenticate(token);
-					System.out.println("3");
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-				
-				
-				
+				Authentication auth = autManager.authenticate(token);
+
 				SecurityContext sc = SecurityContextHolder.getContext();
-				System.out.println("4");
-				
-				
-				
+
 				sc.setAuthentication(auth);
-				System.out.println("5");
-				
-				
+
 				HttpSession session = httpRequest.getSession(true);
-				System.out.println("6");
 				
 				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
-				System.out.println("7");
 				
 				
 				
-				if ( sc.getAuthentication().isAuthenticated() ) {
-					
-					System.out.println("Usuario autenticado");
-				}
-				else {
-					
-					System.out.println("Usuario NO autenticado");
-				}
-				
-	
 				//Dar acceso. Redirigir a pagina de chat
-				
-				System.out.println("Acceso exitoso!");
-				
+
 				return "redirect:/chat";
 				
 		}
