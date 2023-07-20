@@ -11,6 +11,11 @@ import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 
 @Component
 public class ActualizarDatosUsuario {
+	
+	public ActualizarDatosUsuario(Usuario_Repositorio userRepo, Conversacion_Repositorio conversacionRepo) {
+		this.userRepo = userRepo;
+		this.conversacionRepo = conversacionRepo;
+	}
 
 	
 	public String guardarImagenPerfil(MultipartFile metadatosImagen, Long idUsuario) {
@@ -65,7 +70,7 @@ public class ActualizarDatosUsuario {
 	
 	@Autowired
 	private Usuario_Repositorio userRepo;
-	
+
 	@Autowired
 	private Conversacion_Repositorio conversacionRepo;
 	

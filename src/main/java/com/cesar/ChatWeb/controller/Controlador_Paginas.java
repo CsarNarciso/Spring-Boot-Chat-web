@@ -3,9 +3,12 @@
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +25,8 @@ import com.cesar.ChatWeb.service.Usuario_UserDetailsService;
 import com.cesar.Methods.AccederUsuarioAutenticado;
 import com.cesar.Methods.ActualizarDatosUsuario;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -70,9 +75,15 @@ public class Controlador_Paginas {
 			@Valid @ModelAttribute("usuario") Usuario usuario, 
 			BindingResult resultadoValidacion,
 			@RequestParam("imagenPerfil") MultipartFile metadatosImagenPerfil,
+			HttpServletRequest httpRequest,
 			Model modelo
 			) {
 
+		
+			//Guardar contraseña con formato original
+			String contraseña = usuario.getContraseña();
+		
+		
 		
 			//Comprobar registro
 		
@@ -91,8 +102,6 @@ public class Controlador_Paginas {
 				
 				//Subir ususario a BBDD
 
-				UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getNombre());
-
 				usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
 
 				userRepo.save(usuario);
@@ -105,7 +114,7 @@ public class Controlador_Paginas {
 				Usuario usuarioGuardado = userRepo.buscarPorNombre_Email(usuario.getNombre());
 				Long idUsuario = usuarioGuardado.getId();
 				
-				ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario();
+				ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario(userRepo, conversacionRepo);
 
 				actualizarDatosUsuario.guardarImagenPerfil(metadatosImagenPerfil, idUsuario);
 				
@@ -113,28 +122,56 @@ public class Controlador_Paginas {
 				
 				//Autenticar 
 				
+				
+				UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getNombre());
+				System.out.println("1");
+				
 				System.out.println("Nombre: " + userDetails.getUsername() + "\n" +
 					"Contraseña: " + userDetails.getPassword() + "\n" +
 					"Roles: " + userDetails.getAuthorities());
 				
-				System.out.println("1");
+				
+				
 				
 				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-						userDetails.getUsername(),
-						userDetails.getPassword(),
-						userDetails.getAuthorities()
-					);
+					userDetails,
+					contraseña,
+					userDetails.getAuthorities()
+				);
 				System.out.println("2");
 				
+				
+				
+				Authentication auth = null;
+				
+				
 				try {
-					autManager.authenticate(token);
+					auth = autManager.authenticate(token);
 					System.out.println("3");
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
 				
-	
-				if ( SecurityContextHolder.getContext().getAuthentication().isAuthenticated() ) {
+				
+				
+				SecurityContext sc = SecurityContextHolder.getContext();
+				System.out.println("4");
+				
+				
+				
+				sc.setAuthentication(auth);
+				System.out.println("5");
+				
+				
+				HttpSession session = httpRequest.getSession(true);
+				System.out.println("6");
+				
+				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+				System.out.println("7");
+				
+				
+				
+				if ( sc.getAuthentication().isAuthenticated() ) {
 					
 					System.out.println("Usuario autenticado");
 				}
