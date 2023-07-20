@@ -51,18 +51,6 @@ public class Controlador_Paginas {
 	
 	
 
-	@RequestMapping("/index")
-	public String dameIndex_desdeLogin(Model modelo){
-		
-		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
-		
-		modelo.addAttribute("DatosUsuario", accederUsuarioAutenticado.getDatos());
-	
-		return "Pagina_Chat";
-	}
-	
-	
-	
 	
 	@PostMapping("login/formularioRegistro/validar")
 	public String damePagina_Index_desdeRegistro(
