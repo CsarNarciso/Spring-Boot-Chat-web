@@ -184,9 +184,17 @@ public class Controlador_Paginas {
 		
 		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
 		
-		modelo.addAttribute("DatosUsuario", accederUsuarioAutenticado.getDatos());
+		Usuario u = accederUsuarioAutenticado.getDatos();
+		
+		modelo.addAttribute("DatosUsuario", u);
 
 		System.out.println("datos de usuario autenticado cargados en el modelo");
+		
+		System.out.println(u);
+		System.out.println(u.getNombre());
+		System.out.println(u.getContraseña());
+		System.out.println(u.getEmail());
+		System.out.println(u.getNombreImagen());
 		
 		return "Pagina_Chat";
 	}

@@ -18,10 +18,14 @@ public class AccederUsuarioAutenticado {
 	
 	
 	public Usuario getDatos() {
+		
+		System.out.println("---------ACCEDER USUARIO AUTENTICADO-------------");
+		
+		System.out.println("Repo: " + userRepo);
 
 		Authentication a = SecurityContextHolder.getContext().getAuthentication();
 		
-		return userRepo.buscarPorNombre_Email(a.getPrincipal().toString());
+		return userRepo.buscarPorNombre_Email( a.getName() );
 	}
 	
 	
