@@ -162,16 +162,6 @@ public class Controlador_Paginas {
 					System.out.println("Usuario NO autenticado");
 				}
 				
-				
-				
-				//Cargar datos de usuario autenticado en el modelo
-
-				AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
-				
-				modelo.addAttribute("DatosUsuario", accederUsuarioAutenticado.getDatos());
-
-				System.out.println("datos de usuario autenticado cargados en el modelo");
-				
 	
 				//Dar acceso. Redirigir a pagina de chat
 				
@@ -188,7 +178,13 @@ public class Controlador_Paginas {
 	
 	
 	@RequestMapping("/chat")
-	public String dameChat(){
+	public String dameChat(Model modelo){
+		
+		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
+		
+		modelo.addAttribute("DatosUsuario", accederUsuarioAutenticado.getDatos());
+
+		System.out.println("datos de usuario autenticado cargados en el modelo");
 		
 		return "Pagina_Chat";
 	}
