@@ -31,7 +31,7 @@ public class Configuracion_Seguridad{
 		.and()
 			.formLogin()
 			.loginPage("/login")
-			.loginProcessingUrl("/verificacionLogin")
+			.loginProcessingUrl("/login/validar")
 			.defaultSuccessUrl("/chat", true)
 			.usernameParameter("usernameOrEmail")
 			.permitAll()
