@@ -20,7 +20,7 @@ public class ActualizarDatosUsuario {
 	
 	public String guardarImagenPerfil(MultipartFile metadatosImagen, Long idUsuario) {
 			
-			String nombreImagen = "SinImagen.jpg";
+			String nombreImagen = "SinImagen.png";
 			String extension = null;
 		
 			if(!metadatosImagen.isEmpty()) {
