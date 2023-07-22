@@ -31,8 +31,7 @@ import jakarta.validation.Valid;
 
 @Controller
 public class Controlador_Paginas {
-
-
+	
 
 	@RequestMapping("/login")
 	public String login() {
@@ -136,7 +135,7 @@ public class Controlador_Paginas {
 	
 	
 	
-	@RequestMapping("/chat")
+	@RequestMapping({"/chat", "/"})
 	public String chat(Model modelo){
 		
 		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
