@@ -1,19 +1,12 @@
 package com.cesar.ChatWeb.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cesar.ChatWeb.validation.EmailNoDisponible;
 import com.cesar.ChatWeb.validation.EmailPersonalizado;
-import com.cesar.ChatWeb.validation.NombreNoDisponible;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -25,11 +18,9 @@ public class Usuario {
 	private Long id;
 
 	@NotBlank(message = "Nombre necesario")
-//	@NombreNoDisponible
 	private String nombre;
 
 	@EmailPersonalizado(message = "Introduce un email correcto")
-//	@EmailNoDisponible
 	private String email;
 	
 	private String nombreImagen;
