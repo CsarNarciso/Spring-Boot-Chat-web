@@ -26,6 +26,8 @@ public class Configuracion_Seguridad{
 			.disable()
 		.authorizeHttpRequests()
 			.requestMatchers("/registro/**").permitAll()
+			.requestMatchers("/ImagenesGenerales/**").permitAll()
+			.requestMatchers("/ImagenesDePerfil/**").permitAll()
 			.anyRequest()
 			.authenticated()
 		.and()

@@ -154,7 +154,7 @@ public class Controlador_Paginas {
 	
 	
 	
-	@RequestMapping({"/chat", "/"})
+	@RequestMapping("/chat")
 	public String chat(Model modelo){
 		
 		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
