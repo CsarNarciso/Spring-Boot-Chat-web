@@ -73,6 +73,7 @@ public class Controlador_Paginas {
 			//Validar
 			
 			
+			
 				//Email existene
 			
 			if ( userRepo.findByEmail( usuario.getEmail() ) != null ) {
@@ -80,7 +81,15 @@ public class Controlador_Paginas {
 				resultadoValidacion.addError(new FieldError("usuario", "email", "Este email ya esta siendo utilizado"));
 			}
 			
+			
+				//Nombre existene
+			
+			if ( userRepo.findByNombre( usuario.getNombre() ) != null ) {
+				
+				resultadoValidacion.addError(new FieldError("usuario", "nombre", "Nombre no dispoinble"));
+			}
 
+			
 		
 			//Incorrecto
 		
