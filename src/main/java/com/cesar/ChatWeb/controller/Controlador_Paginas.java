@@ -58,7 +58,7 @@ public class Controlador_Paginas {
 			
 			@Valid @ModelAttribute("usuario") Usuario usuario, 
 			BindingResult resultadoValidacion,
-			@RequestParam("imagenPerfil") MultipartFile metadatosImagenPerfil,
+			@RequestParam("nombreImagen") MultipartFile metadatosImagenPerfil,
 			HttpServletRequest httpRequest,
 			Model modelo
 			) {
@@ -88,6 +88,8 @@ public class Controlador_Paginas {
 				
 				resultadoValidacion.addError(new FieldError("usuario", "nombre", "Nombre no dispoinble"));
 			}
+			
+			
 
 			
 		
