@@ -9,8 +9,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="conversaciones")
 public class Conversacion {
-	
-	
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -19,15 +19,15 @@ public class Conversacion {
 	private String nombre;
 	private String nombreImagen;
 	private int mensajesNuevos;
-	
-	
-	
+
+
+
 	public Conversacion() {
 		super();
 	}
-	
-	
-	
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -64,9 +64,9 @@ public class Conversacion {
 	public void setMensajesNuevos(int mensajesNuevos) {
 		this.mensajesNuevos = mensajesNuevos;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }

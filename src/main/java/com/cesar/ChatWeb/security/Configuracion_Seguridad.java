@@ -17,10 +17,10 @@ import com.cesar.ChatWeb.service.Usuario_UserDetailsService;
 @EnableWebSecurity
 public class Configuracion_Seguridad{
 
-	
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
+
 		http
 		.csrf()
 			.disable()
@@ -44,29 +44,28 @@ public class Configuracion_Seguridad{
 			.invalidateHttpSession(true)
 			.deleteCookies("JSESSIONID")
 			.permitAll();
-		
+
 		return http.build();
-		
+
 	}
-	
-	
-	
+
+
+
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) 
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
 	         throws Exception {
 	    return authenticationConfiguration.getAuthenticationManager();
 	}
-	
-	
+
+
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new Usuario_UserDetailsService();
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 }
-	
-	
+

@@ -1,3 +1,3 @@
-src/main/resources/static/ImagenesDePerfil/*.jpg
-src/main/resources/static/ImagenesDePerfil/*.png
-!src/main/resources/static/ImagenesDePerfil/SinImagen.jpg
+/src/main/resources/static/ImagenesDePerfil/*.jpg
+/src/main/resources/static/ImagenesDePerfil/*.png
+!/src/main/resources/static/ImagenesDePerfil/SinImagen.jpg

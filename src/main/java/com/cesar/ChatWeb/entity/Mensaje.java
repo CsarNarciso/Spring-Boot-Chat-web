@@ -14,7 +14,7 @@ import jakarta.persistence.TemporalType;
 @Table(name = "mensajes")
 public class Mensaje {
 
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -23,9 +23,9 @@ public class Mensaje {
 	private String contenido;
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime fecha;
-	
-	
-	
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -56,16 +56,16 @@ public class Mensaje {
 	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
-	
 
-	
-	
-	
-	
-	
 
-	
-	
-	
+
+
+
+
+
+
+
+
+
 }
 

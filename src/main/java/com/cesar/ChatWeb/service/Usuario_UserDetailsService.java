@@ -13,26 +13,26 @@ public class Usuario_UserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private Usuario_Repositorio repositorio_usuario;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-		
+
 		Usuario usuario = repositorio_usuario.buscarPorNombre_Email(usernameOrEmail);
-		
+
 		if( usuario == null) {
 			throw new UsernameNotFoundException("--Usuario no encontrado--");
 		}
 		else {
 			System.out.println("Usuario " + usuario.getNombre() + " encontrado en la base de datos");
 		}
-		
+
 		return User.builder()
 				.username(usuario.getNombre())
 	            .password(usuario.getContraseña())
-	            .roles("USER") 
+	            .roles("USER")
 	            .build();
-	
+
 	}
-	
+
 
 }
