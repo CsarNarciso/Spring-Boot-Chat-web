@@ -52,6 +52,10 @@
 	line-height: 24px;
 }
 
+#mensajeError_MetadatosImagen{
+	display:none;
+}
+
 </style>
 
 
@@ -122,6 +126,7 @@
 					</div>
 					<!-- form-group end.// -->
 						<!-- form-group// -->
+					<div id="mensajeError_MetadatosImagen" class="formatoError">La imagen es demasiado grande. Elije una mas pequeña</div>	
 					<div class="formatoError" th:if="${#fields.hasErrors('metadatosImagen')}" th:errors="*{metadatosImagen}"></div>
 					<div class="form-group input-group">
 						<div class="input-group-prepend">
