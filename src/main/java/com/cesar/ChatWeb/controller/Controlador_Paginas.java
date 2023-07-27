@@ -87,26 +87,7 @@ public class Controlador_Paginas {
 			}
 			
 
-				//Imagen
-			
-			if ( usuario.getMetadatosImagen() != null ) { 
 				
-				if ( ! usuario.getMetadatosImagen().isEmpty() ) {
-
-					String tipoExtension = usuario.getMetadatosImagen().getContentType();
-					
-					//Extension incorrecta
-					
-					if ( ! tipoExtension.equals("image/jpeg") || ! tipoExtension.equals("image/png") ) {
-					
-						resultadoValidacion.addError(new FieldError("usuario", "metadatosImagen", "Permitidos solamente archivos jpg o png"));
-					}	
-				}
-			}
-
-			
-
-
 			//Incorrecto
 
 			if (resultadoValidacion.hasErrors()){
