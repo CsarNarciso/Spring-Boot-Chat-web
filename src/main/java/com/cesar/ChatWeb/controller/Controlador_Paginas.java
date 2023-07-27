@@ -95,27 +95,13 @@ public class Controlador_Paginas {
 
 					String tipoExtension = usuario.getMetadatosImagen().getContentType();
 					
-					if ( tipoExtension.equals("image/jpeg") || tipoExtension.equals("image/png") ) {
-						
-						//Tamaño excesivo
-						
-						if ( usuario.getMetadatosImagen().getSize() > (1*1024*1024) ) {
-	
-							resultadoValidacion.addError(new FieldError("usuario", "metadatosImagen", "Imagen demasiado grande"));
-						}
-					}
-					
 					//Extension incorrecta
 					
-					else {
-						
+					if ( ! tipoExtension.equals("image/jpeg") || ! tipoExtension.equals("image/png") ) {
+					
 						resultadoValidacion.addError(new FieldError("usuario", "metadatosImagen", "Permitidos solamente archivos jpg o png"));
-					}
-				
+					}	
 				}
-				
-				
-
 			}
 
 			
