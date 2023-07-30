@@ -28,14 +28,21 @@ public class Controlador_Sockets {
 
 		String accion = (String) datos.get("accion");
 		Long id = Long.valueOf( (String) datos.get("id") );
+		
+		System.out.println("Accion: " + accion);
 
 		if( accion.equals("agregar") || accion.equals("actualizar") ) {
 			
 			if ( accion.equals("actualizar") ) {
+				
+				System.out.println("Actualizando usuario online");
+				
 				usuariosOnline.remove(id);
 			}
 
 			if( !usuariosOnline.containsKey(id) ) {
+				
+				System.out.println("Agregando usuario online");
 
 				String nombre = (String) datos.get("nombre");
 				String nombreImagen = (String) datos.get("nombreImagen");
@@ -50,12 +57,16 @@ public class Controlador_Sockets {
 		else if ( accion.equals("quitar") ){
 
 			if(usuariosOnline.containsKey(id)) {
+				
+				System.out.println("Quitando usuario online");
 
 				usuariosOnline.remove(id);
 			}
 		}
 		
 		simp.convertAndSend("/topic/mostrarListaUsuariosOnline", usuariosOnline);
+		
+		System.out.println("Lista usuarios online devuelta");
 
 	}
 

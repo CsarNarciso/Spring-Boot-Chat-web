@@ -234,15 +234,15 @@ $(document).ready(function() {
 	
 	
 	/////////////CAPTURA DE EVENTO DE DESCONEXION/////////////
- 	$(window).on('unload', function() {
+ 	$(window).on('beforeunload', function() {
 		 
 		//ACTUALIZAR LISTA USUARIOS ONLINE
-        stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, {
+        stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, JSON.stringify({
 			"accion" : "quitar",
-			"id" : id, 
-        });
+			"id" : id
+        }));
         
-        stomp.disconnect(function() {});
+        stomp.disconnect();
         
     });
 	
@@ -609,35 +609,35 @@ $(document).ready(function() {
 	
 	//////////////////INICIALIZACION Y ASIGNACION DE FUNCIONES A ELEMENTOS////////////////////
 	/////////////////////////////////////////////////////////////////////////
-//	
-//
-//		////////mostrar menu de opciones del perfil
-//	$("#imagenUsuario").click(function(e){
-//		
-//		$("#menu_EditarPerfil").hide();
-//		
-//		$("#menu_OpcionesPerfil").toggle();
-//	});
-//	
-//	
-//	
-//		////////mostrar menu para editar perfil
-//	$("#botonEditarPerfil").click(function(e){
-//		
-//		$("#menu_OpcionesPerfil").hide();
-//		
-//		$("#campoNuevoNombre").val(nombre);
-//		
-//		$("#campoNuevaImagen").val("");
-//		
-//		$("#menu_EditarPerfil").css({
-//			display:"block"
-//		});
-//		
-//	});
-//	
-//	
-//	
+	
+
+		////////mostrar menu de opciones del perfil
+	$("#imagenUsuario").click(function(e){
+		
+		$("#menu_EditarPerfil").hide();
+		
+		$("#menu_OpcionesPerfil").toggle();
+	});
+	
+	
+	
+		////////mostrar menu para editar perfil
+	$("#botonEditarPerfil").click(function(e){
+		
+		$("#menu_OpcionesPerfil").hide();
+		
+		$("#campoNuevoNombre").val(nombre);
+		
+		$("#campoNuevaImagen").val("");
+		
+		$("#menu_EditarPerfil").css({
+			display:"block"
+		});
+		
+	});
+	
+	
+	
 //		/////////Comprobar valor del campo nuevoNombre para habilitar o no el boton actualizarNombre 
 //	$("#campoNuevoNombre").on("input", function(){
 //		
