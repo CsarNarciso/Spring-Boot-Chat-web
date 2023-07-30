@@ -27,7 +27,7 @@ public class Controlador_Sockets {
 	public void actualizarUsuariosOnline(Map<String, Object> datos) {
 
 		String accion = (String) datos.get("accion");
-		Long id = (Long) datos.get("id");
+		Long id = Long.valueOf( (String) datos.get("id") );
 
 		if( accion == "agregar" || accion == "actualizar" ) {
 
