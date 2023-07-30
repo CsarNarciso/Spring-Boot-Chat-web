@@ -29,9 +29,9 @@ public class Controlador_Sockets {
 		String accion = (String) datos.get("accion");
 		Long id = Long.valueOf( (String) datos.get("id") );
 
-		if( accion == "agregar" || accion == "actualizar" ) {
-
-			if ( accion == "actualizar" ) {
+		if( accion.equals("agregar") || accion.equals("actualizar") ) {
+			
+			if ( accion.equals("actualizar") ) {
 				usuariosOnline.remove(id);
 			}
 
@@ -43,18 +43,18 @@ public class Controlador_Sockets {
 				Usuario usuario = new Usuario(id, nombre, nombreImagen);
 
 				usuariosOnline.put(id, usuario);
+				
 			}
 		}
 
-		else if ( accion == "quitar" ){
+		else if ( accion.equals("quitar") ){
 
 			if(usuariosOnline.containsKey(id)) {
 
 				usuariosOnline.remove(id);
 			}
 		}
-
-
+		
 		simp.convertAndSend("/topic/mostrarListaUsuariosOnline", usuariosOnline);
 
 	}
