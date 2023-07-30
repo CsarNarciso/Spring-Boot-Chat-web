@@ -614,9 +614,9 @@ $(document).ready(function() {
 		////////mostrar menu de opciones del perfil
 	$("#imagenUsuario").click(function(e){
 		
-		$("#menu_EditarPerfil").hide();
-		
 		$("#menu_OpcionesPerfil").toggle();
+		
+		$("#menu_EditarPerfil").hide();
 	});
 	
 	
@@ -634,6 +634,12 @@ $(document).ready(function() {
 			display:"block"
 		});
 		
+	});
+	
+	
+	$("#botonCerrar_MenuEditarPerfil").click(function(e){
+	
+		$("#menu_EditarPerfil").hide();	
 	});
 	
 	
