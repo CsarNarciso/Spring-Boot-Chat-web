@@ -138,12 +138,12 @@ $(document).ready(function() {
 		
 		//////////ENVIO OBTENER Y ACTUALIZAR GLOBALMENTE USUARIOS ONLINE///////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, {
+		stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, JSON.stringify({
 			"accion" : "agregar", 
 			"id" : id, 
 			"nombre" : nombre,
 			"nombreImagen" : nombreImagen
-		});
+		}));
 		
 		
 		//////////ENVIO OBTENER LISTA CONVERSACIONES///////////////
