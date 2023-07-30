@@ -24,7 +24,7 @@ $(document).ready(function() {
 	var destinoSuscripcion_ListaMensajes = "/user/" + id + "/queue/mensajes";
 	
 	var destinoEnvio_Mensaje = "/enviarMensaje";
-	var destinoEnvio_ActualizarListaUsuarios = "/actualizarListaUsuariosOnline";
+	var destinoEnvio_ActualizarListaUsuarios = "/actualizarUsuariosOnline";
 	var destinoEnvio_ObtenerListaConversaciones = "/obtenerListaConversaciones";
 	var destinoEnvio_CrearConversacion = "/crearConversacion";
 	var destinoEnvio_EliminarConversacion = "/eliminarConversacion";
