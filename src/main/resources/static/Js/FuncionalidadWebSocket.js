@@ -611,13 +611,6 @@ $(document).ready(function() {
 	//////////////////INICIALIZACION Y ASIGNACION DE FUNCIONES A ELEMENTOS////////////////////
 	/////////////////////////////////////////////////////////////////////////
 	
-	
-		////////////ocultar menu para eliminar conversacion
-	$(this).click(function(){
-		$("#menu_OpcionesPerfil").hide();
-		$("#menu_EditarPerfil").hide();
-	});
-	
 
 		////////mostrar menu de opciones del perfil
 	$("#imagenUsuario").click(function(e){
