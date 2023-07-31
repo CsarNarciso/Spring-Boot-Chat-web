@@ -156,24 +156,24 @@ $(document).ready(function() {
 	
 	
 	
-//
-//	///////////ENVIO ACTUALIZAR NOMBRE PERFIL/////////
-//	//////////////////////////////////////////////////
-//	$("#formEditarNombre").submit(function(event) {
-//		
-//		var nuevoNombre = $("#campoNuevoNombre").val();
-//		
-//		stomp.send(destinoEnvio_ActualizarDatosUsuario, {
-//			"actualizar" : "nombre", 
-//			"id" : id, 
-//			"nuevoNombre" : nuevoNombre, 
-//			"nombreImagen" : nombreImagen
-//		});
-//		
-//	});
-//	
-//	
-//	
+
+	///////ENVIO ACTUALIZAR NOMBRE PERFIL/////////
+	//////////////////////////////////////////////////
+	$("#formEditarNombre").submit(function(event) {
+		
+		var nuevoNombre = $("#campoNuevoNombre").val();
+		
+		stomp.send(destinoEnvio_ActualizarDatosUsuario, {}, JSON.stringify({
+			"actualizar" : "nombre", 
+			"id" : id, 
+			"nuevoNombre" : nuevoNombre, 
+			"nombreImagen" : nombreImagen
+		}));
+		
+	});
+	
+	
+	
 //	///////////ENVIO ACTUALIZAR IMAGEN PERFIL/////////
 //	//////////////////////////////////////////////////
 //	$("#formEditarImagen").submit(function(event){
@@ -252,7 +252,7 @@ $(document).ready(function() {
 	////////////////////////////////////FUNCIONES////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////
 	
-	function agregarUsuario(idP, nombreP, nombreImagenP){
+	function agregarUsuario(idP, nombreP, nombreImagenP) {
 		
 		if( idP != id ) {
 					
@@ -273,11 +273,16 @@ $(document).ready(function() {
 //			$("#usuario_" + idP).click(abrirConversacion(idP, $(this)));
 					
 		}
-//		else{
-//			
-//			nombre = nombreP;
-//			$("#nombreUsuario").text(nombreP);
-//			$("#datosUsuario").attr("data-Nombre", nombreP);
+		else {
+			
+			if ( nombre != nombreP ) {
+
+				$("#nombreUsuario").text(nombreP);
+				$("#datosUsuario").attr("data-Nombre", nombreP);
+				
+				nombre = nombreP;
+			}			
+			
 //			
 //			nombreImagen = nombreImagenP;
 //			$("#imagenUsuario").attr("src", nombreImagenP);
@@ -296,10 +301,9 @@ $(document).ready(function() {
 //					}
 //				});
 //			}
-//		}
-		
-		
+		}
 	}
+
 	
 //	
 //	function agregarConversacion(idRemitente, idDestinatario, nombre, nombreImagen, mensajesNuevos){
@@ -627,6 +631,7 @@ $(document).ready(function() {
 		$("#menu_OpcionesPerfil").hide();
 		
 		$("#campoNuevoNombre").val(nombre);
+		$("#botonEditarNombre").prop("disabled", true);
 		
 		$("#campoNuevaImagen").val("");
 		
@@ -644,27 +649,25 @@ $(document).ready(function() {
 	
 	
 	
-//		/////////Comprobar valor del campo nuevoNombre para habilitar o no el boton actualizarNombre 
-//	$("#campoNuevoNombre").on("input", function(){
-//		
-//		var nuevoNombre = $(this).val(); 
-//		
-//		if( nuevoNombre.trim() !== "" ){
-//			if ( nuevoNombre !== nombre ){
-//				
-//				$("#botonEditarNombre").prop("disabled", false);
-//				
-//			}
-//		}
-//		else{
-//			$("#botonEditarNombre").prop("disabled", true);
-//		}
-//		
-//	});
-//	
-//	
-//	
-//	
+		/////////Comprobar valor del campo nuevoNombre para habilitar o no el boton actualizarNombre 
+	$("#campoNuevoNombre").on("input", function(){
+		
+		var nuevoNombre = $(this).val(); 
+		
+		if( nuevoNombre === nombre || nuevoNombre.trim() === ""){
+
+			$("#botonEditarNombre").prop("disabled", true);
+		}
+		else{
+			
+			$("#botonEditarNombre").prop("disabled", false);
+		}
+		
+	});
+	
+	
+	
+	
 //		/////////Comprobar valor del campo nuevaImagen para habilitar o no el boton actualizarImagen 
 //	$("#campoNuevaImagen").on("input", function(){
 //		

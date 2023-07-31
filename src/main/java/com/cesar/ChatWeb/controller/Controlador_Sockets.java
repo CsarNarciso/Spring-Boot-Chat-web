@@ -126,16 +126,16 @@ public class Controlador_Sockets {
 	public void actualizarDatosUsuario(Map<String, Object> datos) {
 
 		String actualizar = (String) datos.get("actualizar");
-		Long id = (Long) datos.get("id");
+		Long id = Long.valueOf( (String) datos.get("id") );
 
 
 		Map<String, Object> datosUsuarioActualizado = new HashMap<>();
 		datosUsuarioActualizado.put("accion", "actualizar");
-		datosUsuarioActualizado.put("id", id);
+		datosUsuarioActualizado.put("id", datos.get("id"));
 
 
 
-		if ( actualizar == "nombre" ) {
+		if ( actualizar.equals("nombre") ) {
 
 			String nuevoNombre = (String) datos.get("nuevoNombre");
 
@@ -147,7 +147,7 @@ public class Controlador_Sockets {
 			datosUsuarioActualizado.put("nombreImagen", datos.get("nombreImagen"));
 		}
 
-		else if ( actualizar == "imagen" ) {
+		else if ( actualizar.equals("imagen") ) {
 
 			MultipartFile metadatosNuevaImagen = (MultipartFile) datos.get("nuevaImagen");
 
