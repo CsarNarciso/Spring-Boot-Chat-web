@@ -28,7 +28,6 @@ $(document).ready(function() {
 	var destinoEnvio_ObtenerListaConversaciones = "/obtenerListaConversaciones";
 	var destinoEnvio_CrearConversacion = "/crearConversacion";
 	var destinoEnvio_EliminarConversacion = "/eliminarConversacion";
-	var destinoEnvio_ActualizarDatosUsuario = "/actualizarDatosUsuario"
 	var destinoEnvio_ActualizarMensajesNuevos = "/actualizarMensajesNuevos";
 	var destinoEnvio_ObtenerListaMensajes = "/obtenerListaMensajes";
 
@@ -157,20 +156,6 @@ $(document).ready(function() {
 	
 	
 
-	///////ENVIO ACTUALIZAR NOMBRE PERFIL/////////
-	//////////////////////////////////////////////////
-	$("#formEditarNombre").submit(function(event) {
-		
-		var nuevoNombre = $("#campoNuevoNombre").val();
-		
-		stomp.send(destinoEnvio_ActualizarDatosUsuario, {}, JSON.stringify({
-			"actualizar" : "nombre", 
-			"id" : id, 
-			"nuevoNombre" : nuevoNombre, 
-			"nombreImagen" : nombreImagen
-		}));
-		
-	});
 	
 	
 	

@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -151,6 +152,56 @@ public class Controlador_Paginas {
 		}
 
 	}
+	
+	
+	
+	
+	
+	@RequestMapping("/actualizarDatosUsuario")
+	public String actualizarDatosUsuario( HttpServletRequest httpRequest ){
+		
+		
+		//Obtener datos para actualizar
+		
+		Long idUsuarioActual = new AccederUsuarioAutenticado(userRepo).getDatos().getId(); 
+		
+		String nuevoNombre = httpRequest.getParameter("nuevoNombre");
+		
+		
+		
+		//Actualizar nombre de usuario
+		
+		if ( httpRequest.getParameter("nuevoNombre") != null ) {
+			
+			//En BBDD
+			
+			userRepo.updateNombre( nuevoNombre, idUsuarioActual );
+			
+			//En Autenticacion. 
+			
+			UsernamePasswordAuthenticationToken newToken = new UsernamePasswordAuthenticationToken( nuevoNombre, null, null );
+
+			SecurityContextHolder.getContext().setAuthentication( newToken );
+		}
+		
+//		else if ( actualizar.equals("imagen") ) {
+		//
+//					MultipartFile metadatosNuevaImagen = (MultipartFile) datos.get("nuevaImagen");
+		//
+//					ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario(usuarioRepo, conversacionRepo);
+//					String nombreNuevaImagen = actualizarDatosUsuario.guardarImagenPerfil(metadatosNuevaImagen, id);
+		//
+//					datosUsuarioActualizado.put("nombre", datos.get("nombre"));
+//					datosUsuarioActualizado.put("nombreImagen", nombreNuevaImagen);
+//				}
+		
+//		conversacionRepo.updateNombreByUserID(id, nuevoNombre);
+	
+			
+		//Actualizacion de datos correcta. Redirigir a chat.
+		
+		return "redirect:/chat";
+	}
 
 
 
@@ -158,7 +209,7 @@ public class Controlador_Paginas {
 
 	@RequestMapping({"/chat", "/"})
 	public String chat(Model modelo){
-
+	
 		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
 
 		Usuario u = accederUsuarioAutenticado.getDatos();

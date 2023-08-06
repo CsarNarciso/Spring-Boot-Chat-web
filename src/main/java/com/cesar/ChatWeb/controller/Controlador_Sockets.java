@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.MessageHeaderAccessor;
+import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +21,8 @@ import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Mensaje_Repositorio;
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 import com.cesar.Methods.ActualizarDatosUsuario;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class Controlador_Sockets {
@@ -119,58 +125,9 @@ public class Controlador_Sockets {
 	}
 
 
-
-
-
-	@MessageMapping("/actualizarDatosUsuario")
-	public void actualizarDatosUsuario(Map<String, Object> datos) {
-
-		String actualizar = (String) datos.get("actualizar");
-		Long id = Long.valueOf( (String) datos.get("id") );
-
-
-		Map<String, Object> datosUsuarioActualizado = new HashMap<>();
-		datosUsuarioActualizado.put("accion", "actualizar");
-		datosUsuarioActualizado.put("id", datos.get("id"));
-
-
-
-		if ( actualizar.equals("nombre") ) {
-
-			String nuevoNombre = (String) datos.get("nuevoNombre");
-
-			usuarioRepo.updateNombre(nuevoNombre, id);
-
-			conversacionRepo.updateNombreByUserID(id, nuevoNombre);
-
-			datosUsuarioActualizado.put("nombre", nuevoNombre);
-			datosUsuarioActualizado.put("nombreImagen", datos.get("nombreImagen"));
-		}
-
-		else if ( actualizar.equals("imagen") ) {
-
-			MultipartFile metadatosNuevaImagen = (MultipartFile) datos.get("nuevaImagen");
-
-			ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario(usuarioRepo, conversacionRepo);
-			String nombreNuevaImagen = actualizarDatosUsuario.guardarImagenPerfil(metadatosNuevaImagen, id);
-
-			datosUsuarioActualizado.put("nombre", datos.get("nombre"));
-			datosUsuarioActualizado.put("nombreImagen", nombreNuevaImagen);
-		}
-
-
-		actualizarUsuariosOnline(datosUsuarioActualizado);
-
-
-		datosUsuarioActualizado.remove("accion");
-		datosUsuarioActualizado.put("actualizar", actualizar);
-
-		simp.convertAndSend("/topic/actualizarDatosConversacion/" + id, datosUsuarioActualizado);
-	}
-
-
-
-
+	
+	
+	
 	@MessageMapping("/actualizarMensajesNuevos")
 	public void actualizarMensajesNuevos(Map<String, Object> datos) {
 
