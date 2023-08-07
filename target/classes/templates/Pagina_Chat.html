@@ -9,7 +9,11 @@
     
     <style>
     	
-    	
+    	.formatoError {
+			color: red;
+			font-size: 12px;
+			line-height: 24px;
+		}
     	
     	
     	#listaUsuarios{
@@ -32,6 +36,8 @@
     	#menu_EditarPerfil{
     		display:none;
     	}
+    	
+    	
     	
     	
     </style>
@@ -105,6 +111,12 @@
  
     	<form id="formEditarImagen" action="/actualizarDatosUsuario">
     		Nombre de usuario: <input id="campoNuevoNombre" type="text" name="nuevoNombre"> <br>
+    		
+    		<div id="mensajeError_ActualizarNombre" class="formatoError" 
+    			th:data-ResultadoValidacion="${ResultadoValidacion_ActualizarNombre}"
+    			th:data-NombreNoDisponible="${NombreNoDisponible}"
+    		></div> <br>
+    		
     		<input id="botonEditarNombre" type="submit" value="Actualizar">
     	</form>
     	

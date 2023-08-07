@@ -6,7 +6,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,10 @@ import com.cesar.ChatWeb.validation.Usuario_Validador;
 import com.cesar.Methods.AccederUsuarioAutenticado;
 import com.cesar.Methods.ActualizarDatosUsuario;
 
+import jakarta.servlet.http.HttpServletMapping;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -144,7 +146,7 @@ public class Controlador_Paginas {
 				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
 
 
-
+				
 				//Dar acceso. Redirigir a pagina de chat
 
 				return "redirect:/chat";
@@ -155,10 +157,10 @@ public class Controlador_Paginas {
 	
 	
 	
-	
+
 	
 	@RequestMapping("/actualizarDatosUsuario")
-	public String actualizarDatosUsuario( HttpServletRequest httpRequest ){
+	public String actualizarDatosUsuario( HttpServletRequest httpRequest, HttpSession sesion){
 		
 		
 		//Obtener datos para actualizar
@@ -169,11 +171,32 @@ public class Controlador_Paginas {
 		
 		
 		
-		//Actualizar nombre de usuario
+		//Nombre de usuario
 		
-		if ( httpRequest.getParameter("nuevoNombre") != null ) {
+		if ( nuevoNombre != null ) {
 			
-			//En BBDD
+			
+			//Validar
+
+
+			//Nombre existene
+
+			if ( userRepo.findByNombre( nuevoNombre ) != null ) {
+	
+				//Incorrecto
+				
+				//Agregar resultado de validacion en sesion
+				sesion.setAttribute("ResultadoValidacion_ActualizarNombre", "Incorrecta");
+				sesion.setAttribute("NombreNoDisponible", nuevoNombre);
+				
+				return "redirect:/chat";
+			}
+			
+			//Correcto
+
+			sesion.setAttribute("ResultadoValidacion_ActualizarNombre", "Correcta");
+			
+			//Actualizar en BBDD
 			
 			userRepo.updateNombre( nuevoNombre, idUsuarioActual );
 			
@@ -208,8 +231,35 @@ public class Controlador_Paginas {
 
 
 	@RequestMapping({"/chat", "/"})
-	public String chat(Model modelo){
+	public String chat(Model modelo, HttpSession sesion){
 	
+		
+		//TRAS ACTUALIZAR NOMBRE DE USUARIO
+		
+		//Obtener resultado de validacion gardado en sesion
+		
+		String resultadoValidacion_ActualizarNombre = (String) sesion.getAttribute("ResultadoValidacion_ActualizarNombre"); 
+		String nombreNoDisponible = (String) sesion.getAttribute("NombreNoDisponible"); 
+		
+		//Y eliminarlo de la sesion
+		
+		sesion.removeAttribute("ResultadoValidacion_ActualizarNombre");
+		sesion.removeAttribute("NombreNoDisponible");
+		
+		//Verificar si la llamada ha sido tras actualizacion
+		if ( resultadoValidacion_ActualizarNombre != null ) {
+			
+			//Agregar resultado a modelo.
+			modelo.addAttribute("ResultadoValidacion_ActualizarNombre", resultadoValidacion_ActualizarNombre);
+			
+			//Si la validacion fue erronea, agregar tambien el nombre no disponible
+			if ( resultadoValidacion_ActualizarNombre != null ) {
+				
+				modelo.addAttribute("NombreNoDisponible", nombreNoDisponible);
+			}
+		}
+		
+
 		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
 
 		Usuario u = accederUsuarioAutenticado.getDatos();

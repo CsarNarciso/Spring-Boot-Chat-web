@@ -605,6 +605,11 @@ $(document).ready(function() {
 		
 		$("#menu_OpcionesPerfil").toggle();
 		
+		if ( $("#menu_OpcionesPerfil").is(":visible") ){
+		
+			$("#mensajeError_ActualizarNombre").hide();	
+		}
+		
 		$("#menu_EditarPerfil").hide();
 	});
 	
@@ -630,6 +635,8 @@ $(document).ready(function() {
 	$("#botonCerrar_MenuEditarPerfil").click(function(e){
 	
 		$("#menu_EditarPerfil").hide();	
+		
+		$("#mensajeError_ActualizarNombre").hide();
 	});
 	
 	
@@ -651,6 +658,17 @@ $(document).ready(function() {
 	});
 	
 	
+	/////////Comprobar resultado de validacion al actualizar nombre de usuario
+	if( $("#mensajeError_ActualizarNombre").attr("data-ResultadoValidacion") === "Incorrecta"){
+		
+		$("#mensajeError_ActualizarNombre").text("Nombre no disponible.");
+		
+		$("#campoNuevoNombre").val( $("#mensajeError_ActualizarNombre").attr("data-NombreNoDisponible") );
+		
+		$("#menu_EditarPerfil").css({
+			display:"block"
+		});
+	}
 	
 	
 //		/////////Comprobar valor del campo nuevaImagen para habilitar o no el boton actualizarImagen 
