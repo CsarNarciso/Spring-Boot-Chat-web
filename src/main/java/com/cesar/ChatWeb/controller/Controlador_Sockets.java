@@ -3,26 +3,20 @@ package com.cesar.ChatWeb.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.MessageHeaderAccessor;
-import org.springframework.messaging.support.NativeMessageHeaderAccessor;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.cesar.ChatWeb.entity.Conversacion;
 import com.cesar.ChatWeb.entity.Mensaje;
-import com.cesar.ChatWeb.entity.Usuario;
 import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Mensaje_Repositorio;
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
-import com.cesar.Methods.ActualizarDatosUsuario;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class Controlador_Sockets {
@@ -30,52 +24,119 @@ public class Controlador_Sockets {
 
 
 	@MessageMapping("/actualizarUsuariosOnline")
-	public void actualizarUsuariosOnline(Map<String, Object> datos) {
+	public void actualizarUsuariosOnline(UsuarioOnline usuario) {
 
-		String accion = (String) datos.get("accion");
-		Long id = Long.valueOf( (String) datos.get("id") );
+		System.out.println("-----------------------actualizarObtenerUsuariosOnline-----------------------" );
 		
-		System.out.println("Accion: " + accion);
+		//Obtener info usuario
+		String estado = usuario.getEstado();
+		Long id = usuario.getId();
+		
+		
+		System.out.println("Estado: " + estado);
 
-		if( accion.equals("agregar") || accion.equals("actualizar") ) {
+		
+		if ( estado.equals("CONECTADO") ) {
+		
+			//Reconectar
+			if ( usuariosOnline.containsKey(id) ) {
 			
-			if ( accion.equals("actualizar") ) {
+				if ( ! usuariosOnline.get(id).getEstado().equals(estado) ) {
 				
-				System.out.println("Actualizando usuario online");
-				
-				usuariosOnline.remove(id);
+					//Tiempo desconectado
+					if ( System.currentTimeMillis() - usuariosOnline.get(id).getHoraDesconexion() < 5000 ) {
+					
+						//Correcto. Cambiar estado.
+						accionRealizada = "Reconectar";
+						usuariosOnline.get(id).setEstado(estado);
+					}
+
+				}	
 			}
+			//Conectar
+			else {
 
-			if( !usuariosOnline.containsKey(id) ) {
-				
-				System.out.println("Agregando usuario online");
-
-				String nombre = (String) datos.get("nombre");
-				String nombreImagen = (String) datos.get("nombreImagen");
-
-				Usuario usuario = new Usuario(id, nombre, nombreImagen);
-
+				accionRealizada = "Agregar";
 				usuariosOnline.put(id, usuario);
-				
 			}
 		}
-
-		else if ( accion.equals("quitar") ){
-
-			if(usuariosOnline.containsKey(id)) {
+		else if ( estado.equals("DESCONECTADO") ) {
+			
+			//Desconectar
+			if ( usuariosOnline.containsKey(id) ) {
 				
-				System.out.println("Quitando usuario online");
-
-				usuariosOnline.remove(id);
+				if ( ! usuariosOnline.get(id).getEstado().equals(estado) ) {
+					
+					//Guardar hora de desconexion
+					usuariosOnline.get(id).setHoraDesconexion(System.currentTimeMillis());
+					usuariosOnline.get(id).setEstado(estado);
+					
+					accionRealizada = "EsperarReconexion";
+					
+					//Timer: esperar reconexion
+					new Timer().schedule(new TimerTask() {
+						
+						private Long idUsuarioDesconectado = id;
+						private int contador=0;
+						
+						@Override
+						public void run() { 
+							
+							if ( contador > 0 ) {
+								
+								//Si no se reconecta...
+								if ( usuariosOnline.get(idUsuarioDesconectado).getEstado().equals("DESCONECTADO") ) {
+									
+									//Quitar
+									usuariosOnline.remove(id);
+									
+									accionRealizada = "Quitar";
+									
+									//Enviar a todos actualizacion
+									simp.convertAndSend("/topic/ActualizarListaUsuarios", usuario);
+									
+									System.out.println("Accion realizada: " + accionRealizada);
+								}
+								//Detener timer
+								cancel();	
+							}
+							contador++;
+						}
+					}, 0, 5000);
+					
+					
+				}
 			}
 		}
 		
-		simp.convertAndSend("/topic/mostrarListaUsuariosOnline", usuariosOnline);
 		
-		System.out.println("Lista usuarios online devuelta");
+		
+		//Enviar para...
+		
+		
+		//Agregar
+		if ( accionRealizada.equals("Agregar") ) {
+			
+			if ( usuario.getEstado().equals("CONECTADO") ) {
+				
+				simp.convertAndSend("/user/" + id + "/queue/RecivirListaUsuarios", usuariosOnline);
+			}
+			
+			simp.convertAndSend("/topic/ActualizarListaUsuarios", usuario);
+		}
+		
+		//Reconectar
+		else if ( accionRealizada.equals("Reconectar") ) {
+			
+			simp.convertAndSend("/user/" + id + "/queue/RecivirListaUsuarios", usuariosOnline);
+		}
+		
+		
+		System.out.println("Accion realizada: " + accionRealizada);
+		
+		System.out.println("-------------------------------------------------------" );
 
 	}
-
 
 
 
@@ -153,8 +214,57 @@ public class Controlador_Sockets {
 		simp.convertAndSend("/user/" + idRemitente + "/queue/mensajes", listaMensajes);
 	}
 
-
-
+	
+	
+	
+	//Clases internas
+	
+	private static class UsuarioOnline {
+		
+		private Long id;
+		private String estado;
+		private String nombre;
+		private String nombreImagen;
+		private Long horaDesconexion;
+		
+		public Long getId() {
+			return id;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+		public String getEstado() {
+			return estado;
+		}
+		public void setEstado(String estado) {
+			this.estado = estado;
+		}
+		public String getNombre() {
+			return nombre;
+		}
+		public void setNombre(String nombre) {
+			this.nombre = nombre;
+		}
+		public String getNombreImagen() {
+			return nombreImagen;
+		}
+		public void setNombreImagen(String nombreImagen) {
+			this.nombreImagen = nombreImagen;
+		}
+		public Long getHoraDesconexion() {
+			return horaDesconexion;
+		}
+		public void setHoraDesconexion(Long horaDesconexion) {
+			this.horaDesconexion = horaDesconexion;
+		}
+		
+		
+		
+	}
+	
+	
+	
+	//Variables e instancias
 
 	@Autowired
 	private SimpMessagingTemplate simp;
@@ -168,7 +278,9 @@ public class Controlador_Sockets {
 	@Autowired
 	private Usuario_Repositorio usuarioRepo;
 
-	private Map<Long, Usuario> usuariosOnline = new HashMap<>();
+	private Map<Long, UsuarioOnline> usuariosOnline = new HashMap<>();
+	
+	private String accionRealizada;
 
 
 

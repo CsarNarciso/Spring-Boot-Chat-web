@@ -17,19 +17,22 @@ $(document).ready(function() {
 	var rutaImagenesPerfil = "/ImagenesDePerfil/";
 	var rutaImagenesGenerales = "/imagenesGenerales/";
 	
-	var destinoSuscripcion_ListaUsuarios = "/topic/mostrarListaUsuariosOnline";
+	var destinoSuscripcion_RecivirListaUsuarios = "/user/" + id + "/queue/RecivirListaUsuarios";
+	var destinoSuscripcion_ActualizarListaUsuarios = "/topic/ActualizarListaUsuarios";
 	var destinoSuscripcion_ListaConversaciones = "/user/" + id + "/queue/conversaciones";
 	var destinoSuscripcion_RecibirMensaje = "/user/" + id + "/queue/recibirMensaje";
 	var destinoSuscripcion_ActualizarDatosConversacion = "/topic/actualizarDatosConversacion/";
 	var destinoSuscripcion_ListaMensajes = "/user/" + id + "/queue/mensajes";
 	
+	
+	var destinoEnvio_ActualizarUsuariosOnline = "/actualizarUsuariosOnline";
 	var destinoEnvio_Mensaje = "/enviarMensaje";
-	var destinoEnvio_ActualizarListaUsuarios = "/actualizarUsuariosOnline";
-	var destinoEnvio_ObtenerListaConversaciones = "/obtenerListaConversaciones";
-	var destinoEnvio_CrearConversacion = "/crearConversacion";
-	var destinoEnvio_EliminarConversacion = "/eliminarConversacion";
 	var destinoEnvio_ActualizarMensajesNuevos = "/actualizarMensajesNuevos";
 	var destinoEnvio_ObtenerListaMensajes = "/obtenerListaMensajes";
+	var destinoEnvio_CrearConversacion = "/crearConversacion";
+	var destinoEnvio_ObtenerListaConversaciones = "/obtenerListaConversaciones";
+	var destinoEnvio_EliminarConversacion = "/eliminarConversacion";
+	
 
 
 
@@ -41,117 +44,133 @@ $(document).ready(function() {
 
 
 
-	stomp.connect({}, function() {
-		
-		
-		
-		/////////SUSCRIPCION MOSTRAR LISTA DE USUARIOS ONLINE//////////
-		/////////////////////////////////////////////////////////////////
-		stomp.subscribe(destinoSuscripcion_ListaUsuarios, function(message){
+		stomp.connect({}, function() {
 			
-			var listaUsuarios = JSON.parse(message.body);
 			
-			$("#listaUsuarios").empty();
 			
-			for (const [clave, u] of Object.entries(listaUsuarios)) {
+			/////////SUSCRIPCION OBTENER LISTA USUARIOS ONLINE//////////
+			/////////////////////////////////////////////////////////////////
+			stomp.subscribe(destinoSuscripcion_RecivirListaUsuarios, function(message){
+				
+				var listaUsuarios = JSON.parse(message.body);
 	
-      			agregarUsuario(u.id, u.nombre, u.nombreImagen);
-    		}
+				for (const [clave, u] of Object.entries(listaUsuarios)) {
+		
+					agregarUsuario(u.id, u.nombre, u.nombreImagen);		
+	    		}
+			});
+			
+			
+			
+			/////////SUSCRIPCION ACTUALIZAR LISTA USUARIOS ONLINE//////////
+			/////////////////////////////////////////////////////////////////
+			stomp.subscribe(destinoSuscripcion_ActualizarListaUsuarios, function(message){
+	
+				var u = JSON.parse(message.body);
+				
+				if ( u.estado === "CONECTADO" ) {
+						
+					agregarUsuario(u.id, u.nombre, u.nombreImagen);	
+				}
+				else if ( u.estado === "DESCONECTADO" ) {
+						
+					$("#usuario_" + u.id).remove();
+				}		
+			});
+			
+			
+	//		
+	//		/////////SUSCRIPCION MOSTRAR LISTA DE CONVERSACIONES//////////
+	//		/////////////////////////////////////////////////////////////////
+	//		stomp.subscribe(destinoSuscripcion_ListaConversaciones, function(message){
+	//			
+	//			var listaConversaciones = JSON.parse(message.body);
+	//			
+	//			$("#listaConversaciones").empty();
+	//			
+	//			listaConversaciones.forEach(function(c){
+	//				
+	//				agregarConversacion(c.id_remitente, c.id_destinatario, c.nombre, c.nombreImagen, c.mensajesNuevos)
+	//
+	//			});
+	//			
+	//		});
+	//		
+	//		
+	//		/////////SUSCRIPCION MOSTRAR LISTA DE MENSAJES//////////
+	//		/////////////////////////////////////////////////////////////////
+	//		stomp.subscribe(destinoSuscripcion_ListaMensajes, function(message){
+	//			
+	//			var listaMensajes = JSON.parse(message.body);
+	//
+	//			$("#bandejaConversacion").empty();
+	//			
+	//			listaMensajes.forEach(function(m){
+	//				
+	//				agregarMensajeBandejaConversacion(m);
+	//			})
+	//			
+	//		});
+	//		
+	//
+	//		/////////SUSCRIPCION PARA PROCESAMIENTO DE MENSAJES//////////
+	//		/////////////////////////////////////////////////////////////////
+	//		stomp.subscribe(destinoSuscripcion_RecibirMensaje, function(message){
+	//			
+	//			var envio = JSON.parse(message.body);
+	//			
+	//			var datosRemitente = envio.datosRemitente;
+	//			var mensaje = envio.mensaje;
+	//			
+	//			var idRemitente = mensaje.id_remitente;
+	//			
+	//			var nombreRemitente = datosRemitente.nombre;
+	//			var nombreImagenRemitente = datosRemitente.nombreImagen;
+	//			
+	//			
+	//			if ( $("#conversacion_" + idRemitente).length === 0) {
+	//				
+	//				agregarConversacionAndGuardarBBDD(id, idRemitente, nombreRemitente, nombreImagenRemitente, 1);
+	//			}
+	//			else{
+	//				
+	//				if ( verificarSiConversacionEstaAbierta(idRemitente) ){
+	//
+	//					agregarMensajeBandejaConversacion(mensaje.contenido);
+	//				}
+	//				else{
+	//					
+	//					actualizarMensajesNuevos(idRemitente, "+");
+	//				}
+	//			}
+	//			
+	//			
+	//		});
+	//		
+	//		
+			
+			
+			
+			
+			//////////ENVIO CONECTAR USUARIO///////////////
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			stomp.send(destinoEnvio_ActualizarUsuariosOnline, {}, JSON.stringify({ 
+				"id" : id, 
+				"estado" : "CONECTADO",
+				"nombre" : nombre,
+				"nombreImagen" : nombreImagen
+			}));
+			
+	//		
+	//		//////////ENVIO OBTENER LISTA CONVERSACIONES///////////////
+	//		////////////////////////////////////////////////////////////////////////////////////////////////////
+	//		stomp.send(destinoEnvio_ObtenerListaConversaciones, {}, id);
+	//	
+	//		
+	
 			
 		});
-		
-		
-//		
-//		/////////SUSCRIPCION MOSTRAR LISTA DE CONVERSACIONES//////////
-//		/////////////////////////////////////////////////////////////////
-//		stomp.subscribe(destinoSuscripcion_ListaConversaciones, function(message){
-//			
-//			var listaConversaciones = JSON.parse(message.body);
-//			
-//			$("#listaConversaciones").empty();
-//			
-//			listaConversaciones.forEach(function(c){
-//				
-//				agregarConversacion(c.id_remitente, c.id_destinatario, c.nombre, c.nombreImagen, c.mensajesNuevos)
-//
-//			});
-//			
-//		});
-//		
-//		
-//		/////////SUSCRIPCION MOSTRAR LISTA DE MENSAJES//////////
-//		/////////////////////////////////////////////////////////////////
-//		stomp.subscribe(destinoSuscripcion_ListaMensajes, function(message){
-//			
-//			var listaMensajes = JSON.parse(message.body);
-//
-//			$("#bandejaConversacion").empty();
-//			
-//			listaMensajes.forEach(function(m){
-//				
-//				agregarMensajeBandejaConversacion(m);
-//			})
-//			
-//		});
-//		
-//
-//		/////////SUSCRIPCION PARA PROCESAMIENTO DE MENSAJES//////////
-//		/////////////////////////////////////////////////////////////////
-//		stomp.subscribe(destinoSuscripcion_RecibirMensaje, function(message){
-//			
-//			var envio = JSON.parse(message.body);
-//			
-//			var datosRemitente = envio.datosRemitente;
-//			var mensaje = envio.mensaje;
-//			
-//			var idRemitente = mensaje.id_remitente;
-//			
-//			var nombreRemitente = datosRemitente.nombre;
-//			var nombreImagenRemitente = datosRemitente.nombreImagen;
-//			
-//			
-//			if ( $("#conversacion_" + idRemitente).length === 0) {
-//				
-//				agregarConversacionAndGuardarBBDD(id, idRemitente, nombreRemitente, nombreImagenRemitente, 1);
-//			}
-//			else{
-//				
-//				if ( verificarSiConversacionEstaAbierta(idRemitente) ){
-//
-//					agregarMensajeBandejaConversacion(mensaje.contenido);
-//				}
-//				else{
-//					
-//					actualizarMensajesNuevos(idRemitente, "+");
-//				}
-//			}
-//			
-//			
-//		});
-//		
-//		
-		
-		
-		
-		
-		//////////ENVIO OBTENER Y ACTUALIZAR GLOBALMENTE USUARIOS ONLINE///////////////
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, JSON.stringify({
-			"accion" : "agregar", 
-			"id" : id, 
-			"nombre" : nombre,
-			"nombreImagen" : nombreImagen
-		}));
-		
-//		
-//		//////////ENVIO OBTENER LISTA CONVERSACIONES///////////////
-//		////////////////////////////////////////////////////////////////////////////////////////////////////
-//		stomp.send(destinoEnvio_ObtenerListaConversaciones, {}, id);
-//	
-//		
-
-		
-	});
+	
 	
 	
 	
@@ -221,16 +240,15 @@ $(document).ready(function() {
 	/////////////CAPTURA DE EVENTO DE DESCONEXION/////////////
  	$(window).on('beforeunload', function() {
 		 
-		//ACTUALIZAR LISTA USUARIOS ONLINE
-        stomp.send(destinoEnvio_ActualizarListaUsuarios, {}, JSON.stringify({
-			"accion" : "quitar",
-			"id" : id
-        }));
-        
-        stomp.disconnect();
-        
-    });
-	
+		//ENVIO DESCONECTAR USUARIO
+	    stomp.send(destinoEnvio_ActualizarUsuariosOnline, {}, JSON.stringify({
+			"id" : id,
+			"estado" : "DESCONECTADO"
+	    })); 
+	});  
+		 
+		 
+
 	
 	
 	
