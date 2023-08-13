@@ -75,7 +75,12 @@ $(document).ready(function() {
 				else if ( u.estado === "DESCONECTADO" ) {
 						
 					$("#usuario_" + u.id).remove();
-				}		
+				}
+				else if ( u.estado === "ACTUALIZAR_NOMBRE" ) {
+						
+					$("#usuario_" + u.id + " #elemento_nombre").text(u.nombre);
+					$("#usuario_" + u.id).attr("data-Nombre", u.nombre);
+				}
 			});
 			
 			

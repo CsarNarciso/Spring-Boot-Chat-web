@@ -28,6 +28,9 @@ public class Controlador_Sockets {
 
 		System.out.println("-----------------------actualizarObtenerUsuariosOnline-----------------------" );
 		
+		//Instancias necesarias
+		String actualizar = "";
+		
 		//Obtener info usuario
 		String estado = usuario.getEstado();
 		Long id = usuario.getId();
@@ -41,16 +44,44 @@ public class Controlador_Sockets {
 			//Reconectar
 			if ( usuariosOnline.containsKey(id) ) {
 			
-				if ( ! usuariosOnline.get(id).getEstado().equals(estado) ) {
+				UsuarioOnline usuarioDesconectado = usuariosOnline.get(id);
+				System.out.println(usuarioDesconectado.getNombre());
+				
+				if ( ! usuarioDesconectado.getEstado().equals(estado) ) {
 				
 					//Tiempo desconectado
-					if ( System.currentTimeMillis() - usuariosOnline.get(id).getHoraDesconexion() < 5000 ) {
-					
-						//Correcto. Cambiar estado.
+					if ( System.currentTimeMillis() - usuarioDesconectado.getHoraDesconexion() < 5000 ) {
+	
+						//Correcto. 
 						accionRealizada = "Reconectar";
-						usuariosOnline.get(id).setEstado(estado);
+						usuariosOnline.replace(id, usuario);
+						simp.convertAndSend("/user/" + id + "/queue/RecivirListaUsuarios", usuariosOnline);
+						
+						
+						//Datos actualizados
+						
+						
+						//Nombre (?)
+						if ( ! usuarioDesconectado.getNombre().equals(usuario.getNombre()) ) {
+							
+							actualizar = "ACTUALIZAR_NOMBRE";
+						}
+						//Imagen (?)
+						if ( ! usuarioDesconectado.getNombreImagen().equals(usuario.getNombreImagen()) ) {
+							
+							actualizar = "ACTUALIZAR_IMAGEN";
+						}
+						
+						//Si hay actualizacion de datos...
+						if ( actualizar != "" ) {
+							
+							//Actualizar
+							accionRealizada = actualizar;
+							usuario.setEstado(actualizar);
+							
+							simp.convertAndSend("/topic/ActualizarListaUsuarios", usuario);
+						}
 					}
-
 				}	
 			}
 			//Conectar
@@ -58,6 +89,10 @@ public class Controlador_Sockets {
 
 				accionRealizada = "Agregar";
 				usuariosOnline.put(id, usuario);
+				System.out.println(usuario.getNombre());
+				
+				simp.convertAndSend("/user/" + id + "/queue/RecivirListaUsuarios", usuariosOnline);
+				simp.convertAndSend("/topic/ActualizarListaUsuarios", usuario);
 			}
 		}
 		else if ( estado.equals("DESCONECTADO") ) {
@@ -103,39 +138,11 @@ public class Controlador_Sockets {
 							contador++;
 						}
 					}, 0, 5000);
-					
-					
 				}
 			}
 		}
-		
-		
-		
-		//Enviar para...
-		
-		
-		//Agregar
-		if ( accionRealizada.equals("Agregar") ) {
-			
-			if ( usuario.getEstado().equals("CONECTADO") ) {
-				
-				simp.convertAndSend("/user/" + id + "/queue/RecivirListaUsuarios", usuariosOnline);
-			}
-			
-			simp.convertAndSend("/topic/ActualizarListaUsuarios", usuario);
-		}
-		
-		//Reconectar
-		else if ( accionRealizada.equals("Reconectar") ) {
-			
-			simp.convertAndSend("/user/" + id + "/queue/RecivirListaUsuarios", usuariosOnline);
-		}
-		
-		
 		System.out.println("Accion realizada: " + accionRealizada);
-		
 		System.out.println("-------------------------------------------------------" );
-
 	}
 
 
