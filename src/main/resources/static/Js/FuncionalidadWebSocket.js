@@ -81,6 +81,11 @@ $(document).ready(function() {
 					$("#usuario_" + u.id + " #elemento_nombre").text(u.nombre);
 					$("#usuario_" + u.id).attr("data-Nombre", u.nombre);
 				}
+				else if ( u.estado === "ACTUALIZAR_IMAGEN" ) {
+					
+					$("#usuario_" + u.id + " #elemento_imagen").attr("src", rutaImagenesPerfil + u.nombreImagen);
+					$("#usuario_" + u.id).attr("data-NombreImagen", u.nombreImagen);
+				}
 			});
 			
 			
@@ -159,9 +164,17 @@ $(document).ready(function() {
 			
 			//////////ENVIO CONECTAR USUARIO///////////////
 			////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			var estado = "CONECTADO";
+			
+			if ( $("#datosUsuario").attr("data-Actualizar") === "Imagen" ){
+				
+				estado = "ACTUALIZAR_IMAGEN";
+			}
+			
 			stomp.send(destinoEnvio_ActualizarUsuariosOnline, {}, JSON.stringify({ 
 				"id" : id, 
-				"estado" : "CONECTADO",
+				"estado" : estado,
 				"nombre" : nombre,
 				"nombreImagen" : nombreImagen
 			}));
@@ -694,22 +707,7 @@ $(document).ready(function() {
 	}
 	
 	
-//		/////////Comprobar valor del campo nuevaImagen para habilitar o no el boton actualizarImagen 
-//	$("#campoNuevaImagen").on("input", function(){
-//		
-//		var metadatosNuevaImagen = $(this).val(); 
-//		
-//		if( metadatosNuevaImagen !== "" ){
-//
-//			$("#botonEditarImagen").prop("disabled", false);
-//		}
-//		else{
-//			$("#botonEditarImagen").prop("disabled", true);
-//		}
-//		
-//	});
-//	
-//	
+
 //		//////////comprobar valor de campoMensaje para habilitar o no botonEnviarMensaje
 //		$("#campoMensaje").on("input", function(){
 //			

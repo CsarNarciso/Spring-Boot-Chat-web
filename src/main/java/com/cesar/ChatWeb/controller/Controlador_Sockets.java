@@ -56,31 +56,6 @@ public class Controlador_Sockets {
 						accionRealizada = "Reconectar";
 						usuariosOnline.replace(id, usuario);
 						simp.convertAndSend("/user/" + id + "/queue/RecivirListaUsuarios", usuariosOnline);
-						
-						
-						//Datos actualizados
-						
-						
-						//Nombre (?)
-						if ( ! usuarioDesconectado.getNombre().equals(usuario.getNombre()) ) {
-							
-							actualizar = "ACTUALIZAR_NOMBRE";
-						}
-						//Imagen (?)
-						if ( ! usuarioDesconectado.getNombreImagen().equals(usuario.getNombreImagen()) ) {
-							
-							actualizar = "ACTUALIZAR_IMAGEN";
-						}
-						
-						//Si hay actualizacion de datos...
-						if ( actualizar != "" ) {
-							
-							//Actualizar
-							accionRealizada = actualizar;
-							usuario.setEstado(actualizar);
-							
-							simp.convertAndSend("/topic/ActualizarListaUsuarios", usuario);
-						}
 					}
 				}	
 			}
@@ -141,6 +116,24 @@ public class Controlador_Sockets {
 				}
 			}
 		}
+		
+		//Si hay actualizacion...
+		else if ( estado.contains("ACTUALIZAR") ) {
+			
+			//Actualizar
+			accionRealizada = estado;
+			
+			//Enviar actualizacion a todos
+			simp.convertAndSend("/topic/ActualizarListaUsuarios", usuario);
+			
+			//Volver a conectar 
+			usuario.setEstado("CONECTADO");
+			usuariosOnline.replace(id, usuario);	
+			
+			//Obtener usuariosOnline
+			simp.convertAndSend("/user/" + id + "/queue/RecivirListaUsuarios", usuariosOnline);
+		}
+		
 		System.out.println("Accion realizada: " + accionRealizada);
 		System.out.println("-------------------------------------------------------" );
 	}

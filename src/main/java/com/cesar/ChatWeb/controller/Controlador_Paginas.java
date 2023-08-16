@@ -15,6 +15,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cesar.ChatWeb.entity.Usuario;
 import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
@@ -24,10 +26,7 @@ import com.cesar.ChatWeb.validation.Usuario_Validador;
 import com.cesar.Methods.AccederUsuarioAutenticado;
 import com.cesar.Methods.ActualizarDatosUsuario;
 
-import jakarta.servlet.http.HttpServletMapping;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -59,6 +58,7 @@ public class Controlador_Paginas {
 
 			@Valid @ModelAttribute("usuario") Usuario_Validador usuario,
 			BindingResult resultadoValidacion,
+			@RequestParam("metadatosImagen") MultipartFile metadatosImagen,
 			HttpServletRequest httpRequest,
 			Model modelo
 			) {
@@ -124,7 +124,7 @@ public class Controlador_Paginas {
 
 				ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario(userRepo, conversacionRepo);
 
-				actualizarDatosUsuario.guardarImagenPerfil(usuario.getMetadatosImagen(), idUsuario);
+				actualizarDatosUsuario.guardarImagenPerfil(metadatosImagen, idUsuario);
 
 
 
@@ -159,44 +159,47 @@ public class Controlador_Paginas {
 	
 
 	
-	@RequestMapping("/actualizarDatosUsuario")
-	public String actualizarDatosUsuario( HttpServletRequest httpRequest, HttpSession sesion){
+	@PostMapping("/actualizarDatosUsuario")
+	public String actualizarDatosUsuario( 
+			@RequestParam(name = "nuevoNombre", required = false) String nuevoNombre,
+			@RequestParam(name = "nuevaImagen", required = false) MultipartFile nuevaImagen,
+			HttpServletRequest httpRequest, HttpSession sesion
+			) {
 		
 		
-		//Obtener datos para actualizar
+		//Obtener datos para actualizar.
 		
 		Long idUsuarioActual = new AccederUsuarioAutenticado(userRepo).getDatos().getId(); 
 		
-		String nuevoNombre = httpRequest.getParameter("nuevoNombre");
-		
-		
-		
-		//Nombre de usuario
+		//Nombre de usuario.
 		
 		if ( nuevoNombre != null ) {
 			
 			
-			//Validar
+			//Validar.
 
 
-			//Nombre existene
+			//Nombre existene.
 
 			if ( userRepo.findByNombre( nuevoNombre ) != null ) {
 	
-				//Incorrecto
+				//Incorrecto.
 				
-				//Agregar resultado de validacion en sesion
+				//Agregar resultado de validacion en sesion.
 				sesion.setAttribute("ResultadoValidacion_ActualizarNombre", "Incorrecta");
 				sesion.setAttribute("NombreNoDisponible", nuevoNombre);
 				
 				return "redirect:/chat";
 			}
 			
-			//Correcto
+			//Correcto.
 
+			//Agregar actualizacion en sesion
+			sesion.setAttribute("Actualizar", "Nombre");
+			
 			sesion.setAttribute("ResultadoValidacion_ActualizarNombre", "Correcta");
 			
-			//Actualizar en BBDD
+			//Actualizar en BBDD.
 			
 			userRepo.updateNombre( nuevoNombre, idUsuarioActual );
 			
@@ -207,20 +210,19 @@ public class Controlador_Paginas {
 			SecurityContextHolder.getContext().setAuthentication( newToken );
 		}
 		
-//		else if ( actualizar.equals("imagen") ) {
-		//
-//					MultipartFile metadatosNuevaImagen = (MultipartFile) datos.get("nuevaImagen");
-		//
-//					ActualizarDatosUsuario actualizarDatosUsuario = new ActualizarDatosUsuario(usuarioRepo, conversacionRepo);
-//					String nombreNuevaImagen = actualizarDatosUsuario.guardarImagenPerfil(metadatosNuevaImagen, id);
-		//
-//					datosUsuarioActualizado.put("nombre", datos.get("nombre"));
-//					datosUsuarioActualizado.put("nombreImagen", nombreNuevaImagen);
-//				}
+		//Imagen de usuario.
 		
-//		conversacionRepo.updateNombreByUserID(id, nuevoNombre);
-	
+		else if ( nuevaImagen != null ) {
 			
+			//Actualizar en BBDD y en archivos de Servidor.
+			
+			new ActualizarDatosUsuario(userRepo, conversacionRepo).guardarImagenPerfil(nuevaImagen, idUsuarioActual);
+			
+			//Agregar actualizacion en sesion
+			sesion.setAttribute("Actualizar", "Imagen");
+		}
+		
+		
 		//Actualizacion de datos correcta. Redirigir a chat.
 		
 		return "redirect:/chat";
@@ -234,30 +236,50 @@ public class Controlador_Paginas {
 	public String chat(Model modelo, HttpSession sesion){
 	
 		
-		//TRAS ACTUALIZAR NOMBRE DE USUARIO
+		//TRAS ACTUALIZAR (?)
 		
-		//Obtener resultado de validacion gardado en sesion
+		String actualizar = (String) sesion.getAttribute("Actualizar");
 		
-		String resultadoValidacion_ActualizarNombre = (String) sesion.getAttribute("ResultadoValidacion_ActualizarNombre"); 
-		String nombreNoDisponible = (String) sesion.getAttribute("NombreNoDisponible"); 
-		
-		//Y eliminarlo de la sesion
-		
-		sesion.removeAttribute("ResultadoValidacion_ActualizarNombre");
-		sesion.removeAttribute("NombreNoDisponible");
-		
-		//Verificar si la llamada ha sido tras actualizacion
-		if ( resultadoValidacion_ActualizarNombre != null ) {
+		if ( actualizar != null ) {
 			
-			//Agregar resultado a modelo.
-			modelo.addAttribute("ResultadoValidacion_ActualizarNombre", resultadoValidacion_ActualizarNombre);
+			//Nombre (?)
 			
-			//Si la validacion fue erronea, agregar tambien el nombre no disponible
-			if ( resultadoValidacion_ActualizarNombre != null ) {
+			if ( actualizar == "Nombre" ) {
 				
-				modelo.addAttribute("NombreNoDisponible", nombreNoDisponible);
+				//Obtener resultado de validacion
+				
+				String resultadoValidacion_ActualizarNombre = (String) sesion.getAttribute("ResultadoValidacion_ActualizarNombre"); 
+				String nombreNoDisponible = (String) sesion.getAttribute("NombreNoDisponible"); 
+				
+				//Y eliminarlo de la sesion
+				
+				sesion.removeAttribute("ResultadoValidacion_ActualizarNombre");
+				
+				//Agregar resultado a modelo.
+				
+				modelo.addAttribute("ResultadoValidacion_ActualizarNombre", resultadoValidacion_ActualizarNombre);
+				
+				//Si la validacion fue erronea, agregar nombre no disponible
+				
+				if ( resultadoValidacion_ActualizarNombre == "Incorrecta" ) {
+					
+					modelo.addAttribute("NombreNoDisponible", nombreNoDisponible);
+					
+					//Y eliminarlo de la sesion
+					sesion.removeAttribute("NombreNoDisponible");
+				}
 			}
+			
+			//Imagen (?) Ninguna accion
+			
+
+			//Agregar Actualizar a modelo
+			modelo.addAttribute("Actualizar", actualizar);	
+			
+			//Y eliminarlo de la sesion
+			sesion.removeAttribute("Actualizar");
 		}
+		
 		
 
 		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);

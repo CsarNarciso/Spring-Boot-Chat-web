@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.cesar.ChatWeb.service.Usuario_UserDetailsService;
 
+
 @Configuration
 @EnableWebSecurity
 public class Configuracion_Seguridad{
@@ -21,13 +22,13 @@ public class Configuracion_Seguridad{
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+		
 		http
 		.csrf()
 			.disable()
 		.authorizeHttpRequests()
 			.requestMatchers("/registro/**").permitAll()
 			.requestMatchers("/ImagenesGenerales/**").permitAll()
-			.requestMatchers("/ImagenesDePerfil/**").permitAll()
 			.requestMatchers("/Js/**").permitAll()
 			.anyRequest()
 			.authenticated()
