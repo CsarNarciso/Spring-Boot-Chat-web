@@ -23,7 +23,6 @@ import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Usuario_Repositorio;
 import com.cesar.ChatWeb.service.Usuario_UserDetailsService;
 import com.cesar.ChatWeb.validation.Usuario_Validador;
-import com.cesar.Methods.AccederUsuarioAutenticado;
 import com.cesar.Methods.ActualizarDatosUsuario;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -169,7 +168,7 @@ public class Controlador_Paginas {
 		
 		//Obtener datos para actualizar.
 		
-		Long idUsuarioActual = new AccederUsuarioAutenticado(userRepo).getDatos().getId(); 
+		Long idUsuarioActual = (Long) sesion.getAttribute("Id"); 
 		
 		//Nombre de usuario.
 		
@@ -281,21 +280,28 @@ public class Controlador_Paginas {
 		}
 		
 		
-
-		AccederUsuarioAutenticado accederUsuarioAutenticado = new AccederUsuarioAutenticado(userRepo);
-
-		Usuario u = accederUsuarioAutenticado.getDatos();
-
-		modelo.addAttribute("DatosUsuario", u);
-
-		System.out.println("datos de usuario autenticado cargados en el modelo");
-
-		System.out.println(u);
-		System.out.println(u.getNombre());
-		System.out.println(u.getContraseña());
-		System.out.println(u.getEmail());
-		System.out.println(u.getNombreImagen());
-
+		//Cargar datos usuario
+		
+		//Si aun no estan en sesion...
+		if ( sesion.getAttribute("DatosUsuario") == null ) {
+			
+			Authentication a = SecurityContextHolder.getContext().getAuthentication();
+			
+			Usuario u = userRepo.buscarPorNombre_Email( a.getName() );
+			
+			//Cargar en sesion
+			sesion.setAttribute("Id", u.getId());
+			sesion.setAttribute("Nombre", u.getNombre());
+			sesion.setAttribute("NombreImagen", u.getNombreImagen());
+		}
+		
+		//En modelo
+		modelo.addAttribute("Id", sesion.getAttribute("Id"));
+		modelo.addAttribute("Nombre", sesion.getAttribute("Nombre"));
+		modelo.addAttribute("NombreImagen", sesion.getAttribute("NombreImagen"));
+		
+		
+		//Redirigir a chat.
 		return "Pagina_Chat";
 	}
 
