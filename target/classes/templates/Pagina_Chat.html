@@ -57,9 +57,9 @@
 
 <body>
 	<div id="datosUsuario" 
-		th:data-Id="${DatosUsuario.id}" 
-		th:data-Nombre="${DatosUsuario.nombre}" 
-		th:data-NombreImagen="${DatosUsuario.nombreImagen}" 
+		th:data-Id="${Id}" 
+		th:data-Nombre="${Nombre}" 
+		th:data-NombreImagen="${NombreImagen}" 
 		th:data-Actualizar="${Actualizar}"
 	></div>
 	
@@ -93,7 +93,7 @@
     <form id="formEnviar" data-AccionAlEnviar="">
     
     	<input type="text" id="campoMensaje" placeholder="Escribe aqui..."> <br>
-    	<input type="submit" id="botonEnviarMensa" value="Enviar">
+    	<input type="submit" id="botonEnviarMensaje" value="Enviar">
     	
     </form>
 

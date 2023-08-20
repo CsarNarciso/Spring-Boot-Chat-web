@@ -291,18 +291,11 @@ $(document).ready(function() {
 			$("#usuario_" + idP).attr("data-NombreImagen", nombreImagenP);
 			
 
-//			$("#usuario_" + idP).click(abrirConversacion(idP, $(this)));
-					
+			$("#usuario_" + idP).click( function() {
+				abrirConversacion(idP, $(this))
+			});
 		}
-		else {
 			
-			if ( nombre != nombreP ) {
-
-				$("#nombreUsuario").text(nombreP);
-				$("#datosUsuario").attr("data-Nombre", nombreP);
-				
-				nombre = nombreP;
-			}			
 			
 //			
 //			nombreImagen = nombreImagenP;
@@ -322,7 +315,6 @@ $(document).ready(function() {
 //					}
 //				});
 //			}
-		}
 	}
 
 	
@@ -427,34 +419,33 @@ $(document).ready(function() {
 //			
 //		stomp.send(destinoCrearConversacion, JSON.stringify(conversacion));
 //	}
-//	
-//	
-//	
-//	function abrirConversacion(id, elemento){
-//		
-//		if ( verificarSiConversacionEstaAbierta(id) ){
-//			
-//			$("#nombreConversacion").hide();
-//			$("#formEnviar").hide();
-//		}
-//		else{
-//		
-//			if ( ! $("#formEnviar").is(":visible") ){
-//			
-//				$("#nombreConversacion").css({
-//					display:"block"
-//				});
-//				$("#formEnviar").css({
-//					display:"block"
-//				});
-//			}	
-//			
-//			$("#nombreConversacion").text( elemento.attr("data-Nombre") );
-//			
-//			idDestinatarioActual = elemento.attr("data-IdDestinatario");
+	
+	
+	
+	function abrirConversacion(id, elemento){
+		console.log("------------------" + id);
+		console.log("------------------" + elemento.attr("data-Nombre"));
+		
+		if ( verificarSiConversacionEstaAbierta(id) ){
+			
+			$("#nombreConversacion").hide();
+			$("#formEnviar").hide();
+		}
+		else{
+		
+			$("#nombreConversacion").css({
+				display:"block"
+			});
+			$("#formEnviar").css({
+				display:"block"
+			});
+			
+			$("#nombreConversacion").text( elemento.attr("data-Nombre") );
+			
+			idDestinatarioActual = elemento.attr("data-Id");
 //			nombreDestinatarioActual = elemento.attr("data-Nombre");
 //			nombreImagenDestinatarioActual = elemento.attr("data-NombreImagen");
-//			
+			
 //			if ( $("#conversacion_" + id).length > 0 ) {
 //				
 //				$("#formEnviar").attr("data-CrearConversacion", "No");
@@ -468,15 +459,15 @@ $(document).ready(function() {
 //				
 //				$("#formEnviar").attr("data-CrearConversacion", "Si");
 //			}
-//			
-//			
+			
+			
 //			stomp.send(destinoEnvio_ObtenerListaMensajes, {}, {"idRemitente" : id, "idDestinatario" : idDestinatarioActual});
-//
-//		}		
-//	}
-//	
-//	
-//	
+
+		}		
+	}
+	
+	
+	
 //	function eliminarConversacion(id, suscripcionActualizarDatosConversacion){
 //		
 //		if ( verificarSiConversacionEstaAbierta(id) ){
@@ -493,24 +484,24 @@ $(document).ready(function() {
 //		stomp.unsubscribe(suscripcionActualizarDatosConversacion.id);
 //	}
 //	
-//	
-//	
-//	function verificarSiConversacionEstaAbierta(idDestinatario){
-//		
-//		if ( $("#formEnviar").is(":visible") ){
-//			
-//			if ( idDestinatarioActual === idDestinatario ){
-//				
-//				return true;
-//			}
-//		}
-//		else{
-//			return false;
-//		}
-//	}
-//	
-//	
-//	
+	
+	
+	function verificarSiConversacionEstaAbierta(idDestinatario){
+		
+		if ( $("#formEnviar").is(":visible") ){
+			
+			if ( idDestinatarioActual == idDestinatario ){
+				
+				return true;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
+	
 //	function actualizarMensajesNuevos(idConversacion, accion){
 //		
 //		var mensajesNuevos;
@@ -708,21 +699,24 @@ $(document).ready(function() {
 	
 	
 
-//		//////////comprobar valor de campoMensaje para habilitar o no botonEnviarMensaje
-//		$("#campoMensaje").on("input", function(){
-//			
-//			if ( $(this).val().trim() !== "" ){
-//				
-//				$("#botonEnviarMensaje").prop("disabled", false);
-//			}
-//			else{
-//				
-//				$("#botonEnviarMensaje").prop("disabled", true);
-//			}
-//			
-//		});
-//	
-//	
+		//////////comprobar valor de campoMensaje para habilitar o no botonEnviarMensaje
+		
+		$("#botonEnviarMensaje").prop("disabled", true);
+		
+		$("#campoMensaje").on("input", function(){
+			
+			if ( $(this).val().trim() === "" ){
+				
+				$("#botonEnviarMensaje").prop("disabled", true);
+			}
+			else{
+				
+				$("#botonEnviarMensaje").prop("disabled", false);
+			}
+			
+		});
+	
+	
 	
 
 });
