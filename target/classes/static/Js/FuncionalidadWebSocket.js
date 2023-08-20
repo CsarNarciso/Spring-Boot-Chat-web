@@ -423,20 +423,18 @@ $(document).ready(function() {
 	
 	
 	function abrirConversacion(id, elemento){
-		console.log("------------------" + id);
-		console.log("------------------" + elemento.attr("data-Nombre"));
-		
+
 		if ( verificarSiConversacionEstaAbierta(id) ){
 			
 			$("#nombreConversacion").hide();
-			$("#formEnviar").hide();
+			$("#menuEnviar").hide();
 		}
 		else{
 		
 			$("#nombreConversacion").css({
 				display:"block"
 			});
-			$("#formEnviar").css({
+			$("#menuEnviar").css({
 				display:"block"
 			});
 			
@@ -488,7 +486,7 @@ $(document).ready(function() {
 	
 	function verificarSiConversacionEstaAbierta(idDestinatario){
 		
-		if ( $("#formEnviar").is(":visible") ){
+		if ( $("#menuEnviar").is(":visible") ){
 			
 			if ( idDestinatarioActual == idDestinatario ){
 				
@@ -683,6 +681,7 @@ $(document).ready(function() {
 		}
 		
 	});
+	
 	
 	
 	/////////Comprobar resultado de validacion al actualizar nombre de usuario

@@ -21,7 +21,7 @@
     		overflow: auto;
     	}
     	
-    	#formEnviar{
+    	#menuEnviar{
     		display:none;
     	}
     	
@@ -84,18 +84,16 @@
 
 
 
-	<div id="nombreConversacion"></div> <br>
-    <ul id="bandejaMensajes"></ul> <br>
+	
+    <div id="menuEnviar" data-AccionAlEnviar="">
     
+    	<div id="nombreConversacion"></div> <br>
+    	<ul id="bandejaMensajes"></ul> <br>
     
-    
-
-    <form id="formEnviar" data-AccionAlEnviar="">
-    
-    	<input type="text" id="campoMensaje" placeholder="Escribe aqui..."> <br>
-    	<input type="submit" id="botonEnviarMensaje" value="Enviar">
+    	<input type="text" id="campoMensaje"> <br>
+    	<button id="botonEnviarMensaje">Enviar</button>
     	
-    </form>
+    </div>
 
 
 
