@@ -1,7 +1,6 @@
 package com.cesar.ChatWeb.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,10 +8,9 @@ import java.util.TimerTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
-import com.cesar.ChatWeb.entity.Conversacion;
 import com.cesar.ChatWeb.entity.Mensaje;
 import com.cesar.ChatWeb.repository.Conversacion_Repositorio;
 import com.cesar.ChatWeb.repository.Mensaje_Repositorio;
@@ -140,79 +138,84 @@ public class Controlador_Sockets {
 
 
 
-	@MessageMapping("/obtenerListaConversaciones")
-	public void obtenerListaConversaciones(Long id) {
-
-		List<Conversacion> conversaciones = conversacionRepo.findAllByUserID(id);
-
-		simp.convertAndSend("/user/" + id + "/queue/conversaciones", conversaciones);
-
-	}
+//	@MessageMapping("/obtenerListaConversaciones")
+//	public void obtenerListaConversaciones(Long id) {
+//
+//		List<Conversacion> conversaciones = conversacionRepo.findAllByUserID(id);
+//
+//		simp.convertAndSend("/user/" + id + "/queue/conversaciones", conversaciones);
+//
+//	}
 
 
 
 
 
 	@MessageMapping("/enviarMensaje")
-	public void enviarMensaje(Map<String, Object> envio) {
+	public void enviarMensaje(StompHeaderAccessor headers, Mensaje mensaje) {
 
-		Mensaje mensaje = (Mensaje) envio.get("mensaje");
-
-		Long idDestinatario = mensaje.getId_destinatario();
-
-		String destinoEnvio = "/user/" + idDestinatario + "/queue/recibirMensaje";
-
-		mensajeRepo.save(mensaje);
-
-		simp.convertAndSend(destinoEnvio, envio);
-
+		//Asignar headers 
+		
+		Map<String, Object> nativeHeaders = new HashMap<>();
+		
+		nativeHeaders.put("nombre", headers.toNativeHeaderMap().get("nombre").get(0));
+		nativeHeaders.put("nombreImagen", headers.toNativeHeaderMap().get("nombreImagen").get(0));
+		
+		//Destino
+		String destinoEnvio = "/user/" + mensaje.getId_destinatario() + "/queue/recibirMensaje";
+		
+		//Guardar mensaje en BBDD
+//		mensajeRepo.save(mensaje);
+		
+		//Enviar
+		simp.convertAndSend(destinoEnvio, mensaje, nativeHeaders);
 	}
 
 
 
 
 
-	@MessageMapping("/crearConversacion")
-	public void crearConversacion(Conversacion conversacion) {
-		conversacionRepo.save(conversacion);
-	}
-
-
-
-
-	@MessageMapping("/eliminarConversacion")
-	public void eliminarConversacion(Long id) {
-		conversacionRepo.deleteById(id);
-	}
+//	@MessageMapping("/crearConversacion")
+//	public void crearConversacion(Conversacion conversacion) {
+//		conversacionRepo.save(conversacion);
+//	}
+//
+//
+//
+//
+//	@MessageMapping("/eliminarConversacion")
+//	public void eliminarConversacion(Long id) {
+//		conversacionRepo.deleteById(id);
+//	}
 
 
 	
 	
 	
-	@MessageMapping("/actualizarMensajesNuevos")
-	public void actualizarMensajesNuevos(Map<String, Object> datos) {
-
-		conversacionRepo.updateMensajesNuevosByIDs(
-			(Long) datos.get("idRemitente"),
-			(Long) datos.get("idDestintatario"),
-			(Integer) datos.get("mensajesNuevos")
-		);
-	}
-
-
-
-
-
-	@MessageMapping("/obtenerListaMensajes")
-	public void obtenerListaMensajes(Map<String, Long> ids) {
-
-		Long idRemitente = ids.get("idRemitente");
-		Long idDestinatario = ids.get("idDestinatario");
-
-		List<Mensaje> listaMensajes = mensajeRepo.findAllByIDs(idRemitente, idDestinatario);
-
-		simp.convertAndSend("/user/" + idRemitente + "/queue/mensajes", listaMensajes);
-	}
+//	@MessageMapping("/actualizarMensajesNuevos")
+//	public void actualizarMensajesNuevos(Map<String, Object> datos) {
+//
+//		conversacionRepo.updateMensajesNuevosByIDs(
+//			(Long) datos.get("idRemitente"),
+//			(Long) datos.get("idDestintatario"),
+//			(Integer) datos.get("mensajesNuevos")
+//		);
+//	}
+//
+//
+//
+//
+//
+//	@MessageMapping("/obtenerListaMensajes")
+//	public void obtenerListaMensajes(Map<String, Long> ids) {
+//
+//		Long idRemitente = ids.get("idRemitente");
+//		Long idDestinatario = ids.get("idDestinatario");
+//
+//		List<Mensaje> listaMensajes = mensajeRepo.findAllByIDs(idRemitente, idDestinatario);
+//
+//		simp.convertAndSend("/user/" + idRemitente + "/queue/mensajes", listaMensajes);
+//	}
 
 	
 	

@@ -121,43 +121,43 @@ $(document).ready(function() {
 	//			})
 	//			
 	//		});
-	//		
-	//
-	//		/////////SUSCRIPCION PARA PROCESAMIENTO DE MENSAJES//////////
-	//		/////////////////////////////////////////////////////////////////
-	//		stomp.subscribe(destinoSuscripcion_RecibirMensaje, function(message){
-	//			
-	//			var envio = JSON.parse(message.body);
-	//			
-	//			var datosRemitente = envio.datosRemitente;
-	//			var mensaje = envio.mensaje;
-	//			
-	//			var idRemitente = mensaje.id_remitente;
-	//			
-	//			var nombreRemitente = datosRemitente.nombre;
-	//			var nombreImagenRemitente = datosRemitente.nombreImagen;
-	//			
-	//			
-	//			if ( $("#conversacion_" + idRemitente).length === 0) {
-	//				
-	//				agregarConversacionAndGuardarBBDD(id, idRemitente, nombreRemitente, nombreImagenRemitente, 1);
-	//			}
-	//			else{
-	//				
-	//				if ( verificarSiConversacionEstaAbierta(idRemitente) ){
-	//
-	//					agregarMensajeBandejaConversacion(mensaje.contenido);
-	//				}
-	//				else{
-	//					
-	//					actualizarMensajesNuevos(idRemitente, "+");
-	//				}
-	//			}
-	//			
-	//			
-	//		});
-	//		
-	//		
+			
+	
+			/////////SUSCRIPCION PARA PROCESAMIENTO DE MENSAJES//////////
+			/////////////////////////////////////////////////////////////////
+			stomp.subscribe(destinoSuscripcion_RecibirMensaje, function(message){
+				
+				var mensaje = JSON.parse(message.body);
+				
+				var datosRemitente = message.headers;
+
+				
+				var idRemitente = mensaje.id_remitente;
+				
+				var nombreRemitente = datosRemitente.nombre;
+				var nombreImagenRemitente = datosRemitente.nombreImagen;
+				
+				agregarMensajeBandejaConversacion(mensaje, datosRemitente);
+//				if ( $("#conversacion_" + idRemitente).length == 0) {
+//					
+//					agregarConversacionAndGuardarBBDD(id, idRemitente, nombreRemitente, nombreImagenRemitente, 1);
+//				}
+//				else{
+//					
+//					if ( verificarSiConversacionEstaAbierta(idRemitente) ){
+//	
+//						agregarMensajeBandejaConversacion(mensaje.contenido);
+//					}
+//					else{
+//						
+//						actualizarMensajesNuevos(idRemitente, "+");
+//					}
+//				}
+				
+				
+			});
+			
+			
 			
 			
 			
@@ -196,63 +196,40 @@ $(document).ready(function() {
 	
 	
 	
-//	///////////ENVIO ACTUALIZAR IMAGEN PERFIL/////////
-//	//////////////////////////////////////////////////
-//	$("#formEditarImagen").submit(function(event){
-//		
-//		var metadatosNuevaImagen = $("#campoNuevaImagen").val();
-//		
-//		stomp.send(destinoEnvio_ActualizarDatosUsuario, {
-//			"actualizar" : "imagen", 
-//			"id" : id, 
-//			"nuevaImagen" : metadatosNuevaImagen,
-//			"nombre" : nombre
-//		});
-//		
-//	});
-//
-//
-//	
-//	//////////////ENVIO DE MENSAJE///////////////////
-//	////////////////////////////////////////////////
-//	$("#formEnviar").submit(function(event) {
-//		
-//		event.preventDefault(); 
-//
-//		if( $("#formEnviar").attr("data-CrearConversacion") === "Si" ){
+	//////////////ENVIO DE MENSAJE///////////////////
+	////////////////////////////////////////////////
+	$("#botonEnviarMensaje").click(function(e) {
+		
+//		if( $("#menuEnviar").attr("data-CrearConversacion") === "Si" ){
 //			
 //			agregarConversacionAndGuardarBBDD(id, idDestinatarioActual, nombreDestinatarioActual, nombreImagenDestinatarioActual, 0);
 //		}
-//		
-//		
-//
-//		var datosRemitente = {
-//			"nombre" : nombre,
-//			"nombreImagen" : nombreImagen
-//		}
-//		
-//		var mensaje = {
-//			"id_remitente" : id,
-//			"id_destinatario" : idDestinatarioActual,
-//			"contenido" : $("#campoMensaje").val(),
-//			"fecha" : new Date().toISOString
-//		}
-//		
-//		var envio = {
-//			"datosRemitente" : datosRemitente,
-//			"mensaje" : mensaje
-//		}
-//		
-//		
-//		agregarMensajeBandejaConversacion(mensaje);
-//
-//		stomp.send(destinoEnvio_Mensaje, {}, envio);
-//						
-//	});
-//	
-//	
-//	
-//	
+		
+		
+
+		var datosRemitente = {
+			"nombre" : nombre,
+			"nombreImagen" : nombreImagen
+		}
+		
+		var mensaje = {
+			"id_remitente" : id,
+			"id_destinatario" : idDestinatarioActual,
+			"contenido" : $("#campoMensaje").val(),
+			"fecha" : new Date().toISOString()
+		}
+		
+		
+		agregarMensajeBandejaConversacion(mensaje, datosRemitente);
+
+		stomp.send(destinoEnvio_Mensaje, datosRemitente, JSON.stringify(mensaje));
+		
+		$("#campoMensaje").val("");
+	});
+	
+	
+	
+	
 	
 	
 	/////////////CAPTURA DE EVENTO DE DESCONEXION/////////////
@@ -281,7 +258,7 @@ $(document).ready(function() {
 				
 				"<li id='usuario_" + idP + "'>" + 
 					"<span id='elemento_nombre'>" + nombreP + "</span>" +
-					"<img id='elemento_imagen' src='" + (rutaImagenesPerfil + nombreImagenP) + "'></img>" +
+					"<img id='elemento_imagen' src='" + (rutaImagenesPerfil + nombreImagenP) + "' height='50px' width='50px'></img>" +
 				"</li>"
 				
 			);
@@ -424,6 +401,8 @@ $(document).ready(function() {
 	
 	function abrirConversacion(id, elemento){
 
+		$("#campoMensaje").val("");
+
 		if ( verificarSiConversacionEstaAbierta(id) ){
 			
 			$("#nombreConversacion").hide();
@@ -529,33 +508,42 @@ $(document).ready(function() {
 //		
 //		stomp.send(destinoEnvio_ActualizarMensajesNuevos, {}, datosActualizacion);
 //	}
-//	
-//	
-//	
-//	function agregarMensajeBandejaConversacion(mensaje){
-//		
-//		var idRemitente = mensaje.id_remitente;
-//		var idDestinatario = mensaje.id_destinatario;
-//		var contenido = mensaje.contenido;
+	
+	
+	
+	function agregarMensajeBandejaConversacion(mensaje, datosRemitente){
+		
+		var idRemitente = mensaje.id_remitente;
+		var idDestinatario = mensaje.id_destinatario;
+		var contenido = mensaje.contenido;
+		
+		var nombreRemitente = datosRemitente.nombre;
+		var nombreImagenRemitente = datosRemitente.nombreImagen;
+		
+		
+		//FUNCIONALIDAD DE FECHA DE ENVIO
 //		var fechaEnvio = new Date(mensaje.fecha);
 //		
+//		console.log(fechaEnvio.getTime());
 //		
 //		var fechaActual = new Date();
 //		
-//		var milisegundosDiferencia = fechaActual.getTime() - fechaEnvio.getTime();
+//		console.log(fechaActual.getTime());
+//		
+//		var milisegundosDiferencia = (fechaActual.getTime() - fechaEnvio.getTime());
+//		
+//		console.log( milisegundosDiferencia );
 //		
 //		var segundos = Math.floor( milisegundosDiferencia / 1000 );
+//		console.log("SEGUNDOS: " + segundos);
 //		var minutos = Math.floor( segundos / 60 );
 //		var horas = Math.floor( minutos / 60 );
 //		var dias = Math.floor( horas / 24 );
 //		
 //		
-//		var enviadoHace;
+//		var enviadoHace = "un instante";
 //		
-//		if ( segundos > 0 ){
-//			
-//			enviadoHace = "un instante";
-//		}
+//
 //		if ( minutos > 0 ){
 //			
 //			enviadoHace = minutos + " minutos";
@@ -568,10 +556,10 @@ $(document).ready(function() {
 //			
 //			enviadoHace = dias + " dias";
 //		}
-//		
-//		
-//		
-//		
+		
+		
+		
+		
 //		if ( $("#bandejaConversacion li").length > 0 ){
 //			
 //			
@@ -599,25 +587,32 @@ $(document).ready(function() {
 //		}
 //		
 //		
-//		var elementoImagen = "";
-//		
-//		if ( id !== idRemitente ){
-//			
-//			elementoImagen = "<img id='imagen' src='" + rutaImagenesPerfil + nombreImagenDestinatarioActual + "'></img>";
-//		}
-//		
-//		$("#bandejaConversacion").append(
-//			
-//			"<li data-Remitente='" + idRemitente + "' data-DiferenciaMinutos='" + minutos + ">" +
+
+
+//		"<li data-Remitente='" + idRemitente + "' data-DiferenciaMinutos='" + minutos + "'>" +
 //				elementoImagen +
-//				"<span id='contenido'>" + contenido + "</span>" + 
-//				"<span id='fecha'> Enviado hace " + enviadoHace + "</span>" + 
-//			
+//				"<span id='contenido'>" + contenido + "</span> <br>" + 
+//				"<span id='fecha'> Enviado hace " + enviadoHace + "</span>" 
+//				+ 
 //			"</li>"
-//			
-//		);
-//	}
-//	
+
+		var elementoImagen = "";
+		
+		if ( id != idRemitente ){
+			
+			elementoImagen = "<img id='imagen' src='" + rutaImagenesPerfil + nombreImagenRemitente + "' height='35px' width='35px'> <br>";
+		}
+		
+		$("#bandejaMensajes").append(
+			
+			"<li data-Remitente='" + idRemitente + "'>" +
+				elementoImagen +
+				"<span id='contenido'>" + contenido + "</span> <br>" + 
+			"</li>"
+			
+		);
+	}
+	
 	
 	
 	
