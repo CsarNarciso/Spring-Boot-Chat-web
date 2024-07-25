@@ -14,9 +14,9 @@ $(document).ready(function() {
 	var nombreDestinatarioActual;
 	var nombreImagenDestinatarioActual;
 
-	var rutaImagenesPerfil = "/ImagenesDePerfil/";
-	var rutaImagenesGenerales = "/imagenesGenerales/";
-	
+	var rutaImagenesPerfil = "/images/profile/";
+	var rutaImagenesGenerales = "/images/general/";
+		
 	var destinoSuscripcion_RecivirListaUsuarios = "/user/" + id + "/queue/RecivirListaUsuarios";
 	var destinoSuscripcion_ActualizarListaUsuarios = "/topic/ActualizarListaUsuarios";
 	var destinoSuscripcion_ListaConversaciones = "/user/" + id + "/queue/conversaciones";

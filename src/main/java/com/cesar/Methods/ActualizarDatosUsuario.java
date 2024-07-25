@@ -35,10 +35,7 @@ public class ActualizarDatosUsuario {
 					extension = ".png";
 				}
 
-
-				String rutaImagen = "C:/Users/cesar/Desktop/Programacion/SPRING/Practica/ChatWeb/src/main/resources/ImagenesDePerfil/" + idUsuario + extension;
-
-				File imagen = new File(rutaImagen);
+				File imagen = new File("/images/profile/" + nombreImagen + extension);
 
 				if (imagen.exists()) {
 
