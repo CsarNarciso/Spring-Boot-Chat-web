@@ -12,7 +12,7 @@
 	<artifactId>ChatWeb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ChatWeb</name>
-	<description>Chat web con red Wan y protocolo de conexion UDP</description>
+	<description>Chat web using WAN connection and UDP protocol connection</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
